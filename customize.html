@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bazi Scent Customizer — CHUWU 初·五</title>
+<meta name="description" content="Enter your birth date and time to reveal your Bazi Five Element balance, then build a fragrance around what you lack.">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .pillars-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 28px 0; }
+  .pillar-card { background: #fff; border: 1px solid rgba(45,42,40,0.08); border-radius: 4px; padding: 18px 10px; text-align: center; }
+  .pillar-card .label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .pillar-card .cn { font-family: var(--serif); font-size: 2rem; line-height: 1.2; }
+  .pillar-card .en { font-size: 0.72rem; color: #706a63; margin-top: 6px; }
+
+  .tally-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .tally-row .el-label { width: 90px; font-size: 0.85rem; flex-shrink: 0; }
+  .tally-track { flex: 1; height: 10px; background: #EFEBE1; border-radius: 6px; overflow: hidden; }
+  .tally-fill { height: 100%; border-radius: 6px; }
+  .tally-row .el-val { width: 34px; text-align: right; font-size: 0.78rem; color: #726c65; }
+
+  .aspect-card { background: #fff; border: 1px solid rgba(45,42,40,0.08); border-radius: 4px; padding: 26px 24px; }
+  .aspect-card h3 { display: flex; align-items: center; gap: 10px; }
+  .layer-block { margin-top: 14px; }
+  .layer-block .layer-name { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8a847c; margin-bottom: 6px; }
+  .note-chip {
+    display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem;
+    background: #EFEBE1; margin: 2px 4px 2px 0; border: 1px solid rgba(45,42,40,0.08);
+  }
+  .fallback-note { font-size: 0.76rem; color: #8a847c; margin-top: 8px; font-style: italic; }
+
+  .note-picker { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 26px; }
+  .note-pick {
+    padding: 8px 14px; border-radius: 20px; font-size: 0.82rem; cursor: pointer;
+    border: 1px solid var(--grey); background: #fff; transition: all 0.15s ease;
+  }
+  .note-pick.recommended { border-color: var(--gold); background: #FBF6EA; }
+  .note-pick.selected { background: var(--charcoal); color: var(--ivory); border-color: var(--charcoal); }
+  .note-pick .zh-small { color: #948e86; font-size: 0.72rem; margin-left: 4px; }
+  .note-pick.selected .zh-small { color: var(--grey); }
+
+  .blend-preview { background: #fff; border: 1px solid rgba(45,42,40,0.08); border-radius: 4px; padding: 24px; margin-top: 20px; }
+  .blend-preview .slot { margin-bottom: 10px; font-size: 0.95rem; }
+  .blend-preview .slot b { text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.08em; color: var(--gold); margin-right: 8px; }
+
+  .note-disclaimer { font-size: 0.8rem; color: #8a847c; max-width: 640px; margin: 0 auto; }
+
+  .note-pick.sold-out { opacity: 0.45; cursor: not-allowed; text-decoration: line-through; }
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-row">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 200 300" style="height:40px;color:var(--charcoal)">
+        <rect x="20" y="10" width="160" height="200" rx="80" fill="none" stroke="currentColor" stroke-width="4"/>
+        <text x="100" y="95" text-anchor="middle" font-family="'Noto Serif SC', serif" font-size="50" fill="currentColor">初</text>
+        <line x1="55" y1="125" x2="145" y2="125" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="100" cy="125" r="4" fill="currentColor"/>
+        <text x="100" y="185" text-anchor="middle" font-family="'Noto Serif SC', serif" font-size="50" fill="currentColor">五</text>
+      </svg>
+      <span class="wordmark">CHUWU</span>
+    </a>
+    <nav class="links">
+      <a href="index.html" data-page="index.html">Home</a>
+      <a href="customize.html" data-page="customize.html">Bazi Customize</a>
+      <a href="shop.html" data-page="shop.html">Shop</a>
+      <a href="customize.html" class="nav-cta">Find Your Element</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" style="padding-bottom:50px">
+  <div class="container">
+    <p class="eyebrow">Bazi Scent Customizer</p>
+    <h1>Discover the Element You're Missing</h1>
+    <p class="lede">Enter your birth date and time (as precisely as you know it) to calculate your Bazi (八字) — your Four Pillars of Destiny — and see which of the Five Elements your chart could use more of.</p>
+  </div>
+</section>
+
+<section style="padding-top:20px">
+  <div class="container" style="max-width:560px">
+    <form id="bazi-form">
+      <div class="field">
+        <label for="birth-date">Date of Birth</label>
+        <input type="date" id="birth-date" required min="1930-01-01" max="2025-12-31">
+      </div>
+      <div class="field">
+        <label for="birth-place">Place of Birth</label>
+        <select id="birth-place"></select>
+      </div>
+      <div class="field">
+        <label for="birth-shichen">Time of Birth (2-Hour Block · 时辰)</label>
+        <select id="birth-shichen"></select>
+      </div>
+      <p class="muted" style="font-size:0.82rem">Bazi hour pillars are traditionally read in 12 two-hour blocks (时辰) rather than the exact minute, so pick the block you were born in. Not sure? Leave it on the midday estimate — your Day and Year pillars will still be accurate; only the Hour pillar will be approximate. Place of birth refines the reading using true solar time.</p>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:10px">Calculate My Bazi</button>
+    </form>
+    <p id="form-error" class="hidden" style="color:var(--fire);font-size:0.85rem;margin-top:12px"></p>
+  </div>
+</section>
+
+<section id="results-section" class="alt hidden">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Your Four Pillars</p>
+      <h2 id="results-heading">Your Bazi Reading</h2>
+    </div>
+    <div class="pillars-grid" id="pillars-grid"></div>
+
+    <div class="divider"></div>
+
+    <div style="max-width:640px;margin:0 auto">
+      <h3 class="center">Your Five Element Balance</h3>
+      <div id="tally-chart" style="margin-top:24px"></div>
+      <p id="analysis-text" class="muted center" style="margin-top:20px"></p>
+      <p class="center" style="margin-top:10px">
+        <span id="lacking-tags"></span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="recommend-section" class="hidden">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Recommended For You</p>
+      <h2>Scents to Restore Your Balance</h2>
+      <p>Based on your lacking element(s), here's what we suggest for each area of life.</p>
+    </div>
+    <div class="grid-3" id="aspect-grid"></div>
+  </div>
+</section>
+
+<section id="build-section" class="alt hidden">
+  <div class="container" style="max-width:760px">
+    <div class="section-head">
+      <p class="eyebrow">Build Your Own</p>
+      <h2>Compose Your Custom Blend</h2>
+      <p>Notes highlighted in gold match the element(s) you're lacking. Pick one top, one middle and one base note to build your fragrance.</p>
+    </div>
+
+    <div class="layer-block">
+      <div class="layer-name">Top Note</div>
+      <div class="note-picker" id="picker-top"></div>
+    </div>
+    <div class="layer-block">
+      <div class="layer-name">Middle Note</div>
+      <div class="note-picker" id="picker-middle"></div>
+    </div>
+    <div class="layer-block">
+      <div class="layer-name">Base Note</div>
+      <div class="note-picker" id="picker-base"></div>
+    </div>
+
+    <div class="blend-preview">
+      <div class="slot"><b>Top</b><span id="preview-top">—</span></div>
+      <div class="slot"><b>Middle</b><span id="preview-middle">—</span></div>
+      <div class="slot"><b>Base</b><span id="preview-base">—</span></div>
+    </div>
+
+    <div class="field" style="margin-top:24px">
+      <label for="req-name">Your Name</label>
+      <input type="text" id="req-name" placeholder="Full name">
+    </div>
+    <div class="field">
+      <label for="req-email">Your Email</label>
+      <input type="email" id="req-email" placeholder="you@example.com">
+    </div>
+    <button id="request-blend" class="btn btn-primary" disabled style="width:100%;justify-content:center">Select All 3 Notes to Request This Blend</button>
+  </div>
+</section>
+
+<section>
+  <div class="container center">
+    <p class="note-disclaimer">This reading is offered as a lifestyle and inspirational guide drawing on traditional Five Element (Wu Xing) theory, and is not a substitute for a professional Bazi consultation.</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div>
+      <svg viewBox="0 0 200 300" style="height:56px;color:var(--ivory)">
+        <rect x="20" y="10" width="160" height="200" rx="80" fill="none" stroke="currentColor" stroke-width="4"/>
+        <text x="100" y="95" text-anchor="middle" font-family="'Noto Serif SC', serif" font-size="50" fill="currentColor">初</text>
+        <line x1="55" y1="125" x2="145" y2="125" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="100" cy="125" r="4" fill="currentColor"/>
+        <text x="100" y="185" text-anchor="middle" font-family="'Noto Serif SC', serif" font-size="50" fill="currentColor">五</text>
+      </svg>
+      <p class="muted" style="margin-top:14px;max-width:240px">Inspired by Five Elements, rooted in balance.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <a href="index.html">Home</a>
+      <a href="customize.html">Bazi Customize</a>
+      <a href="shop.html">Shop</a>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <a href="mailto:hello@chuwu.com">hello@chuwu.com</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© <span data-year></span> CHUWU 初·五. All rights reserved.</div>
+</footer>
+
+<script src="assets/js/notes-data.js"></script>
+<script src="assets/js/recommend.js"></script>
+<script src="assets/js/cities-data.js"></script>
+<script src="assets/js/bazi-engine.js"></script>
+<script src="assets/js/customize.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

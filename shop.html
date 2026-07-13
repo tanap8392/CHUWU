@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop Signature Blends — CHUWU 初·五</title>
+<meta name="description" content="Five signature CHUWU fragrances, each composed around the Five Elements for a specific intention: love, wealth, career, health and overall balance.">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .product-card {
+    background: #fff; border: 1px solid rgba(45,42,40,0.08); border-radius: 4px;
+    overflow: hidden; display: flex; flex-direction: column;
+  }
+  .product-media {
+    height: 220px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(160deg, var(--ivory), #EFEBE1);
+  }
+  .product-media .bottle {
+    width: 64px; height: 120px; border-radius: 8px 8px 22px 22px; position: relative;
+    box-shadow: 0 18px 30px rgba(45,42,40,0.15);
+  }
+  .product-media .bottle::before {
+    content: ''; position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+    width: 26px; height: 22px; background: var(--charcoal); border-radius: 3px;
+  }
+  .product-body { padding: 26px 24px 28px; flex: 1; display: flex; flex-direction: column; }
+  .product-body .zh { font-family: var(--serif); font-size: 1.6rem; color: var(--gold); display:block; }
+  .product-body h3 { margin: 2px 0 10px; }
+  .product-tags { margin: 10px 0 14px; }
+  .note-line { font-size: 0.82rem; color: #605a54; margin-bottom: 4px; }
+  .note-line b { color: var(--charcoal); font-weight: 500; }
+  .price-row { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 18px; }
+  .price { font-family: var(--serif); font-size: 1.3rem; }
+  .stock-badge { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; display: inline-block; }
+  .stock-badge.in_stock { color: var(--wood); }
+  .stock-badge.low_stock { color: var(--earth); }
+  .stock-badge.sold_out { color: var(--fire); }
+  .product-card.sold_out .product-media { opacity: 0.55; }
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-row">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 200 300" style="height:40px;color:var(--charcoal)">
+        <rect x="20" y="10" width="160" height="200" rx="80" fill="none" stroke="currentColor" stroke-width="4"/>
+        <text x="100" y="95" text-anchor="middle" font-family="'Noto Serif SC', serif" font-size="50" fill="currentColor">初</text>
+        <line x1="55" y1="125" x2="145" y2="125" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="100" cy="125" r="4" fill="currentColor"/>
+        <text x="100" y="185" text-anchor="middle" font-family="'Noto Serif SC', serif" font-size="50" fill="currentColor">五</text>
+      </svg>
+      <span class="wordmark">CHUWU</span>
+    </a>
+    <nav class="links">
+      <a href="index.html" data-page="index.html">Home</a>
+      <a href="customize.html" data-page="customize.html">Bazi Customize</a>
+      <a href="shop.html" data-page="shop.html">Shop</a>
+      <a href="customize.html" class="nav-cta">Find Your Element</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" style="padding-bottom:50px">
+  <div class="container">
+    <p class="eyebrow">Signature Blends</p>
+    <h1>Five Scents, Five Intentions</h1>
+    <p class="lede">No reading required. Each signature blend is composed around the Five Elements associated with a specific intention — pick the one that speaks to what you need most right now.</p>
+  </div>
+</section>
+
+<section style="padding-top:50px">
+  <div class="container">
+    <div class="grid-3" id="shop-grid">
+      <p class="muted center" id="shop-loading">Loading blends…</p>
+    </div>
+
+    <div class="center" style="margin-top:52px">
+      <p class="muted">Not sure which is right for you?</p>
+      <a href="customize.html" class="btn btn-gold">Get a Free Bazi Reading</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div>
+      <svg viewBox="0 0 200 300" style="height:56px;color:var(--ivory)">
+        <rect x="20" y="10" width="160" height="200" rx="80" fill="none" stroke="currentColor" stroke-width="4"/>
+        <text x="100" y="95" text-anchor="middle" font-family="'Noto Serif SC', serif" font-size="50" fill="currentColor">初</text>
+        <line x1="55" y1="125" x2="145" y2="125" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="100" cy="125" r="4" fill="currentColor"/>
+        <text x="100" y="185" text-anchor="middle" font-family="'Noto Serif SC', serif" font-size="50" fill="currentColor">五</text>
+      </svg>
+      <p class="muted" style="margin-top:14px;max-width:240px">Inspired by Five Elements, rooted in balance.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <a href="index.html">Home</a>
+      <a href="customize.html">Bazi Customize</a>
+      <a href="shop.html">Shop</a>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <a href="mailto:hello@chuwu.com">hello@chuwu.com</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© <span data-year></span> CHUWU 初·五. All rights reserved.</div>
+</footer>
+
+<script src="assets/js/shop.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
