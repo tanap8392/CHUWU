@@ -7,7 +7,6 @@ public_folder: "/assets/img/uploads"
 
 site_url: https://chuwu-fragrance.netlify.app
 display_url: https://chuwu-fragrance.netlify.app
-logo_url: /assets/img/logo.png
 
 collections:
   - name: "products"
