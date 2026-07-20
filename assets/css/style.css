@@ -76,18 +76,19 @@ nav.links a.active::after {
 }
 .nav-cta {
   background: var(--charcoal); color: var(--ivory) !important;
-  padding: 9px 20px; border-radius: 2px; font-size: 0.78rem !important;
-  letter-spacing: 0.12em !important;
+  padding: 11px 26px; border-radius: 999px; font-size: 0.76rem !important;
+  letter-spacing: 0.1em !important; white-space: nowrap;
 }
 .nav-cta:hover { background: var(--ink); }
 
 /* ---------- Buttons ---------- */
 .btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 13px 28px; border: 1px solid var(--charcoal);
-  font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 32px; border: 1px solid var(--charcoal);
+  font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
   cursor: pointer; background: transparent; color: var(--charcoal);
-  border-radius: 2px; transition: all 0.2s ease; font-family: var(--sans);
+  border-radius: 999px; transition: all 0.2s ease; font-family: var(--sans);
+  white-space: nowrap; line-height: 1.2;
 }
 .btn:hover { background: var(--charcoal); color: var(--ivory); }
 .btn-primary { background: var(--charcoal); color: var(--ivory); }

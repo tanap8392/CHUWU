@@ -59,7 +59,7 @@
     if (soldOut) {
       buyBtn = el('button', { class: 'btn', disabled: 'disabled' }, [text('Sold Out')]);
     } else if (isPersonalized) {
-      buyBtn = el('a', { href: 'customize.html', class: 'btn btn-primary' }, [text('Start Your Bazi Reading')]);
+      buyBtn = el('a', { href: 'customize.html', class: 'btn btn-primary' }, [text('Personalize')]);
     } else {
       buyBtn = el('button', { class: 'btn btn-primary' }, [text('Buy Now')]);
       buyBtn.addEventListener('click', () => buyNow(variant.id, p.title, buyBtn));
@@ -93,14 +93,24 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     const grid = document.getElementById('shop-grid');
+    const gridPersonalized = document.getElementById('shop-grid-personalized');
     ChuwuShopify.fetchProducts()
       .then(products => {
+        const personalized = products.filter(p => /personalized chu wu blend/i.test(p.title));
+        const signature = products.filter(p => !/personalized chu wu blend/i.test(p.title));
+
         grid.innerHTML = '';
-        products.forEach(p => grid.appendChild(productCard(p)));
+        signature.forEach(p => grid.appendChild(productCard(p)));
+
+        gridPersonalized.innerHTML = '';
+        personalized
+          .sort((a, b) => parseFloat(a.variants.nodes[0].price.amount) - parseFloat(b.variants.nodes[0].price.amount))
+          .forEach(p => gridPersonalized.appendChild(productCard(p)));
       })
       .catch(err => {
         grid.innerHTML = '';
         grid.appendChild(el('p', { class: 'muted center' }, [text('Unable to load products right now — please try again shortly.')]));
+        gridPersonalized.innerHTML = '';
         console.error(err);
       });
   });
