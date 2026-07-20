@@ -82,6 +82,43 @@ nav.links a.active::after {
 }
 .nav-cta:hover { background: var(--ink); }
 
+/* ---------- Cart ---------- */
+.cart-toggle {
+  background: none; border: none; cursor: pointer; padding: 6px;
+  display: inline-flex; align-items: center; position: relative; color: var(--charcoal);
+}
+.cart-toggle-mobile { display: none; }
+.cart-toggle svg { width: 22px; height: 22px; }
+.cart-count {
+  position: absolute; top: -2px; right: -2px; background: var(--gold); color: var(--charcoal);
+  font-size: 0.65rem; font-weight: 600; border-radius: 999px; min-width: 16px; height: 16px;
+  display: none; align-items: center; justify-content: center; padding: 0 3px; line-height: 1;
+}
+.cart-panel {
+  display: none; position: fixed; top: 74px; right: 20px; width: 360px; max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 100px); overflow-y: auto;
+  background: #fff; border: 1px solid rgba(45, 42, 40, 0.1); border-radius: 8px;
+  box-shadow: 0 20px 50px rgba(45, 42, 40, 0.18); z-index: 100; padding: 20px;
+}
+.cart-panel.open { display: block; }
+.cart-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.cart-panel-header h4 { margin: 0; font-family: var(--serif); font-size: 1.2rem; }
+.cart-close { background: none; border: none; font-size: 1.6rem; cursor: pointer; color: var(--charcoal); line-height: 1; padding: 0 4px; }
+.cart-line { display: flex; gap: 10px; padding: 12px 0; border-bottom: 1px solid rgba(45, 42, 40, 0.08); }
+.cart-line img, .cart-line-placeholder {
+  width: 48px; height: 48px; border-radius: 4px; object-fit: cover; background: var(--ivory); flex-shrink: 0;
+}
+.cart-line-info { flex: 1; min-width: 0; }
+.cart-line-info .title { font-size: 0.85rem; font-weight: 500; }
+.cart-line-info .attrs { font-size: 0.72rem; color: #8a847c; margin-top: 2px; }
+.cart-line-info .qty-price { font-size: 0.78rem; color: #605a54; margin-top: 4px; display: flex; justify-content: space-between; }
+.cart-line-remove { background: none; border: none; color: #8a847c; font-size: 0.72rem; cursor: pointer; text-decoration: underline; padding: 4px 0 0; }
+.cart-empty { font-size: 0.85rem; color: #8a847c; text-align: center; padding: 24px 0; }
+.cart-subtotal-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0; font-size: 0.95rem; font-weight: 500; border-top: 1px solid rgba(45, 42, 40, 0.1); margin-top: 4px;
+}
+
 /* ---------- Mobile nav (hamburger left, logo centered) ---------- */
 .nav-hamburger {
   display: none; flex-direction: column; justify-content: center; gap: 5px;
@@ -104,14 +141,15 @@ nav.links a.active::after {
     border-top: 1px solid rgba(45, 42, 40, 0.08);
   }
   .mobile-menu.open { display: flex; }
-  .mobile-menu a {
+  .mobile-menu a:not(.nav-cta) {
     padding: 12px 0; font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--charcoal); border-bottom: 1px solid rgba(45, 42, 40, 0.06);
   }
   .mobile-menu a.active { color: var(--ink); }
   .mobile-menu a.nav-cta {
-    text-align: center; margin-top: 12px; border-bottom: none; padding: 13px 34px;
+    display: block; text-align: center; margin-top: 12px; padding: 13px 34px;
   }
+  .cart-toggle-mobile { display: flex; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); }
 }
 
 /* ---------- Buttons ---------- */
@@ -215,6 +253,7 @@ footer.site-footer .container { display: flex; justify-content: space-between; f
 footer.site-footer h4 { color: var(--ivory); font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; font-family: var(--sans); font-weight: 500; }
 footer.site-footer a { color: var(--grey); font-size: 0.85rem; display: block; margin-bottom: 8px; }
 footer.site-footer a:hover { color: var(--ivory); }
+.footer-social { display: inline-flex; align-items: center; }
 .footer-bottom { text-align: center; margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem; color: #8b8680; }
 
 /* ---------- Forms ---------- */

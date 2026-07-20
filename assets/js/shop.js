@@ -29,17 +29,23 @@
     return { blurb: description.slice(0, m.index).trim(), top: m[1].trim(), middle: m[2].trim(), base: m[3].trim() };
   }
 
-  function buyNow(variantId, productTitle, btn) {
+  function addToCart(variantId, productTitle, btn) {
     btn.disabled = true;
     const originalText = btn.textContent;
-    btn.textContent = 'Preparing checkout…';
-    ChuwuShopify.createCartAndGetCheckoutUrl([{ merchandiseId: variantId, quantity: 1 }])
-      .then(url => { window.location.href = url; })
+    btn.textContent = 'Adding…';
+    ChuwuShopify.addToCart(variantId, 1, [])
+      .then(() => {
+        btn.textContent = 'Added ✓';
+        if (window.ChuwuCartUI) {
+          window.ChuwuCartUI.refresh().then(() => window.ChuwuCartUI.open());
+        }
+        setTimeout(() => { btn.disabled = false; btn.textContent = originalText; }, 1800);
+      })
       .catch(err => {
         console.error(err);
         btn.disabled = false;
         btn.textContent = originalText;
-        alert(`Sorry, something went wrong starting checkout for ${productTitle}. Please try again.`);
+        alert(`Sorry, something went wrong adding ${productTitle} to your cart. Please try again.`);
       });
   }
 
@@ -61,8 +67,8 @@
     } else if (isPersonalized) {
       buyBtn = el('a', { href: 'customize.html', class: 'btn btn-primary' }, [text('Personalize')]);
     } else {
-      buyBtn = el('button', { class: 'btn btn-primary' }, [text('Buy Now')]);
-      buyBtn.addEventListener('click', () => buyNow(variant.id, p.title, buyBtn));
+      buyBtn = el('button', { class: 'btn btn-primary' }, [text('Add to Cart')]);
+      buyBtn.addEventListener('click', () => addToCart(variant.id, p.title, buyBtn));
     }
 
     const media = p.featuredImage

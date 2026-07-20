@@ -318,7 +318,7 @@
     const ready = notesReady && selectedSize;
     btn.disabled = !ready;
     btn.textContent = ready
-      ? `Checkout — ${formatPrice(selectedSize.price, selectedSize.currency)}`
+      ? `Add to Cart — ${formatPrice(selectedSize.price, selectedSize.currency)}`
       : (notesReady ? 'Select a Bottle Size to Continue' : 'Select 1–2 Notes Per Layer to Continue');
   }
 
@@ -342,15 +342,21 @@
 
     const originalText = btn.textContent;
     btn.disabled = true;
-    btn.textContent = 'Preparing checkout…';
+    btn.textContent = 'Adding to cart…';
 
-    ChuwuShopify.createCartAndGetCheckoutUrl([{ merchandiseId: selectedSize.variantId, quantity: 1, attributes }])
-      .then(url => { window.location.href = url; })
+    ChuwuShopify.addToCart(selectedSize.variantId, 1, attributes)
+      .then(() => {
+        btn.textContent = 'Added ✓';
+        if (window.ChuwuCartUI) {
+          window.ChuwuCartUI.refresh().then(() => window.ChuwuCartUI.open());
+        }
+        setTimeout(() => { btn.disabled = false; updateRequestButton(); }, 1800);
+      })
       .catch(err => {
         console.error(err);
         btn.disabled = false;
         btn.textContent = originalText;
-        errorEl.textContent = 'Something went wrong starting checkout. Please try again.';
+        errorEl.textContent = 'Something went wrong adding this to your cart. Please try again.';
         errorEl.classList.remove('hidden');
       });
   });
