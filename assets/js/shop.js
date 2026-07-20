@@ -49,15 +49,21 @@
     const aspectTag = p.tags.find(t => /Luck|Balance/i.test(t));
     const parsed = parseNotes(p.description || '');
     const soldOut = !variant.availableForSale;
+    const isPersonalized = /personalized chu wu blend/i.test(p.title);
 
     const tagEls = elementTags.map(e =>
       el('span', { class: 'tag', style: `background:var(${ELEMENT_COLOR_VAR[e]});color:#fff` }, [text(e)])
     );
 
-    const buyBtn = soldOut
-      ? el('button', { class: 'btn', disabled: 'disabled' }, [text('Sold Out')])
-      : el('button', { class: 'btn btn-primary' }, [text('Buy Now')]);
-    if (!soldOut) buyBtn.addEventListener('click', () => buyNow(variant.id, p.title, buyBtn));
+    let buyBtn;
+    if (soldOut) {
+      buyBtn = el('button', { class: 'btn', disabled: 'disabled' }, [text('Sold Out')]);
+    } else if (isPersonalized) {
+      buyBtn = el('a', { href: 'customize.html', class: 'btn btn-primary' }, [text('Start Your Bazi Reading')]);
+    } else {
+      buyBtn = el('button', { class: 'btn btn-primary' }, [text('Buy Now')]);
+      buyBtn.addEventListener('click', () => buyNow(variant.id, p.title, buyBtn));
+    }
 
     const media = p.featuredImage
       ? el('img', { src: p.featuredImage.url, alt: p.featuredImage.altText || p.title, style: 'width:100%;height:100%;object-fit:cover' }, [])
