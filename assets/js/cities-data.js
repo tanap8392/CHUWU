@@ -5,55 +5,54 @@
    reading before handing it to the Bazi engine (which assumes a UTC+8, 120°E-referenced civil clock). */
 (function (root) {
   const CITIES = {
-    // Mainland China (UTC+8)
-    'Beijing': { longitude: 116.40, utcOffset: 8, group: 'Mainland China' },
-    'Shanghai': { longitude: 121.47, utcOffset: 8, group: 'Mainland China' },
-    'Guangzhou': { longitude: 113.26, utcOffset: 8, group: 'Mainland China' },
-    'Shenzhen': { longitude: 114.06, utcOffset: 8, group: 'Mainland China' },
-    'Chengdu': { longitude: 104.06, utcOffset: 8, group: 'Mainland China' },
-    'Chongqing': { longitude: 106.55, utcOffset: 8, group: 'Mainland China' },
-    'Hangzhou': { longitude: 120.15, utcOffset: 8, group: 'Mainland China' },
-    'Nanjing': { longitude: 118.78, utcOffset: 8, group: 'Mainland China' },
-    'Wuhan': { longitude: 114.31, utcOffset: 8, group: 'Mainland China' },
-    "Xi'an": { longitude: 108.95, utcOffset: 8, group: 'Mainland China' },
-    'Tianjin': { longitude: 117.20, utcOffset: 8, group: 'Mainland China' },
-    'Suzhou': { longitude: 120.62, utcOffset: 8, group: 'Mainland China' },
-    'Qingdao': { longitude: 120.38, utcOffset: 8, group: 'Mainland China' },
-    'Xiamen': { longitude: 118.10, utcOffset: 8, group: 'Mainland China' },
-    'Fuzhou': { longitude: 119.30, utcOffset: 8, group: 'Mainland China' },
-    'Ningbo': { longitude: 121.55, utcOffset: 8, group: 'Mainland China' },
-    'Kunming': { longitude: 102.83, utcOffset: 8, group: 'Mainland China' },
-    'Harbin': { longitude: 126.53, utcOffset: 8, group: 'Mainland China' },
-    'Shenyang': { longitude: 123.43, utcOffset: 8, group: 'Mainland China' },
-    'Zhengzhou': { longitude: 113.65, utcOffset: 8, group: 'Mainland China' },
-    'Changsha': { longitude: 112.94, utcOffset: 8, group: 'Mainland China' },
-    'Dalian': { longitude: 121.62, utcOffset: 8, group: 'Mainland China' },
-    'Hefei': { longitude: 117.27, utcOffset: 8, group: 'Mainland China' },
-    'Jinan': { longitude: 117.00, utcOffset: 8, group: 'Mainland China' },
-    'Nanning': { longitude: 108.37, utcOffset: 8, group: 'Mainland China' },
-    'Guiyang': { longitude: 106.71, utcOffset: 8, group: 'Mainland China' },
-    'Lanzhou': { longitude: 103.73, utcOffset: 8, group: 'Mainland China' },
-    'Urumqi': { longitude: 87.62, utcOffset: 8, group: 'Mainland China' },
-    'Lhasa': { longitude: 91.13, utcOffset: 8, group: 'Mainland China' },
+    // Mainland China — a few representative cities spanning the country's longitude range
+    // (that's what actually matters for the true-solar-time correction), not an exhaustive list.
+    'Beijing': { longitude: 116.40, utcOffset: 8, group: 'China' },
+    'Shanghai': { longitude: 121.47, utcOffset: 8, group: 'China' },
+    'Guangzhou / Shenzhen': { longitude: 113.5, utcOffset: 8, group: 'China' },
+    "Chengdu / Xi'an": { longitude: 106.5, utcOffset: 8, group: 'China' },
+    'Urumqi': { longitude: 87.62, utcOffset: 8, group: 'China' },
+    'Hong Kong': { longitude: 114.17, utcOffset: 8, group: 'China' },
+    'Macau': { longitude: 113.55, utcOffset: 8, group: 'China' },
+    'Taipei': { longitude: 121.56, utcOffset: 8, group: 'China' },
 
-    // Greater China & Southeast Asia
-    'Hong Kong': { longitude: 114.17, utcOffset: 8, group: 'Greater China & SE Asia' },
-    'Macau': { longitude: 113.55, utcOffset: 8, group: 'Greater China & SE Asia' },
-    'Taipei': { longitude: 121.56, utcOffset: 8, group: 'Greater China & SE Asia' },
-    'Kaohsiung': { longitude: 120.30, utcOffset: 8, group: 'Greater China & SE Asia' },
-    'Singapore': { longitude: 103.82, utcOffset: 8, group: 'Greater China & SE Asia' },
-    'Kuala Lumpur': { longitude: 101.69, utcOffset: 8, group: 'Greater China & SE Asia' },
-    'Bangkok': { longitude: 100.50, utcOffset: 7, group: 'Greater China & SE Asia' },
-    'Tokyo': { longitude: 139.69, utcOffset: 9, group: 'Greater China & SE Asia' },
-    'Seoul': { longitude: 126.98, utcOffset: 9, group: 'Greater China & SE Asia' },
+    // East & Southeast Asia
+    'Singapore': { longitude: 103.82, utcOffset: 8, group: 'East & Southeast Asia' },
+    'Kuala Lumpur': { longitude: 101.69, utcOffset: 8, group: 'East & Southeast Asia' },
+    'Jakarta': { longitude: 106.85, utcOffset: 7, group: 'East & Southeast Asia' },
+    'Manila': { longitude: 120.98, utcOffset: 8, group: 'East & Southeast Asia' },
+    'Bangkok': { longitude: 100.50, utcOffset: 7, group: 'East & Southeast Asia' },
+    'Ho Chi Minh City': { longitude: 106.70, utcOffset: 7, group: 'East & Southeast Asia' },
+    'Tokyo': { longitude: 139.69, utcOffset: 9, group: 'East & Southeast Asia' },
+    'Seoul': { longitude: 126.98, utcOffset: 9, group: 'East & Southeast Asia' },
 
-    // Other international hubs
-    'Sydney': { longitude: 151.21, utcOffset: 10, group: 'Other International' },
-    'New York': { longitude: -74.00, utcOffset: -5, group: 'Other International' },
-    'Los Angeles': { longitude: -118.24, utcOffset: -8, group: 'Other International' },
-    'Vancouver': { longitude: -123.12, utcOffset: -8, group: 'Other International' },
-    'Toronto': { longitude: -79.38, utcOffset: -5, group: 'Other International' },
-    'London': { longitude: -0.13, utcOffset: 0, group: 'Other International' }
+    // South Asia & Middle East
+    'Mumbai': { longitude: 72.88, utcOffset: 5.5, group: 'South Asia & Middle East' },
+    'New Delhi': { longitude: 77.21, utcOffset: 5.5, group: 'South Asia & Middle East' },
+    'Dubai': { longitude: 55.27, utcOffset: 4, group: 'South Asia & Middle East' },
+
+    // Europe & Africa
+    'London': { longitude: -0.13, utcOffset: 0, group: 'Europe & Africa' },
+    'Paris': { longitude: 2.35, utcOffset: 1, group: 'Europe & Africa' },
+    'Berlin': { longitude: 13.40, utcOffset: 1, group: 'Europe & Africa' },
+    'Amsterdam': { longitude: 4.90, utcOffset: 1, group: 'Europe & Africa' },
+    'Moscow': { longitude: 37.62, utcOffset: 3, group: 'Europe & Africa' },
+    'Cairo': { longitude: 31.24, utcOffset: 2, group: 'Europe & Africa' },
+    'Johannesburg': { longitude: 28.05, utcOffset: 2, group: 'Europe & Africa' },
+
+    // Americas
+    'New York': { longitude: -74.00, utcOffset: -5, group: 'Americas' },
+    'Chicago': { longitude: -87.63, utcOffset: -6, group: 'Americas' },
+    'Los Angeles': { longitude: -118.24, utcOffset: -8, group: 'Americas' },
+    'Toronto': { longitude: -79.38, utcOffset: -5, group: 'Americas' },
+    'Vancouver': { longitude: -123.12, utcOffset: -8, group: 'Americas' },
+    'Mexico City': { longitude: -99.13, utcOffset: -6, group: 'Americas' },
+    'São Paulo': { longitude: -46.63, utcOffset: -3, group: 'Americas' },
+
+    // Oceania
+    'Sydney': { longitude: 151.21, utcOffset: 10, group: 'Oceania' },
+    'Melbourne': { longitude: 144.96, utcOffset: 10, group: 'Oceania' },
+    'Auckland': { longitude: 174.76, utcOffset: 12, group: 'Oceania' }
   };
 
   // Adjusts a civil birth date/time at `cityKey` into a China-Standard-Time-equivalent,
