@@ -9,45 +9,6 @@ site_url: https://chuwu-fragrance.netlify.app
 display_url: https://chuwu-fragrance.netlify.app
 
 collections:
-  - name: "products"
-    label: "Shop Listings"
-    description: "The premade fragrances shown on the Shop page."
-    files:
-      - file: "content/products.json"
-        label: "Shop Products"
-        name: "products"
-        fields:
-          - label: "Products"
-            name: "products"
-            widget: "list"
-            summary: "{{name}} — {{aspect}} ({{stock}})"
-            fields:
-              - { label: "ID (slug, no spaces)", name: "id", widget: "string" }
-              - { label: "Chinese Name", name: "zh", widget: "string" }
-              - { label: "Product Name", name: "name", widget: "string" }
-              - label: "Intended Aspect"
-                name: "aspect"
-                widget: "select"
-                options: ["Love Luck", "Wealth Luck", "Career Luck", "Health Luck", "Overall Balance"]
-              - label: "Elements"
-                name: "elements"
-                widget: "select"
-                multiple: true
-                options: ["Wood", "Fire", "Earth", "Metal", "Water"]
-              - { label: "Top Notes (display text)", name: "top", widget: "string" }
-              - { label: "Middle Notes (display text)", name: "middle", widget: "string" }
-              - { label: "Base Notes (display text)", name: "base", widget: "string" }
-              - { label: "Price (USD)", name: "price", widget: "number", value_type: "float" }
-              - label: "Stock Status"
-                name: "stock"
-                widget: "select"
-                options:
-                  - { label: "In Stock", value: "in_stock" }
-                  - { label: "Low Stock", value: "low_stock" }
-                  - { label: "Sold Out", value: "sold_out" }
-              - { label: "Bottle Gradient — Start Color", name: "colorFrom", widget: "color", allowInput: true }
-              - { label: "Bottle Gradient — End Color", name: "colorTo", widget: "color", allowInput: true }
-
   - name: "ingredients"
     label: "Ingredient Stock"
     description: "Availability of each scent note used in the Bazi Customizer and Shop."

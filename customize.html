@@ -46,6 +46,19 @@
   .note-disclaimer { font-size: 0.8rem; color: #8a847c; max-width: 640px; margin: 0 auto; }
 
   .note-pick.sold-out { opacity: 0.45; cursor: not-allowed; text-decoration: line-through; }
+  .note-pick.family-match:not(.selected) { border-color: var(--ink); }
+
+  .family-picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap: 10px; margin-top: 10px; }
+  .family-card {
+    border: 1px solid var(--grey); border-radius: 4px; padding: 14px 12px; cursor: pointer;
+    text-align: center; background: #fff; transition: all 0.15s ease;
+  }
+  .family-card:hover { border-color: var(--gold); }
+  .family-card.selected { background: var(--charcoal); border-color: var(--charcoal); color: var(--ivory); }
+  .family-card .label { font-family: var(--serif); font-size: 1.05rem; display: block; }
+  .family-card .zh { font-family: var(--serif); color: var(--gold); font-size: 0.85rem; display: block; margin: 2px 0; }
+  .family-card .desc { font-size: 0.72rem; color: #8a847c; display: block; }
+  .family-card.selected .desc { color: var(--grey); }
 </style>
 </head>
 <body>
@@ -95,6 +108,12 @@
         <select id="birth-shichen"></select>
       </div>
       <p class="muted" style="font-size:0.82rem">Bazi hour pillars are traditionally read in 12 two-hour blocks (时辰) rather than the exact minute, so pick the block you were born in. Not sure? Leave it on the midday estimate — your Day and Year pillars will still be accurate; only the Hour pillar will be approximate. Place of birth refines the reading using true solar time.</p>
+
+      <div class="field" style="margin-top:28px">
+        <label>Which scents do you gravitate toward? <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:400">(optional)</span></label>
+        <div class="family-picker" id="family-picker"></div>
+      </div>
+
       <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:10px">Calculate My Bazi</button>
     </form>
     <p id="form-error" class="hidden" style="color:var(--fire);font-size:0.85rem;margin-top:12px"></p>
@@ -138,7 +157,7 @@
     <div class="section-head">
       <p class="eyebrow">Build Your Own</p>
       <h2>Compose Your Custom Blend</h2>
-      <p>Notes highlighted in gold match the element(s) you're lacking. Pick one top, one middle and one base note to build your fragrance.</p>
+      <p>Notes highlighted in gold match the element(s) you're lacking; a dark border marks your preferred scent family. Pick 1–2 notes per layer (top, middle, base) — the price only depends on bottle size, not how many notes you choose.</p>
     </div>
 
     <div class="layer-block">
@@ -161,14 +180,12 @@
     </div>
 
     <div class="field" style="margin-top:24px">
-      <label for="req-name">Your Name</label>
-      <input type="text" id="req-name" placeholder="Full name">
+      <label>Bottle Size</label>
+      <div class="family-picker" id="size-picker" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr))"></div>
     </div>
-    <div class="field">
-      <label for="req-email">Your Email</label>
-      <input type="email" id="req-email" placeholder="you@example.com">
-    </div>
-    <button id="request-blend" class="btn btn-primary" disabled style="width:100%;justify-content:center">Select All 3 Notes to Request This Blend</button>
+
+    <button id="request-blend" class="btn btn-primary" disabled style="width:100%;justify-content:center;margin-top:20px">Select Your Notes and a Size to Continue</button>
+    <p id="checkout-error" class="hidden" style="color:var(--fire);font-size:0.85rem;margin-top:12px"></p>
   </div>
 </section>
 
@@ -208,6 +225,7 @@
 <script src="assets/js/recommend.js"></script>
 <script src="assets/js/cities-data.js"></script>
 <script src="assets/js/bazi-engine.js"></script>
+<script src="assets/js/shopify-client.js"></script>
 <script src="assets/js/customize.js"></script>
 <script src="assets/js/main.js"></script>
 </body>

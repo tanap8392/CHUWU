@@ -4,7 +4,11 @@
 
   let lastBaziResult = null;
   let lastBirthPlace = '';
-  const selectedNotes = { top: null, middle: null, base: null };
+  let selectedFamily = null;
+  let selectedSize = null;
+  let blendSizes = [];
+  const selectedNotes = { top: [], middle: [], base: [] };
+  const MAX_NOTES_PER_LAYER = 2;
 
   const SHICHEN = [
     { value: '23:30', label: '子时 Zi · 23:00–00:59' },
@@ -49,8 +53,89 @@
     });
   }
 
+  function populateFamilyPicker() {
+    const container = document.getElementById('family-picker');
+    container.innerHTML = '';
+    ChuwuNotes.FAMILIES.forEach(f => {
+      const card = el('div', { class: 'family-card', 'data-family': f.key }, [
+        el('span', { class: 'label' }, [document.createTextNode(f.label)]),
+        el('span', { class: 'zh' }, [document.createTextNode(f.zh)]),
+        el('span', { class: 'desc' }, [document.createTextNode(f.desc)])
+      ]);
+      card.addEventListener('click', () => {
+        const wasSelected = card.classList.contains('selected');
+        document.querySelectorAll('.family-card').forEach(c => c.classList.remove('selected'));
+        if (wasSelected) {
+          selectedFamily = null;
+        } else {
+          card.classList.add('selected');
+          selectedFamily = f.key;
+        }
+      });
+      container.appendChild(card);
+    });
+  }
+
+  function formatPrice(amount, currencyCode) {
+    try {
+      return new Intl.NumberFormat(undefined, { style: 'currency', currency: currencyCode }).format(amount);
+    } catch (e) {
+      return `${amount} ${currencyCode}`;
+    }
+  }
+
+  function renderSizePicker() {
+    const container = document.getElementById('size-picker');
+    container.innerHTML = '';
+    blendSizes.forEach(size => {
+      const card = el('div', { class: 'family-card', 'data-size': size.label }, [
+        el('span', { class: 'label' }, [document.createTextNode(size.label)]),
+        el('span', { class: 'zh' }, [document.createTextNode(formatPrice(size.price, size.currency))]),
+        size.availableForSale ? text('') : el('span', { class: 'desc' }, [document.createTextNode('Sold out')])
+      ]);
+      if (size.availableForSale) {
+        card.addEventListener('click', () => {
+          document.querySelectorAll('#size-picker .family-card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          selectedSize = size;
+          updateRequestButton();
+        });
+      } else {
+        card.style.opacity = '0.45';
+        card.style.cursor = 'not-allowed';
+      }
+      container.appendChild(card);
+    });
+  }
+
+  function text(t) { return document.createTextNode(t); }
+
+  function loadBlendSizes() {
+    ChuwuShopify.fetchProducts()
+      .then(products => {
+        blendSizes = products
+          .filter(p => /personalized chu wu blend/i.test(p.title))
+          .map(p => {
+            const variant = p.variants.nodes[0];
+            const sizeMatch = p.title.match(/(\d+\s*ml)/i);
+            return {
+              label: sizeMatch ? sizeMatch[1].replace(/\s+/g, '') : p.title,
+              variantId: variant.id,
+              price: variant.price.amount,
+              currency: p.priceRange.minVariantPrice.currencyCode,
+              availableForSale: variant.availableForSale
+            };
+          })
+          .sort((a, b) => parseInt(a.label) - parseInt(b.label));
+        renderSizePicker();
+      })
+      .catch(err => console.error('Could not load blend sizes from Shopify:', err));
+  }
+
   populateBirthPlace();
   populateShichen();
+  populateFamilyPicker();
+  loadBlendSizes();
 
   fetch('content/notes-stock.json')
     .then(r => r.json())
@@ -122,10 +207,10 @@
   const STOCK_ORDER = { in_stock: 0, low_stock: 1, sold_out: 2 };
   const STOCK_SUFFIX = { low_stock: ' (low stock)', sold_out: ' (sold out)' };
 
-  function renderAspects(result) {
+  function renderAspects(result, preferredFamily) {
     const grid = document.getElementById('aspect-grid');
     grid.innerHTML = '';
-    const recs = ChuwuRecommend.recommendForBazi(result);
+    const recs = ChuwuRecommend.recommendForBazi(result, preferredFamily);
     recs.forEach(aspect => {
       const layerBlocks = ['top', 'middle', 'base'].map(layer => {
         const scentGroups = aspect.scents.map(s => s[layer]).filter(g => g.notes.length);
@@ -167,16 +252,25 @@
     });
   }
 
-  function renderNotePickers(result) {
+  function renderNotePickers(result, preferredFamily) {
     const lacking = result.lackingElements;
     ['top', 'middle', 'base'].forEach(layer => {
       const container = document.getElementById('picker-' + layer);
       container.innerHTML = '';
-      ChuwuNotes.NOTES[layer].forEach(note => {
+      selectedNotes[layer] = [];
+
+      const notes = ChuwuNotes.NOTES[layer].slice().sort((a, b) => {
+        const score = n => (lacking.includes(n.element) ? 2 : 0) + (preferredFamily && n.family === preferredFamily ? 1 : 0);
+        return score(b) - score(a);
+      });
+
+      notes.forEach(note => {
         const isRecommended = lacking.includes(note.element);
+        const isFamilyMatch = preferredFamily && note.family === preferredFamily;
         const isSoldOut = note.stock === 'sold_out';
         const classes = ['note-pick'];
         if (isRecommended) classes.push('recommended');
+        if (isFamilyMatch) classes.push('family-match');
         if (isSoldOut) classes.push('sold-out');
         const suffix = STOCK_SUFFIX[note.stock] || '';
         const chip = el('span', {
@@ -187,45 +281,78 @@
           document.createTextNode(note.name + suffix),
           el('span', { class: 'zh-small' }, [document.createTextNode(note.zh + ' · ' + note.element)])
         ]);
-        if (!isSoldOut) chip.addEventListener('click', () => selectNote(layer, note, chip));
+        if (!isSoldOut) chip.addEventListener('click', () => toggleNote(layer, note, chip));
         container.appendChild(chip);
       });
+      updatePreview(layer);
     });
+    updateRequestButton();
   }
 
-  function selectNote(layer, note, chipEl) {
-    document.querySelectorAll(`#picker-${layer} .note-pick`).forEach(c => c.classList.remove('selected'));
-    chipEl.classList.add('selected');
-    selectedNotes[layer] = note;
-    document.getElementById('preview-' + layer).textContent = `${note.name} (${note.zh} · ${note.element})`;
+  function toggleNote(layer, note, chipEl) {
+    const list = selectedNotes[layer];
+    const idx = list.findIndex(n => n.name === note.name);
+    if (idx >= 0) {
+      list.splice(idx, 1);
+      chipEl.classList.remove('selected');
+    } else {
+      if (list.length >= MAX_NOTES_PER_LAYER) return; // already at the 2-note cap for this layer
+      list.push(note);
+      chipEl.classList.add('selected');
+    }
+    updatePreview(layer);
     updateRequestButton();
+  }
+
+  function updatePreview(layer) {
+    const previewEl = document.getElementById('preview-' + layer);
+    const list = selectedNotes[layer];
+    previewEl.textContent = list.length
+      ? list.map(n => `${n.name} (${n.zh} · ${n.element})`).join(' + ')
+      : '—';
   }
 
   function updateRequestButton() {
     const btn = document.getElementById('request-blend');
-    const ready = selectedNotes.top && selectedNotes.middle && selectedNotes.base;
+    const notesReady = selectedNotes.top.length && selectedNotes.middle.length && selectedNotes.base.length;
+    const ready = notesReady && selectedSize;
     btn.disabled = !ready;
-    btn.textContent = ready ? 'Request This Blend' : 'Select All 3 Notes to Request This Blend';
+    btn.textContent = ready
+      ? `Checkout — ${formatPrice(selectedSize.price, selectedSize.currency)}`
+      : (notesReady ? 'Select a Bottle Size to Continue' : 'Select 1–2 Notes Per Layer to Continue');
   }
 
   document.getElementById('request-blend').addEventListener('click', () => {
-    const name = document.getElementById('req-name').value || '(not provided)';
-    const email = document.getElementById('req-email').value || '(not provided)';
-    const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      '',
-      'Custom Blend Request:',
-      `Top: ${selectedNotes.top.name} (${selectedNotes.top.element})`,
-      `Middle: ${selectedNotes.middle.name} (${selectedNotes.middle.element})`,
-      `Base: ${selectedNotes.base.name} (${selectedNotes.base.element})`,
-      '',
-      lastBaziResult ? `Day Master: ${lastBaziResult.dayMaster.stem} (${lastBaziResult.dayMaster.element})` : '',
-      lastBaziResult ? `Lacking Elements: ${lastBaziResult.lackingElements.join(', ')}` : '',
-      lastBirthPlace ? `Place of Birth: ${lastBirthPlace}` : ''
-    ].join('\n');
-    const mailto = `mailto:hello@chuwu.com?subject=${encodeURIComponent('Custom Blend Request')}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
+    const btn = document.getElementById('request-blend');
+    const errorEl = document.getElementById('checkout-error');
+    errorEl.classList.add('hidden');
+
+    const layerText = layer => selectedNotes[layer].map(n => n.name).join(', ');
+    const attributes = [
+      { key: 'Top Note', value: layerText('top') },
+      { key: 'Middle Note', value: layerText('middle') },
+      { key: 'Base Note', value: layerText('base') }
+    ];
+    if (selectedFamily) attributes.push({ key: 'Scent Preference', value: selectedFamily });
+    if (lastBaziResult) {
+      attributes.push({ key: 'Day Master', value: `${lastBaziResult.dayMaster.stem} (${lastBaziResult.dayMaster.element})` });
+      attributes.push({ key: 'Lacking Elements', value: lastBaziResult.lackingElements.join(', ') });
+    }
+    if (lastBirthPlace) attributes.push({ key: 'Place of Birth', value: lastBirthPlace });
+
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Preparing checkout…';
+
+    ChuwuShopify.createCartAndGetCheckoutUrl([{ merchandiseId: selectedSize.variantId, quantity: 1, attributes }])
+      .then(url => { window.location.href = url; })
+      .catch(err => {
+        console.error(err);
+        btn.disabled = false;
+        btn.textContent = originalText;
+        errorEl.textContent = 'Something went wrong starting checkout. Please try again.';
+        errorEl.classList.remove('hidden');
+      });
   });
 
   document.getElementById('bazi-form').addEventListener('submit', function (e) {
@@ -259,8 +386,8 @@
     lastBirthPlace = placeVal || 'Not specified';
     renderPillars(result);
     renderTally(result);
-    renderAspects(result);
-    renderNotePickers(result);
+    renderAspects(result, selectedFamily);
+    renderNotePickers(result, selectedFamily);
 
     ['results-section', 'recommend-section', 'build-section'].forEach(id => {
       document.getElementById(id).classList.remove('hidden');

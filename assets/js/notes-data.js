@@ -1,75 +1,87 @@
 /* CHUWU (初·五) — perfume note library, organized by Top / Middle / Base and Five Element (五行).
    Source: brand-provided note list. Elements use English keys matched to the Bazi engine:
-   Wood 木 · Fire 火 · Earth 土 · Metal 金 · Water 水 */
+   Wood 木 · Fire 火 · Earth 土 · Metal 金 · Water 水
+   `family` is the scent-preference category (Citrus, Floral, Woody, Fresh, Spicy, Sweet, Musky)
+   used by the scent-preference quiz to narrow the Bazi-driven element recommendation. */
 (function (root) {
   const NOTES = {
     top: [
-      { name: 'Bergamot', zh: '佛手柑', element: 'Metal' },
-      { name: 'Lemon', zh: '柠檬', element: 'Metal' },
-      { name: 'Grapefruit', zh: '葡萄柚', element: 'Metal' },
-      { name: 'Orange', zh: '橙', element: 'Metal' },
-      { name: 'Mandarin', zh: '柑橘', element: 'Metal' },
-      { name: 'Lime', zh: '青柠', element: 'Metal' },
-      { name: 'Yuzu', zh: '柚子', element: 'Metal' },
-      { name: 'Aldehydes', zh: '醛香', element: 'Metal' },
-      { name: 'Apple', zh: '苹果', element: 'Metal' },
-      { name: 'Pear', zh: '梨', element: 'Metal' },
-      { name: 'Neroli', zh: '橙花', element: 'Metal' },
-      { name: 'Peppermint', zh: '薄荷', element: 'Water' },
-      { name: 'Spearmint', zh: '绿薄荷', element: 'Water' },
-      { name: 'Eucalyptus', zh: '桉树', element: 'Water' },
-      { name: 'Pineapple', zh: '菠萝', element: 'Water' },
-      { name: 'Blackcurrant', zh: '黑加仑', element: 'Water' },
-      { name: 'Basil', zh: '罗勒', element: 'Wood' },
-      { name: 'Lavender', zh: '薰衣草', element: 'Wood' },
-      { name: 'Juniper', zh: '杜松', element: 'Wood' },
-      { name: 'Pink Pepper', zh: '粉胡椒', element: 'Fire' }
+      { name: 'Bergamot', zh: '佛手柑', element: 'Metal', family: 'Citrus' },
+      { name: 'Lemon', zh: '柠檬', element: 'Metal', family: 'Citrus' },
+      { name: 'Grapefruit', zh: '葡萄柚', element: 'Metal', family: 'Citrus' },
+      { name: 'Orange', zh: '橙', element: 'Metal', family: 'Citrus' },
+      { name: 'Mandarin', zh: '柑橘', element: 'Metal', family: 'Citrus' },
+      { name: 'Lime', zh: '青柠', element: 'Metal', family: 'Citrus' },
+      { name: 'Yuzu', zh: '柚子', element: 'Metal', family: 'Citrus' },
+      { name: 'Aldehydes', zh: '醛香', element: 'Metal', family: 'Fresh' },
+      { name: 'Apple', zh: '苹果', element: 'Metal', family: 'Fresh' },
+      { name: 'Pear', zh: '梨', element: 'Metal', family: 'Fresh' },
+      { name: 'Neroli', zh: '橙花', element: 'Metal', family: 'Floral' },
+      { name: 'Peppermint', zh: '薄荷', element: 'Water', family: 'Fresh' },
+      { name: 'Spearmint', zh: '绿薄荷', element: 'Water', family: 'Fresh' },
+      { name: 'Eucalyptus', zh: '桉树', element: 'Water', family: 'Fresh' },
+      { name: 'Pineapple', zh: '菠萝', element: 'Water', family: 'Fresh' },
+      { name: 'Blackcurrant', zh: '黑加仑', element: 'Water', family: 'Fresh' },
+      { name: 'Basil', zh: '罗勒', element: 'Wood', family: 'Fresh' },
+      { name: 'Lavender', zh: '薰衣草', element: 'Wood', family: 'Floral' },
+      { name: 'Juniper', zh: '杜松', element: 'Wood', family: 'Woody' },
+      { name: 'Pink Pepper', zh: '粉胡椒', element: 'Fire', family: 'Spicy' }
     ],
     middle: [
-      { name: 'Rose', zh: '玫瑰', element: 'Wood' },
-      { name: 'Jasmine', zh: '茉莉', element: 'Wood' },
-      { name: 'Orange Blossom', zh: '橙花蕾', element: 'Wood' },
-      { name: 'Ylang-Ylang', zh: '依兰', element: 'Wood' },
-      { name: 'Magnolia', zh: '木兰', element: 'Wood' },
-      { name: 'Peony', zh: '牡丹', element: 'Wood' },
-      { name: 'Lily of the Valley', zh: '铃兰', element: 'Wood' },
-      { name: 'Geranium', zh: '天竺葵', element: 'Wood' },
-      { name: 'Violet', zh: '紫罗兰', element: 'Wood' },
-      { name: 'Iris', zh: '鸢尾', element: 'Wood' },
-      { name: 'Tea', zh: '茶', element: 'Wood' },
-      { name: 'Fig', zh: '无花果', element: 'Wood' },
-      { name: 'Tuberose', zh: '晚香玉', element: 'Fire' },
-      { name: 'Carnation', zh: '康乃馨', element: 'Fire' },
-      { name: 'Cardamom', zh: '豆蔻', element: 'Fire' },
-      { name: 'Cinnamon', zh: '肉桂', element: 'Fire' },
-      { name: 'Nutmeg', zh: '肉豆蔻', element: 'Fire' },
-      { name: 'Clary Sage', zh: '快乐鼠尾草', element: 'Earth' },
-      { name: 'Honey', zh: '蜂蜜', element: 'Earth' },
-      { name: 'Heliotrope', zh: '天芥菜', element: 'Earth' }
+      { name: 'Rose', zh: '玫瑰', element: 'Wood', family: 'Floral' },
+      { name: 'Jasmine', zh: '茉莉', element: 'Wood', family: 'Floral' },
+      { name: 'Orange Blossom', zh: '橙花蕾', element: 'Wood', family: 'Floral' },
+      { name: 'Ylang-Ylang', zh: '依兰', element: 'Wood', family: 'Floral' },
+      { name: 'Magnolia', zh: '木兰', element: 'Wood', family: 'Floral' },
+      { name: 'Peony', zh: '牡丹', element: 'Wood', family: 'Floral' },
+      { name: 'Lily of the Valley', zh: '铃兰', element: 'Wood', family: 'Floral' },
+      { name: 'Geranium', zh: '天竺葵', element: 'Wood', family: 'Floral' },
+      { name: 'Violet', zh: '紫罗兰', element: 'Wood', family: 'Floral' },
+      { name: 'Iris', zh: '鸢尾', element: 'Wood', family: 'Floral' },
+      { name: 'Tea', zh: '茶', element: 'Wood', family: 'Fresh' },
+      { name: 'Fig', zh: '无花果', element: 'Wood', family: 'Woody' },
+      { name: 'Tuberose', zh: '晚香玉', element: 'Fire', family: 'Floral' },
+      { name: 'Carnation', zh: '康乃馨', element: 'Fire', family: 'Spicy' },
+      { name: 'Cardamom', zh: '豆蔻', element: 'Fire', family: 'Spicy' },
+      { name: 'Cinnamon', zh: '肉桂', element: 'Fire', family: 'Spicy' },
+      { name: 'Nutmeg', zh: '肉豆蔻', element: 'Fire', family: 'Spicy' },
+      { name: 'Clary Sage', zh: '快乐鼠尾草', element: 'Earth', family: 'Fresh' },
+      { name: 'Honey', zh: '蜂蜜', element: 'Earth', family: 'Sweet' },
+      { name: 'Heliotrope', zh: '天芥菜', element: 'Earth', family: 'Sweet' }
     ],
     base: [
-      { name: 'Sandalwood', zh: '檀香', element: 'Wood' },
-      { name: 'Cedarwood', zh: '雪松', element: 'Wood' },
-      { name: 'Patchouli', zh: '广藿香', element: 'Wood' },
-      { name: 'Vetiver', zh: '岩兰草', element: 'Wood' },
-      { name: 'Oud', zh: '沉香', element: 'Wood' },
-      { name: 'Oakmoss', zh: '橡苔', element: 'Wood' },
-      { name: 'Guaiac Wood', zh: '愈创木', element: 'Wood' },
-      { name: 'Amber', zh: '琥珀', element: 'Fire' },
-      { name: 'Frankincense', zh: '乳香', element: 'Fire' },
-      { name: 'Myrrh', zh: '没药', element: 'Fire' },
-      { name: 'Tobacco', zh: '烟草', element: 'Fire' },
-      { name: 'Vanilla', zh: '香草', element: 'Earth' },
-      { name: 'Tonka Bean', zh: '零陵香豆', element: 'Earth' },
-      { name: 'Benzoin', zh: '安息香', element: 'Earth' },
-      { name: 'Labdanum', zh: '劳丹脂', element: 'Earth' },
-      { name: 'Leather', zh: '皮革', element: 'Earth' },
-      { name: 'Cashmeran', zh: '琥珀木', element: 'Earth' },
-      { name: 'Musk', zh: '麝香', element: 'Water' },
-      { name: 'Ambergris', zh: '龙涎香', element: 'Water' },
-      { name: 'Civet Accord', zh: '灵猫香调', element: 'Water' }
+      { name: 'Sandalwood', zh: '檀香', element: 'Wood', family: 'Woody' },
+      { name: 'Cedarwood', zh: '雪松', element: 'Wood', family: 'Woody' },
+      { name: 'Patchouli', zh: '广藿香', element: 'Wood', family: 'Woody' },
+      { name: 'Vetiver', zh: '岩兰草', element: 'Wood', family: 'Woody' },
+      { name: 'Oud', zh: '沉香', element: 'Wood', family: 'Woody' },
+      { name: 'Oakmoss', zh: '橡苔', element: 'Wood', family: 'Woody' },
+      { name: 'Guaiac Wood', zh: '愈创木', element: 'Wood', family: 'Woody' },
+      { name: 'Amber', zh: '琥珀', element: 'Fire', family: 'Sweet' },
+      { name: 'Frankincense', zh: '乳香', element: 'Fire', family: 'Spicy' },
+      { name: 'Myrrh', zh: '没药', element: 'Fire', family: 'Spicy' },
+      { name: 'Tobacco', zh: '烟草', element: 'Fire', family: 'Spicy' },
+      { name: 'Vanilla', zh: '香草', element: 'Earth', family: 'Sweet' },
+      { name: 'Tonka Bean', zh: '零陵香豆', element: 'Earth', family: 'Sweet' },
+      { name: 'Benzoin', zh: '安息香', element: 'Earth', family: 'Sweet' },
+      { name: 'Labdanum', zh: '劳丹脂', element: 'Earth', family: 'Sweet' },
+      { name: 'Leather', zh: '皮革', element: 'Earth', family: 'Musky' },
+      { name: 'Cashmeran', zh: '琥珀木', element: 'Earth', family: 'Woody' },
+      { name: 'Musk', zh: '麝香', element: 'Water', family: 'Musky' },
+      { name: 'Ambergris', zh: '龙涎香', element: 'Water', family: 'Musky' },
+      { name: 'Civet Accord', zh: '灵猫香调', element: 'Water', family: 'Musky' }
     ]
   };
+
+  const FAMILIES = [
+    { key: 'Citrus', label: 'Citrus', zh: '柑橘', desc: 'Bright, zesty, uplifting' },
+    { key: 'Floral', label: 'Floral', zh: '花香', desc: 'Soft, romantic, blooming' },
+    { key: 'Woody', label: 'Woody', zh: '木质', desc: 'Grounded, earthy, warm' },
+    { key: 'Fresh', label: 'Fresh & Green', zh: '清新', desc: 'Crisp, herbal, airy' },
+    { key: 'Spicy', label: 'Spicy & Warm', zh: '辛香', desc: 'Bold, comforting, rich' },
+    { key: 'Sweet', label: 'Sweet & Gourmand', zh: '甜美', desc: 'Cozy, indulgent, soft' },
+    { key: 'Musky', label: 'Musky & Sensual', zh: '麝香', desc: 'Skin-close, intimate, quiet' }
+  ];
 
   // Five Element generating cycle (相生): key is nourished BY value.
   const MOTHER_OF = { Wood: 'Water', Fire: 'Wood', Earth: 'Fire', Metal: 'Earth', Water: 'Metal' };
@@ -106,5 +118,5 @@
     });
   }
 
-  root.ChuwuNotes = { NOTES, MOTHER_OF, notesForElement, resolveLayerNotes, applyStock };
+  root.ChuwuNotes = { NOTES, FAMILIES, MOTHER_OF, notesForElement, resolveLayerNotes, applyStock };
 })(typeof window !== 'undefined' ? window : globalThis);

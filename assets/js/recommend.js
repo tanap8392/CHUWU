@@ -57,15 +57,29 @@
     return match.length ? match : aspect.elements.slice(0, 1); // still show the aspect's governing element
   }
 
-  function buildScentFor(element) {
+  // Reorders a layer's candidate notes so the preferred scent family (from the quiz) comes
+  // first, without dropping the rest — keeps the Five Element match as the hard filter and the
+  // family preference as a soft ranking on top of it.
+  function rankByFamily(notes, family) {
+    if (!family) return notes.slice();
+    const matched = notes.filter(n => n.family === family);
+    const rest = notes.filter(n => n.family !== family);
+    return matched.length ? matched.concat(rest) : notes.slice();
+  }
+
+  function buildScentFor(element, preferredFamily) {
     const top = root.ChuwuNotes.resolveLayerNotes('top', element);
     const middle = root.ChuwuNotes.resolveLayerNotes('middle', element);
     const base = root.ChuwuNotes.resolveLayerNotes('base', element);
+    top.notes = rankByFamily(top.notes, preferredFamily);
+    middle.notes = rankByFamily(middle.notes, preferredFamily);
+    base.notes = rankByFamily(base.notes, preferredFamily);
     return { element, top, middle, base };
   }
 
-  // Full recommendation set for every aspect, given a computeBazi() result.
-  function recommendForBazi(baziResult) {
+  // Full recommendation set for every aspect, given a computeBazi() result and an optional
+  // preferred scent family (one of ChuwuNotes.FAMILIES[].key) from the scent-preference quiz.
+  function recommendForBazi(baziResult, preferredFamily) {
     const lacking = baziResult.lackingElements;
     return ASPECTS.map(aspect => {
       const targets = aspectTargetElements(aspect, lacking);
@@ -73,7 +87,7 @@
         ...aspect,
         targetElements: targets,
         isLackingMatch: aspect.key !== 'overall' && aspect.elements.some(e => lacking.includes(e)),
-        scents: targets.map(buildScentFor)
+        scents: targets.map(el => buildScentFor(el, preferredFamily))
       };
     });
   }
