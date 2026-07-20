@@ -66,7 +66,7 @@ header.site-nav {
 .nav-logo svg { height: 40px; width: auto; }
 .nav-logo .wordmark { font-family: var(--sans); font-size: 0.68rem; letter-spacing: 0.3em; color: var(--charcoal); }
 nav.links { display: flex; gap: 30px; align-items: center; }
-nav.links a {
+nav.links a:not(.nav-cta) {
   font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--charcoal); position: relative; padding: 4px 0;
 }
@@ -75,11 +75,44 @@ nav.links a.active::after {
   content: ''; position: absolute; left: 0; right: 0; bottom: -4px; height: 1px; background: var(--gold);
 }
 .nav-cta {
-  background: var(--charcoal); color: var(--ivory) !important;
-  padding: 11px 26px; border-radius: 999px; font-size: 0.76rem !important;
-  letter-spacing: 0.1em !important; white-space: nowrap;
+  display: inline-block;
+  background: var(--charcoal); color: var(--ivory);
+  padding: 13px 34px; border-radius: 999px; font-size: 0.76rem;
+  letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap;
 }
 .nav-cta:hover { background: var(--ink); }
+
+/* ---------- Mobile nav (hamburger left, logo centered) ---------- */
+.nav-hamburger {
+  display: none; flex-direction: column; justify-content: center; gap: 5px;
+  width: 32px; height: 32px; background: none; border: none; cursor: pointer; padding: 0;
+  position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+}
+.nav-hamburger span { display: block; width: 100%; height: 2px; background: var(--charcoal); transition: transform 0.2s ease, opacity 0.2s ease; }
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-menu { display: none; }
+
+@media (max-width: 768px) {
+  .nav-row { justify-content: center; position: relative; }
+  .nav-hamburger { display: flex; }
+  nav.links { display: none; }
+  .mobile-menu {
+    flex-direction: column; gap: 2px; padding: 8px 28px 20px;
+    border-top: 1px solid rgba(45, 42, 40, 0.08);
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    padding: 12px 0; font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--charcoal); border-bottom: 1px solid rgba(45, 42, 40, 0.06);
+  }
+  .mobile-menu a.active { color: var(--ink); }
+  .mobile-menu a.nav-cta {
+    text-align: center; margin-top: 12px; border-bottom: none; padding: 13px 34px;
+  }
+}
 
 /* ---------- Buttons ---------- */
 .btn {
