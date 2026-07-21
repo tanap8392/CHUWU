@@ -63,8 +63,6 @@ header.site-nav {
   max-width: var(--max-w); margin: 0 auto;
 }
 .nav-logo { display: flex; align-items: center; gap: 10px; }
-.nav-logo svg { height: 40px; width: auto; }
-.nav-logo .wordmark { font-family: var(--sans); font-size: 0.68rem; letter-spacing: 0.3em; color: var(--charcoal); }
 nav.links { display: flex; gap: 30px; align-items: center; }
 nav.links a:not(.nav-cta) {
   font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase;
