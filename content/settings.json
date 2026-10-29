@@ -16,7 +16,7 @@
     "xiaohongshu_url": ""
   },
   "announcement": {
-    "enabled": false,
+    "enabled": true,
     "text": "",
     "link": ""
   },
