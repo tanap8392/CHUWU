@@ -1,0 +1,484 @@
+{
+  "notes": [
+    {
+      "layer": "top",
+      "name": "Bergamot",
+      "zh": "佛手柑",
+      "element": "Metal",
+      "family": "Citrus",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Lemon",
+      "zh": "柠檬",
+      "element": "Metal",
+      "family": "Citrus",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Grapefruit",
+      "zh": "葡萄柚",
+      "element": "Metal",
+      "family": "Citrus",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Orange",
+      "zh": "橙",
+      "element": "Metal",
+      "family": "Citrus",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Mandarin",
+      "zh": "柑橘",
+      "element": "Metal",
+      "family": "Citrus",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Lime",
+      "zh": "青柠",
+      "element": "Metal",
+      "family": "Citrus",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Yuzu",
+      "zh": "柚子",
+      "element": "Metal",
+      "family": "Citrus",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Aldehydes",
+      "zh": "醛香",
+      "element": "Metal",
+      "family": "Fresh",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Apple",
+      "zh": "苹果",
+      "element": "Metal",
+      "family": "Fresh",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Pear",
+      "zh": "梨",
+      "element": "Metal",
+      "family": "Fresh",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Neroli",
+      "zh": "橙花",
+      "element": "Metal",
+      "family": "Floral",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Peppermint",
+      "zh": "薄荷",
+      "element": "Water",
+      "family": "Fresh",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Spearmint",
+      "zh": "绿薄荷",
+      "element": "Water",
+      "family": "Fresh",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Eucalyptus",
+      "zh": "桉树",
+      "element": "Water",
+      "family": "Fresh",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Pineapple",
+      "zh": "菠萝",
+      "element": "Water",
+      "family": "Fresh",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Blackcurrant",
+      "zh": "黑加仑",
+      "element": "Water",
+      "family": "Fresh",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Basil",
+      "zh": "罗勒",
+      "element": "Wood",
+      "family": "Fresh",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Lavender",
+      "zh": "薰衣草",
+      "element": "Wood",
+      "family": "Floral",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Juniper",
+      "zh": "杜松",
+      "element": "Wood",
+      "family": "Woody",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "top",
+      "name": "Pink Pepper",
+      "zh": "粉胡椒",
+      "element": "Fire",
+      "family": "Spicy",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Rose",
+      "zh": "玫瑰",
+      "element": "Wood",
+      "family": "Floral",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Jasmine",
+      "zh": "茉莉",
+      "element": "Wood",
+      "family": "Floral",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Orange Blossom",
+      "zh": "橙花蕾",
+      "element": "Wood",
+      "family": "Floral",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Ylang-Ylang",
+      "zh": "依兰",
+      "element": "Wood",
+      "family": "Floral",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Magnolia",
+      "zh": "木兰",
+      "element": "Wood",
+      "family": "Floral",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Peony",
+      "zh": "牡丹",
+      "element": "Wood",
+      "family": "Floral",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Lily of the Valley",
+      "zh": "铃兰",
+      "element": "Wood",
+      "family": "Floral",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Geranium",
+      "zh": "天竺葵",
+      "element": "Wood",
+      "family": "Floral",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Violet",
+      "zh": "紫罗兰",
+      "element": "Wood",
+      "family": "Floral",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Iris",
+      "zh": "鸢尾",
+      "element": "Wood",
+      "family": "Floral",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Tea",
+      "zh": "茶",
+      "element": "Wood",
+      "family": "Fresh",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Fig",
+      "zh": "无花果",
+      "element": "Wood",
+      "family": "Woody",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Tuberose",
+      "zh": "晚香玉",
+      "element": "Fire",
+      "family": "Floral",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Carnation",
+      "zh": "康乃馨",
+      "element": "Fire",
+      "family": "Spicy",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Cardamom",
+      "zh": "豆蔻",
+      "element": "Fire",
+      "family": "Spicy",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Cinnamon",
+      "zh": "肉桂",
+      "element": "Fire",
+      "family": "Spicy",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Nutmeg",
+      "zh": "肉豆蔻",
+      "element": "Fire",
+      "family": "Spicy",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Clary Sage",
+      "zh": "快乐鼠尾草",
+      "element": "Earth",
+      "family": "Fresh",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Honey",
+      "zh": "蜂蜜",
+      "element": "Earth",
+      "family": "Sweet",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "middle",
+      "name": "Heliotrope",
+      "zh": "天芥菜",
+      "element": "Earth",
+      "family": "Sweet",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Sandalwood",
+      "zh": "檀香",
+      "element": "Wood",
+      "family": "Woody",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Cedarwood",
+      "zh": "雪松",
+      "element": "Wood",
+      "family": "Woody",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Patchouli",
+      "zh": "广藿香",
+      "element": "Wood",
+      "family": "Woody",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Vetiver",
+      "zh": "岩兰草",
+      "element": "Wood",
+      "family": "Woody",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Oud",
+      "zh": "沉香",
+      "element": "Wood",
+      "family": "Woody",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Oakmoss",
+      "zh": "橡苔",
+      "element": "Wood",
+      "family": "Woody",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Guaiac Wood",
+      "zh": "愈创木",
+      "element": "Wood",
+      "family": "Woody",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Amber",
+      "zh": "琥珀",
+      "element": "Fire",
+      "family": "Sweet",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Frankincense",
+      "zh": "乳香",
+      "element": "Fire",
+      "family": "Spicy",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Myrrh",
+      "zh": "没药",
+      "element": "Fire",
+      "family": "Spicy",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Tobacco",
+      "zh": "烟草",
+      "element": "Fire",
+      "family": "Spicy",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Vanilla",
+      "zh": "香草",
+      "element": "Earth",
+      "family": "Sweet",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Tonka Bean",
+      "zh": "零陵香豆",
+      "element": "Earth",
+      "family": "Sweet",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Benzoin",
+      "zh": "安息香",
+      "element": "Earth",
+      "family": "Sweet",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Labdanum",
+      "zh": "劳丹脂",
+      "element": "Earth",
+      "family": "Sweet",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Leather",
+      "zh": "皮革",
+      "element": "Earth",
+      "family": "Musky",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Cashmeran",
+      "zh": "琥珀木",
+      "element": "Earth",
+      "family": "Woody",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Musk",
+      "zh": "麝香",
+      "element": "Water",
+      "family": "Musky",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Ambergris",
+      "zh": "龙涎香",
+      "element": "Water",
+      "family": "Musky",
+      "stock": "in_stock"
+    },
+    {
+      "layer": "base",
+      "name": "Civet Accord",
+      "zh": "灵猫香调",
+      "element": "Water",
+      "family": "Musky",
+      "stock": "in_stock"
+    }
+  ]
+}

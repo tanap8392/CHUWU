@@ -1,7 +1,7 @@
+/* CHUWU (初·五) — Shop page: renders products from content/products.json (edited at /admin). */
 (function () {
   const ELEMENT_COLOR_VAR = { Wood: '--wood', Fire: '--fire', Earth: '--earth', Metal: '--metal', Water: '--water' };
-  const ELEMENT_KEYS = Object.keys(ELEMENT_COLOR_VAR);
-  const NOTES_PATTERN = /Top:\s*([^·]+?)\s*·\s*Middle:\s*([^·]+?)\s*·\s*Base:\s*(.+)$/;
+  const ELEMENT_ZH = { Wood: '木', Fire: '火', Earth: '土', Metal: '金', Water: '水' };
 
   function el(tag, attrs, children) {
     const node = document.createElement(tag);
@@ -15,109 +15,90 @@
   }
   function text(t) { return document.createTextNode(t); }
 
-  function formatPrice(amount, currencyCode) {
-    try {
-      return new Intl.NumberFormat(undefined, { style: 'currency', currency: currencyCode }).format(amount);
-    } catch (e) {
-      return `${amount} ${currencyCode}`;
-    }
-  }
-
-  function parseNotes(description) {
-    const m = description.match(NOTES_PATTERN);
-    if (!m) return { blurb: description, top: null, middle: null, base: null };
-    return { blurb: description.slice(0, m.index).trim(), top: m[1].trim(), middle: m[2].trim(), base: m[3].trim() };
-  }
-
-  function addToCart(variantId, productTitle, btn) {
-    btn.disabled = true;
+  function addToCart(product, btn) {
     const originalText = btn.textContent;
-    btn.textContent = 'Adding…';
-    ChuwuShopify.addToCart(variantId, 1, [])
-      .then(() => {
-        btn.textContent = 'Added ✓';
-        if (window.ChuwuCartUI) {
-          window.ChuwuCartUI.refresh().then(() => window.ChuwuCartUI.open());
-        }
-        setTimeout(() => { btn.disabled = false; btn.textContent = originalText; }, 1800);
-      })
-      .catch(err => {
-        console.error(err);
-        btn.disabled = false;
-        btn.textContent = originalText;
-        alert(`Sorry, something went wrong adding ${productTitle} to your cart. Please try again.`);
-      });
+    btn.disabled = true;
+    ChuwuCart.add(product.id, 1, []);
+    btn.textContent = 'Added ✓';
+    if (window.ChuwuCartUI) window.ChuwuCartUI.open();
+    setTimeout(() => { btn.disabled = false; btn.textContent = originalText; }, 1800);
+  }
+
+  function priceEl(p) {
+    const children = [text(ChuwuContent.formatPrice(p.price))];
+    if (p.compare_at_price && p.compare_at_price > p.price) {
+      children.unshift(el('s', { class: 'compare-price' }, [text(ChuwuContent.formatPrice(p.compare_at_price))]), text(' '));
+    }
+    return el('span', { class: 'price' }, children);
+  }
+
+  function buyButton(p) {
+    if (p.status === 'sold_out') return el('button', { class: 'btn', disabled: 'disabled' }, [text('Sold Out')]);
+    if (p.status === 'coming_soon') return el('button', { class: 'btn', disabled: 'disabled' }, [text('Coming Soon')]);
+    if (p.type === 'personalized') return el('a', { href: 'customize.html', class: 'btn btn-primary' }, [text('Personalize')]);
+    const btn = el('button', { class: 'btn btn-primary' }, [text('Add to Cart')]);
+    btn.addEventListener('click', () => addToCart(p, btn));
+    return btn;
   }
 
   function productCard(p) {
-    const variant = p.variants.nodes[0];
-    const elementTags = p.tags.filter(t => ELEMENT_KEYS.includes(t));
-    const aspectTag = p.tags.find(t => /Luck|Balance/i.test(t));
-    const parsed = parseNotes(p.description || '');
-    const soldOut = !variant.availableForSale;
-    const isPersonalized = /personalized chu wu blend/i.test(p.title);
+    const media = p.image
+      ? el('img', { src: p.image, alt: p.name || p.code, style: 'width:100%;height:100%;object-fit:cover' }, [])
+      : el('div', { class: 'bottle', style: 'background:linear-gradient(180deg,#C8B38A,#2D2A28)' }, []);
 
-    const tagEls = elementTags.map(e =>
+    const elements = p.type === 'element_scent' ? [p.element] : (p.elements || []);
+    const tagEls = elements.map(e =>
       el('span', { class: 'tag', style: `background:var(${ELEMENT_COLOR_VAR[e]});color:#fff` }, [text(e)])
     );
 
-    let buyBtn;
-    if (soldOut) {
-      buyBtn = el('button', { class: 'btn', disabled: 'disabled' }, [text('Sold Out')]);
-    } else if (isPersonalized) {
-      buyBtn = el('a', { href: 'customize.html', class: 'btn btn-primary' }, [text('Personalize')]);
+    const body = [];
+    if (p.status === 'sold_out') body.push(el('span', { class: 'stock-badge sold_out' }, [text('Sold Out')]));
+    if (p.status === 'coming_soon') body.push(el('span', { class: 'stock-badge low_stock' }, [text('Coming Soon')]));
+
+    if (p.type === 'element_scent') {
+      body.push(el('h3', {}, [text(`${p.code} · ${p.element} ${ELEMENT_ZH[p.element] || ''}`)]));
+      body.push(el('p', { class: 'muted', style: 'font-size:0.9rem' }, [text(p.family + ' · ' + p.size)]));
+      body.push(el('div', { class: 'product-tags' }, tagEls));
+      if (p.inspired_by) body.push(el('p', { class: 'muted', style: 'font-size:0.85rem' }, [text('Inspired by ' + p.inspired_by)]));
+      if (p.notes) body.push(el('div', { class: 'note-line' }, [text(p.notes)]));
     } else {
-      buyBtn = el('button', { class: 'btn btn-primary' }, [text('Add to Cart')]);
-      buyBtn.addEventListener('click', () => addToCart(variant.id, p.title, buyBtn));
+      body.push(el('h3', {}, [text(ChuwuContent.productTitle(p))]));
+      if (p.intention) body.push(el('p', { class: 'muted', style: 'font-size:0.9rem' }, [text('For ' + p.intention)]));
+      if (tagEls.length) body.push(el('div', { class: 'product-tags' }, tagEls));
+      if (p.description) body.push(el('p', { class: 'muted', style: 'font-size:0.85rem' }, [text(p.description)]));
+      [['Top', p.top], ['Middle', p.middle], ['Base', p.base]].forEach(([label, value]) => {
+        if (value) body.push(el('div', { class: 'note-line' }, [el('b', {}, [text(label + ':')]), text(' ' + value)]));
+      });
     }
+    body.push(el('div', { class: 'price-row' }, [priceEl(p), buyButton(p)]));
 
-    const media = p.featuredImage
-      ? el('img', { src: p.featuredImage.url, alt: p.featuredImage.altText || p.title, style: 'width:100%;height:100%;object-fit:cover' }, [])
-      : el('div', { class: 'bottle', style: 'background:linear-gradient(180deg,#C8B38A,#2D2A28)' }, []);
-
-    const noteLines = [];
-    if (parsed.top) noteLines.push(el('div', { class: 'note-line' }, [el('b', {}, [text('Top:')]), text(' ' + parsed.top)]));
-    if (parsed.middle) noteLines.push(el('div', { class: 'note-line' }, [el('b', {}, [text('Middle:')]), text(' ' + parsed.middle)]));
-    if (parsed.base) noteLines.push(el('div', { class: 'note-line' }, [el('b', {}, [text('Base:')]), text(' ' + parsed.base)]));
-
-    return el('div', { class: 'product-card' + (soldOut ? ' sold_out' : '') }, [
+    return el('div', { class: 'product-card' + (p.status === 'sold_out' ? ' sold_out' : '') }, [
       el('div', { class: 'product-media' }, [media]),
-      el('div', { class: 'product-body' }, [
-        soldOut ? el('span', { class: 'stock-badge sold_out' }, [text('Sold Out')]) : text(''),
-        el('h3', {}, [text(p.title)]),
-        aspectTag ? el('p', { class: 'muted', style: 'font-size:0.9rem' }, [text('For ' + aspectTag)]) : text(''),
-        el('div', { class: 'product-tags' }, tagEls),
-        el('p', { class: 'muted', style: 'font-size:0.85rem' }, [text(parsed.blurb)]),
-        ...noteLines,
-        el('div', { class: 'price-row' }, [
-          el('span', { class: 'price' }, [text(formatPrice(variant.price.amount, p.priceRange.minVariantPrice.currencyCode))]),
-          buyBtn
-        ])
-      ])
+      el('div', { class: 'product-body' }, body)
     ]);
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const grid = document.getElementById('shop-grid');
-    const gridPersonalized = document.getElementById('shop-grid-personalized');
-    ChuwuShopify.fetchProducts()
-      .then(products => {
-        const personalized = products.filter(p => /personalized chu wu blend/i.test(p.title));
-        const signature = products.filter(p => !/personalized chu wu blend/i.test(p.title));
+  function fill(gridId, products) {
+    const grid = document.getElementById(gridId);
+    grid.innerHTML = '';
+    products.forEach(p => grid.appendChild(productCard(p)));
+  }
 
-        grid.innerHTML = '';
-        signature.forEach(p => grid.appendChild(productCard(p)));
+  ChuwuContent.ready.then(data => {
+    const visible = data.products.filter(p => p.status !== 'hidden');
+    const ofType = type => visible.filter(p => p.type === type);
 
-        gridPersonalized.innerHTML = '';
-        personalized
-          .sort((a, b) => parseFloat(a.variants.nodes[0].price.amount) - parseFloat(b.variants.nodes[0].price.amount))
-          .forEach(p => gridPersonalized.appendChild(productCard(p)));
-      })
-      .catch(err => {
-        grid.innerHTML = '';
-        grid.appendChild(el('p', { class: 'muted center' }, [text('Unable to load products right now — please try again shortly.')]));
-        gridPersonalized.innerHTML = '';
-        console.error(err);
-      });
+    fill('shop-grid', ofType('signature'));
+    fill('shop-grid-personalized', ofType('personalized').sort((a, b) => a.price - b.price));
+
+    // The element section only appears once at least one element scent is actually on sale.
+    const elementScents = ofType('element_scent');
+    if (elementScents.some(p => p.status === 'active')) {
+      fill('shop-grid-elements', elementScents);
+      document.getElementById('element-scents-section').classList.remove('hidden');
+    }
+    if (data.settings.features && data.settings.features.custom_blend === false) {
+      document.querySelectorAll('[data-personalized-section]').forEach(n => n.classList.add('hidden'));
+    }
   });
 })();

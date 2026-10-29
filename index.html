@@ -7,7 +7,7 @@
 <meta name="description" content="CHUWU (初·五) creates fragrance guided by Bazi and the Five Elements — discover the scent your elemental balance is missing, or shop signature blends for love, wealth, career, health and harmony.">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
+<body data-content-page="home">
 
 <header class="site-nav">
   <div class="nav-row">
@@ -15,7 +15,7 @@
       <span></span><span></span><span></span>
     </button>
     <a href="index.html" class="nav-logo">
-      <img src="assets/img/logo.svg" alt="CHUWU 初·五" style="height:40px;width:auto">
+      <img data-logo="dark" src="assets/img/logo.svg" alt="CHUWU 初·五" style="height:40px;width:auto">
     </a>
     <button class="cart-toggle cart-toggle-mobile" aria-label="View cart">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -64,19 +64,19 @@
 
 <section class="hero-full">
   <div class="hero-media">
-    <video autoplay muted loop playsinline poster="assets/img/hero-poster.jpg">
-      <source src="assets/video/hero.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline poster="assets/img/hero-poster.jpg" data-cms-poster="home.hero.poster">
+      <source src="assets/video/hero.mp4" type="video/mp4" data-cms-src="home.hero.video">
     </video>
   </div>
   <div class="hero-scrim"></div>
   <div class="hero-overlay">
-    <div class="cn-mark">初 · 五</div>
-    <p class="eyebrow">Inspired by Five Elements, Rooted in Balance</p>
-    <h1>Fragrance, Tuned to<br>Your Elemental Balance</h1>
-    <p class="lede">CHUWU reads your Bazi (八字) to reveal which of the Five Elements — Wood, Fire, Earth, Metal, Water — your chart is missing, then translates that insight into scent. Build a fragrance around what you lack, or choose a signature blend crafted for a specific intention.</p>
+    <div class="cn-mark" data-cms="home.hero.cn_mark">初 · 五</div>
+    <p class="eyebrow" data-cms="home.hero.eyebrow">Inspired by Five Elements, Rooted in Balance</p>
+    <h1 data-cms="home.hero.title">Fragrance, Tuned to<br>Your Elemental Balance</h1>
+    <p class="lede" data-cms="home.hero.lede">CHUWU reads your Bazi (八字) to reveal which of the Five Elements — Wood, Fire, Earth, Metal, Water — your chart is missing, then translates that insight into scent. Build a fragrance around what you lack, or choose a signature blend crafted for a specific intention.</p>
     <div class="hero-actions">
-      <a href="customize.html" class="btn btn-primary">Discover Your Element</a>
-      <a href="shop.html" class="btn btn-light">Shop Signature Blends</a>
+      <a href="customize.html" class="btn btn-primary" data-cms="home.hero.primary_label" data-cms-href="home.hero.primary_link">Discover Your Element</a>
+      <a href="shop.html" class="btn btn-light" data-cms="home.hero.secondary_label" data-cms-href="home.hero.secondary_link">Shop Signature Blends</a>
     </div>
   </div>
 </section>
@@ -84,11 +84,11 @@
 <section>
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow">The Philosophy</p>
-      <h2>Five Elements, One Story</h2>
-      <p>Wu Xing (五行) describes the five forces — Wood, Fire, Earth, Metal, Water — that circulate through every birth chart. Most people carry more of some and less of others. CHUWU exists to gently restore what's missing, one note at a time.</p>
+      <p class="eyebrow" data-cms="home.philosophy.eyebrow">The Philosophy</p>
+      <h2 data-cms="home.philosophy.title">Five Elements, One Story</h2>
+      <p data-cms="home.philosophy.body">Wu Xing (五行) describes the five forces — Wood, Fire, Earth, Metal, Water — that circulate through every birth chart. Most people carry more of some and less of others. CHUWU exists to gently restore what's missing, one note at a time.</p>
     </div>
-    <div class="grid-5">
+    <div class="grid-5" id="element-cards">
       <div class="element-card">
         <div class="element-glyph" style="background:var(--wood)">木</div>
         <h4>Wood</h4><span class="zh">Growth</span>
@@ -121,10 +121,10 @@
 <section class="alt">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow">How It Works</p>
-      <h2>From Birth Chart to Bottle</h2>
+      <p class="eyebrow" data-cms="home.how.eyebrow">How It Works</p>
+      <h2 data-cms="home.how.title">From Birth Chart to Bottle</h2>
     </div>
-    <div class="grid-3">
+    <div class="grid-3" id="how-steps">
       <div class="step-card">
         <div class="step-num">01</div>
         <h3>Share Your Birth Details</h3>
@@ -142,7 +142,7 @@
       </div>
     </div>
     <div class="center" style="margin-top:44px">
-      <a href="customize.html" class="btn btn-gold">Start Your Reading</a>
+      <a href="customize.html" class="btn btn-gold" data-cms="home.how.cta_label" data-cms-href="home.how.cta_link">Start Your Reading</a>
     </div>
   </div>
 </section>
@@ -150,8 +150,8 @@
 <footer class="site-footer">
   <div class="container">
     <div>
-      <img src="assets/img/logo-light.svg" alt="CHUWU 初·五" style="height:56px;width:auto">
-      <p class="muted" style="margin-top:14px;max-width:240px">Inspired by Five Elements, rooted in balance.</p>
+      <img data-logo="light" src="assets/img/logo-light.svg" alt="CHUWU 初·五" style="height:56px;width:auto">
+      <p class="muted" style="margin-top:14px;max-width:240px" data-cms="settings.brand.tagline">Inspired by Five Elements, rooted in balance.</p>
     </div>
     <div>
       <h4>Explore</h4>
@@ -161,9 +161,9 @@
     </div>
     <div>
       <h4>Contact</h4>
-      <a href="mailto:chuwu.fragrance@gmail.com">chuwu.fragrance@gmail.com</a>
-      <a href="https://wa.me/6580285156" target="_blank" rel="noopener">WhatsApp: +65 8028 5156</a>
-      <a href="#" class="footer-social" aria-label="Instagram" target="_blank" rel="noopener">
+      <a href="mailto:chuwu.fragrance@gmail.com" data-contact="email">chuwu.fragrance@gmail.com</a>
+      <a href="https://wa.me/6580285156" data-contact="whatsapp" target="_blank" rel="noopener">WhatsApp: +65 8028 5156</a>
+      <a href="#" class="footer-social" data-contact="instagram" aria-label="Instagram" target="_blank" rel="noopener">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:middle;margin-right:6px">
           <rect x="2" y="2" width="20" height="20" rx="5"/>
           <circle cx="12" cy="12" r="4.5"/>
@@ -175,8 +175,10 @@
   <div class="footer-bottom">© <span data-year></span> CHUWU 初·五. All rights reserved.</div>
 </footer>
 
-<script src="assets/js/shopify-client.js"></script>
+<script src="assets/js/site-content.js"></script>
+<script src="assets/js/cart.js"></script>
 <script src="assets/js/cart-ui.js"></script>
+<script src="assets/js/home.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script>

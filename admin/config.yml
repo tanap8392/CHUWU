@@ -1,3 +1,5 @@
+# CHUWU dashboard (Decap CMS at /admin). Every save commits a content/*.json file to GitHub,
+# and Netlify redeploys the site from GitHub — changes are live about a minute later.
 backend:
   name: git-gateway
   branch: main
@@ -9,28 +11,393 @@ site_url: https://chuwu-fragrance.netlify.app
 display_url: https://chuwu-fragrance.netlify.app
 
 collections:
-  - name: "ingredients"
-    label: "Ingredient Stock"
-    description: "Availability of each scent note used in the Bazi Customizer and Shop."
+  # ---------------------------------------------------------------- Products
+  - name: "products"
+    label: "Products"
+    description: "Everything for sale: signature blends, personalized blend bottle sizes, and the element scents (J01–T03)."
+    editor: { preview: false }
     files:
-      - file: "content/notes-stock.json"
-        label: "Note Availability"
-        name: "notes-stock"
+      - file: "content/products.json"
+        name: "products"
+        label: "All Products"
+        fields:
+          - label: "Products"
+            name: "products"
+            label_singular: "Product"
+            widget: "list"
+            typeKey: "type"
+            hint: "Drag to reorder — the Shop page shows products in this order."
+            types:
+              - label: "Signature Blend"
+                name: "signature"
+                widget: "object"
+                summary: "{{fields.name}} — {{fields.size}} — {{fields.status}}"
+                fields:
+                  - { label: "ID", name: "id", widget: "string", hint: "Short internal name, e.g. chi-xia. Don't change it once the product is on sale — carts use it." }
+                  - { label: "Name", name: "name", widget: "string", hint: "e.g. Chì Xiá — Crimson Glow" }
+                  - { label: "Chinese name", name: "name_zh", widget: "string", required: false }
+                  - { label: "Intention", name: "intention", widget: "string", required: false, hint: "Shown as \"For …\", e.g. Love Luck" }
+                  - label: "Elements"
+                    name: "elements"
+                    widget: "select"
+                    multiple: true
+                    options: &elements
+                      - { label: "Wood 木", value: "Wood" }
+                      - { label: "Fire 火", value: "Fire" }
+                      - { label: "Earth 土", value: "Earth" }
+                      - { label: "Metal 金", value: "Metal" }
+                      - { label: "Water 水", value: "Water" }
+                  - { label: "Description", name: "description", widget: "text" }
+                  - { label: "Top notes", name: "top", widget: "string", required: false }
+                  - { label: "Middle notes", name: "middle", widget: "string", required: false }
+                  - { label: "Base notes", name: "base", widget: "string", required: false }
+                  - { label: "Size", name: "size", widget: "string", default: "30ml" }
+                  - &price { label: "Price (SGD)", name: "price", widget: "number", value_type: "float", min: 0, step: 0.1 }
+                  - &compare { label: "Original price (optional)", name: "compare_at_price", widget: "number", value_type: "float", min: 0, step: 0.1, required: false, hint: "Fill in to show a sale: this price appears crossed out next to the real price. Leave empty for no sale." }
+                  - &image { label: "Product photo", name: "image", widget: "image", required: false }
+                  - &status
+                    label: "Status"
+                    name: "status"
+                    widget: "select"
+                    default: "active"
+                    options:
+                      - { label: "On sale", value: "active" }
+                      - { label: "Coming soon (shown, can't be bought)", value: "coming_soon" }
+                      - { label: "Sold out (shown, can't be bought)", value: "sold_out" }
+                      - { label: "Hidden (not shown anywhere)", value: "hidden" }
+              - label: "Personalized Blend (bottle size)"
+                name: "personalized"
+                widget: "object"
+                summary: "{{fields.name}} — {{fields.size}} — {{fields.status}}"
+                fields:
+                  - { label: "ID", name: "id", widget: "string", hint: "e.g. blend-10ml. Don't change it once on sale." }
+                  - { label: "Name", name: "name", widget: "string", default: "Personalized Chu Wu Blend" }
+                  - { label: "Size", name: "size", widget: "string", hint: "Shown in the Bottle Size picker on the Bazi page, e.g. 10ml" }
+                  - { label: "Description", name: "description", widget: "text", required: false }
+                  - *price
+                  - *compare
+                  - *image
+                  - *status
+              - label: "Element Scent"
+                name: "element_scent"
+                widget: "object"
+                summary: "{{fields.code}} — {{fields.element}} — {{fields.status}}"
+                fields:
+                  - { label: "Code", name: "code", widget: "string", hint: "e.g. J01. J=Metal, M=Wood, S=Water, H=Fire, T=Earth. Don't change it once on sale." }
+                  - { label: "Element", name: "element", widget: "select", options: *elements }
+                  - label: "Scent family"
+                    name: "family"
+                    widget: "select"
+                    options: &families
+                      - { label: "Citrus", value: "Citrus" }
+                      - { label: "Floral", value: "Floral" }
+                      - { label: "Woody", value: "Woody" }
+                      - { label: "Fresh & Green", value: "Fresh" }
+                      - { label: "Spicy & Warm", value: "Spicy" }
+                      - { label: "Sweet & Gourmand", value: "Sweet" }
+                      - { label: "Musky & Sensual", value: "Musky" }
+                  - { label: "Inspired by", name: "inspired_by", widget: "string", required: false }
+                  - { label: "Notes", name: "notes", widget: "text" }
+                  - { label: "Size", name: "size", widget: "string", default: "10ml" }
+                  - *price
+                  - *compare
+                  - *image
+                  - *status
+
+  # ---------------------------------------------------------------- Promotions
+  - name: "promotions"
+    label: "Promotions"
+    description: "Promo codes and automatic offers. Only one offer applies per order: the one that saves the customer the most."
+    editor: { preview: false }
+    files:
+      - file: "content/promotions.json"
+        name: "promotions"
+        label: "All Promotions"
+        fields:
+          - label: "Promotions"
+            name: "promotions"
+            label_singular: "Promotion"
+            widget: "list"
+            summary: "{{fields.name}} — {{fields.code}}"
+            fields:
+              - { label: "Name", name: "name", widget: "string", hint: "Shown to the customer at checkout, e.g. \"Mid-Autumn 15% off\"" }
+              - { label: "Active", name: "active", widget: "boolean", default: true }
+              - { label: "Promo code", name: "code", widget: "string", required: false,
+                  hint: "What customers type at checkout. Not case-sensitive. Note: codes can be found by anyone who looks at the site's files, so treat them as public." }
+              - { label: "Apply automatically (no code needed)", name: "auto_apply", widget: "boolean", default: false }
+              - label: "Type"
+                name: "type"
+                widget: "select"
+                default: "percent"
+                options:
+                  - { label: "% off", value: "percent" }
+                  - { label: "Fixed amount off (SGD)", value: "fixed" }
+                  - { label: "Free delivery", value: "free_delivery" }
+              - { label: "Value", name: "value", widget: "number", value_type: "float", min: 0, default: 10, hint: "10 = 10% off or S$10 off. Ignored for free delivery." }
+              - { label: "Minimum spend (SGD)", name: "min_subtotal", widget: "number", value_type: "float", min: 0, default: 0, required: false }
+              - label: "Applies to"
+                name: "applies_to"
+                widget: "select"
+                default: "all"
+                options:
+                  - { label: "Everything", value: "all" }
+                  - { label: "Signature blends only", value: "signature" }
+                  - { label: "Personalized blends only", value: "personalized" }
+                  - { label: "Element scents only", value: "element_scent" }
+              - { label: "Starts", name: "starts", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+              - { label: "Ends (inclusive)", name: "ends", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+
+  # ---------------------------------------------------------------- Pages (text & images)
+  - name: "pages"
+    label: "Page Content"
+    description: "Headlines, text, buttons and hero media for each page."
+    editor: { preview: false }
+    files:
+      - file: "content/home.json"
+        name: "home"
+        label: "Home Page"
+        fields:
+          - label: "Search & sharing"
+            name: "seo"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Browser tab / Google title", name: "title", widget: "string" }
+              - { label: "Google description", name: "description", widget: "text" }
+          - label: "Hero"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Chinese mark", name: "cn_mark", widget: "string" }
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Headline", name: "title", widget: "text", hint: "Press Enter for a line break." }
+              - { label: "Intro text", name: "lede", widget: "text" }
+              - { label: "Main button text", name: "primary_label", widget: "string" }
+              - { label: "Main button link", name: "primary_link", widget: "string" }
+              - { label: "Second button text", name: "secondary_label", widget: "string" }
+              - { label: "Second button link", name: "secondary_link", widget: "string" }
+              - { label: "Background video (MP4)", name: "video", widget: "file", hint: "Keep it under ~10 MB so the page loads quickly." }
+              - { label: "Poster image (shown while the video loads)", name: "poster", widget: "image" }
+          - label: "Philosophy section"
+            name: "philosophy"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Body", name: "body", widget: "text" }
+              - label: "Element cards"
+                name: "elements"
+                widget: "list"
+                summary: "{{fields.glyph}} {{fields.element}}"
+                fields:
+                  - { label: "Element", name: "element", widget: "select", options: *elements }
+                  - { label: "Character", name: "glyph", widget: "string" }
+                  - { label: "Theme word", name: "theme", widget: "string" }
+                  - { label: "Line", name: "line", widget: "string" }
+          - label: "How It Works section"
+            name: "how"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - label: "Steps"
+                name: "steps"
+                widget: "list"
+                summary: "{{fields.title}}"
+                fields:
+                  - { label: "Title", name: "title", widget: "string" }
+                  - { label: "Text", name: "body", widget: "text" }
+              - { label: "Button text", name: "cta_label", widget: "string" }
+              - { label: "Button link", name: "cta_link", widget: "string" }
+
+      - file: "content/shop.json"
+        name: "shop"
+        label: "Shop Page"
+        fields:
+          - label: "Search & sharing"
+            name: "seo"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Browser tab / Google title", name: "title", widget: "string" }
+              - { label: "Google description", name: "description", widget: "text" }
+          - label: "Signature blends section"
+            name: "signature"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Intro text", name: "lede", widget: "text" }
+          - label: "Element scents section"
+            name: "element_scents"
+            widget: "object"
+            hint: "Only appears once at least one element scent is set to \"On sale\"."
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Intro text", name: "lede", widget: "text" }
+          - label: "Personalized blend section"
+            name: "personalized"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Intro text", name: "lede", widget: "text" }
+          - label: "Closing call to action"
+            name: "closing"
+            widget: "object"
+            fields:
+              - { label: "Text", name: "text", widget: "string" }
+              - { label: "Button text", name: "cta_label", widget: "string" }
+
+      - file: "content/customize.json"
+        name: "customize"
+        label: "Bazi Customize Page"
+        fields:
+          - label: "Search & sharing"
+            name: "seo"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Browser tab / Google title", name: "title", widget: "string" }
+              - { label: "Google description", name: "description", widget: "text" }
+          - label: "Page header"
+            name: "header"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Intro text", name: "lede", widget: "text" }
+          - label: "Recommended scents section"
+            name: "recommend"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Intro text", name: "lede", widget: "text" }
+              - { label: "Small print", name: "explainer", widget: "text" }
+          - label: "Build your own section"
+            name: "build"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Intro text", name: "lede", widget: "text" }
+          - { label: "Disclaimer", name: "disclaimer", widget: "text" }
+
+  # ---------------------------------------------------------------- Note library
+  - name: "ingredients"
+    label: "Note Library"
+    description: "The notes customers choose from in Build Your Own, with their element, family and stock."
+    editor: { preview: false }
+    files:
+      - file: "content/notes.json"
+        label: "All Notes"
+        name: "notes"
         fields:
           - label: "Notes"
             name: "notes"
+            label_singular: "Note"
             widget: "list"
-            summary: "{{name}} ({{layer}}) — {{stock}}"
+            summary: "{{fields.name}} ({{fields.layer}}, {{fields.element}}) — {{fields.stock}}"
             fields:
               - label: "Layer"
                 name: "layer"
                 widget: "select"
                 options: ["top", "middle", "base"]
-              - { label: "Note Name", name: "name", widget: "string" }
-              - label: "Stock Status"
+              - { label: "Note name", name: "name", widget: "string" }
+              - { label: "Chinese name", name: "zh", widget: "string", required: false }
+              - { label: "Element", name: "element", widget: "select", options: *elements }
+              - { label: "Scent family", name: "family", widget: "select", options: *families }
+              - label: "Stock"
                 name: "stock"
                 widget: "select"
+                default: "in_stock"
                 options:
                   - { label: "Available", value: "in_stock" }
-                  - { label: "Low Stock", value: "low_stock" }
+                  - { label: "Low stock", value: "low_stock" }
                   - { label: "Unavailable", value: "sold_out" }
+
+  # ---------------------------------------------------------------- Settings
+  - name: "settings"
+    label: "Site Settings"
+    description: "Brand, colours, announcement bar, contact details, features, delivery and payment."
+    editor: { preview: false }
+    files:
+      - file: "content/settings.json"
+        name: "settings"
+        label: "Settings"
+        fields:
+          - label: "Announcement bar"
+            name: "announcement"
+            widget: "object"
+            hint: "A thin strip across the top of every page, e.g. for a sale."
+            fields:
+              - { label: "Show it", name: "enabled", widget: "boolean", default: false }
+              - { label: "Text", name: "text", widget: "string", required: false }
+              - { label: "Link (optional)", name: "link", widget: "string", required: false, hint: "e.g. shop.html" }
+          - label: "Brand"
+            name: "brand"
+            widget: "object"
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Chinese name", name: "name_zh", widget: "string" }
+              - { label: "Footer tagline", name: "tagline", widget: "string" }
+              - { label: "Logo (dark, for the light header)", name: "logo", widget: "image" }
+              - { label: "Logo (light, for the dark footer)", name: "logo_light", widget: "image" }
+          - label: "Colours"
+            name: "theme"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Background (ivory)", name: "ivory", widget: "color" }
+              - { label: "Text & buttons (charcoal)", name: "charcoal", widget: "color" }
+              - { label: "Accent (gold)", name: "gold", widget: "color" }
+              - { label: "Borders (grey)", name: "grey", widget: "color" }
+              - { label: "Hover (ink)", name: "ink", widget: "color" }
+              - { label: "Wood", name: "wood", widget: "color" }
+              - { label: "Fire", name: "fire", widget: "color" }
+              - { label: "Earth", name: "earth", widget: "color" }
+              - { label: "Metal", name: "metal", widget: "color" }
+              - { label: "Water", name: "water", widget: "color" }
+          - label: "Contact"
+            name: "contact"
+            widget: "object"
+            fields:
+              - { label: "Email", name: "email", widget: "string" }
+              - { label: "WhatsApp number", name: "whatsapp_number", widget: "string", hint: "Digits only with country code, e.g. 6580285156. Orders and payment screenshots are sent here." }
+              - { label: "WhatsApp number as shown", name: "whatsapp_display", widget: "string", hint: "e.g. +65 8028 5156" }
+              - { label: "Instagram link", name: "instagram_url", widget: "string", required: false }
+          - label: "Features"
+            name: "features"
+            widget: "object"
+            fields:
+              - { label: "Build Your Own Blend", name: "custom_blend", widget: "boolean", default: true,
+                  hint: "Shows the note picker after a Bazi reading and the personalized blend section on the Shop page." }
+              - { label: "Element scent recommendations", name: "element_scents", widget: "boolean", default: true,
+                  hint: "Shows the matching element scents (J01–T03) after a Bazi reading." }
+          - { label: "Currency", name: "currency", widget: "hidden", default: "SGD" }
+          - label: "Checkout"
+            name: "checkout"
+            widget: "object"
+            fields:
+              - label: "PayNow"
+                name: "paynow"
+                widget: "object"
+                fields:
+                  - { label: "Offer PayNow", name: "enabled", widget: "boolean", default: true }
+                  - { label: "Payee name", name: "payee_name", widget: "string", required: false, hint: "The name customers will see in their banking app." }
+                  - { label: "PayNow UEN or mobile number", name: "uen_or_mobile", widget: "string", required: false }
+                  - { label: "PayNow QR code", name: "qr_image", widget: "image", required: false }
+                  - { label: "Payment instructions", name: "instructions", widget: "text" }
+              - label: "Delivery options"
+                name: "delivery_options"
+                label_singular: "Delivery option"
+                widget: "list"
+                summary: "{{fields.label}} — S${{fields.fee}}"
+                fields:
+                  - { label: "Name", name: "label", widget: "string", hint: "e.g. Delivery (Singapore) or Self-collection" }
+                  - { label: "Fee (SGD)", name: "fee", widget: "number", value_type: "float", min: 0, default: 0 }
+                  - { label: "Free when the order is over (SGD)", name: "free_over", widget: "number", value_type: "float", min: 0, required: false }
+                  - { label: "Ask for an address", name: "needs_address", widget: "boolean", default: true }
+              - { label: "Thank-you message", name: "thank_you_message", widget: "string" }

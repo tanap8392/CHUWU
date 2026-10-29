@@ -106,17 +106,17 @@
     return { notes: [], element: current, isFallback: true, chain };
   }
 
-  // Merges CMS-editable stock status (see content/notes-stock.json) onto each note entry.
-  // stockList: [{ layer, name, stock }]. Notes not present default to 'in_stock'.
-  function applyStock(stockList) {
-    const lookup = {};
-    (stockList || []).forEach(s => { lookup[s.layer + '::' + s.name] = s.stock; });
-    ['top', 'middle', 'base'].forEach(layer => {
-      NOTES[layer].forEach(note => {
-        note.stock = lookup[layer + '::' + note.name] || 'in_stock';
-      });
+  // Replaces the library with the dashboard-edited one (content/notes.json, edited at /admin →
+  // Note Library): [{ layer, name, zh, element, family, stock }]. The arrays are refilled in place
+  // so anything holding a reference to NOTES.top etc. sees the new notes.
+  function setNotes(list) {
+    if (!list || !list.length) return;
+    ['top', 'middle', 'base'].forEach(layer => { NOTES[layer].length = 0; });
+    list.forEach(n => {
+      if (!NOTES[n.layer]) return;
+      NOTES[n.layer].push({ name: n.name, zh: n.zh || '', element: n.element, family: n.family, stock: n.stock || 'in_stock' });
     });
   }
 
-  root.ChuwuNotes = { NOTES, FAMILIES, MOTHER_OF, notesForElement, resolveLayerNotes, applyStock };
+  root.ChuwuNotes = { NOTES, FAMILIES, MOTHER_OF, notesForElement, resolveLayerNotes, setNotes };
 })(typeof window !== 'undefined' ? window : globalThis);

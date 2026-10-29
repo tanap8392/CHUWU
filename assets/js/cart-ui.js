@@ -1,4 +1,4 @@
-/* CHUWU (初·五) — shared cart dropdown UI, wired to window.ChuwuShopify's persistent cart. */
+/* CHUWU (初·五) — shared cart dropdown UI, wired to window.ChuwuCart (cart.js). */
 (function () {
   function el(tag, attrs, children) {
     const node = document.createElement(tag);
@@ -12,22 +12,26 @@
   }
   function text(t) { return document.createTextNode(t); }
 
-  function formatPrice(amount, currencyCode) {
-    try {
-      return new Intl.NumberFormat(undefined, { style: 'currency', currency: currencyCode }).format(amount);
-    } catch (e) {
-      return `${amount} ${currencyCode}`;
-    }
-  }
-
-  let currentCart = null;
-
   function updateBadges() {
-    const count = currentCart ? currentCart.totalQuantity : 0;
+    const count = ChuwuCart.count();
     document.querySelectorAll('[data-cart-count]').forEach(function (badge) {
       badge.textContent = count;
       badge.style.display = count > 0 ? 'flex' : 'none';
     });
+  }
+
+  function lineMedia(product) {
+    return product && product.image
+      ? el('img', { src: product.image, alt: product.name || product.code || '' }, [])
+      : el('div', { class: 'cart-line-placeholder' }, []);
+  }
+
+  function qtyControl(line) {
+    const minus = el('button', { class: 'qty-btn', 'aria-label': 'Decrease quantity' }, [text('−')]);
+    const plus = el('button', { class: 'qty-btn', 'aria-label': 'Increase quantity' }, [text('+')]);
+    minus.addEventListener('click', () => ChuwuCart.setQuantity(line.id, line.quantity - 1));
+    plus.addEventListener('click', () => ChuwuCart.setQuantity(line.id, line.quantity + 1));
+    return el('span', { class: 'qty-control' }, [minus, el('span', {}, [text(String(line.quantity))]), plus]);
   }
 
   function renderPanel() {
@@ -37,69 +41,62 @@
     if (!linesEl || !subtotalEl || !checkoutBtn) return;
     linesEl.innerHTML = '';
 
-    if (!currentCart || !currentCart.lines.nodes.length) {
+    const { lines, unavailable } = ChuwuCart.priced(ChuwuContent.data.products || []);
+    checkoutBtn.setAttribute('href', 'checkout.html');
+
+    if (!lines.length && !unavailable.length) {
       linesEl.appendChild(el('p', { class: 'cart-empty' }, [text('Your cart is empty.')]));
       subtotalEl.textContent = '—';
       checkoutBtn.classList.add('hidden');
       return;
     }
 
-    checkoutBtn.classList.remove('hidden');
-    checkoutBtn.setAttribute('href', currentCart.checkoutUrl);
-
-    currentCart.lines.nodes.forEach(function (line) {
-      const variant = line.merchandise;
-      const product = variant.product;
-      const attrs = (line.attributes || []).filter(function (a) { return a.value; });
-      const attrsText = attrs.map(function (a) { return a.key + ': ' + a.value; }).join(' · ');
-
-      const media = product.featuredImage
-        ? el('img', { src: product.featuredImage.url, alt: product.featuredImage.altText || product.title }, [])
-        : el('div', { class: 'cart-line-placeholder' }, []);
-
+    lines.forEach(function (line) {
+      const attrsText = line.attributes.map(a => a.key + ': ' + a.value).join(' · ');
       const removeBtn = el('button', { class: 'cart-line-remove' }, [text('Remove')]);
-      removeBtn.addEventListener('click', function () { removeLine(line.id); });
-
-      const infoChildren = [
-        el('div', { class: 'title' }, [text(product.title)])
-      ];
-      if (attrsText) infoChildren.push(el('div', { class: 'attrs' }, [text(attrsText)]));
-      infoChildren.push(el('div', { class: 'qty-price' }, [
-        el('span', {}, [text('Qty ' + line.quantity)]),
-        el('span', {}, [text(formatPrice(variant.price.amount, variant.price.currencyCode))])
-      ]));
-      infoChildren.push(removeBtn);
-
-      linesEl.appendChild(el('div', { class: 'cart-line' }, [media, el('div', { class: 'cart-line-info' }, infoChildren)]));
+      removeBtn.addEventListener('click', () => ChuwuCart.remove(line.id));
+      const info = [el('div', { class: 'title' }, [text(ChuwuContent.productTitle(line.product))])];
+      if (attrsText) info.push(el('div', { class: 'attrs' }, [text(attrsText)]));
+      info.push(el('div', { class: 'qty-price' }, [qtyControl(line), el('span', {}, [text(ChuwuContent.formatPrice(line.lineTotal))])]));
+      info.push(removeBtn);
+      linesEl.appendChild(el('div', { class: 'cart-line' }, [lineMedia(line.product), el('div', { class: 'cart-line-info' }, info)]));
     });
 
-    subtotalEl.textContent = formatPrice(currentCart.cost.subtotalAmount.amount, currentCart.cost.subtotalAmount.currencyCode);
+    unavailable.forEach(function (line) {
+      const removeBtn = el('button', { class: 'cart-line-remove' }, [text('Remove')]);
+      removeBtn.addEventListener('click', () => ChuwuCart.remove(line.id));
+      const title = line.product ? ChuwuContent.productTitle(line.product) : 'Item';
+      linesEl.appendChild(el('div', { class: 'cart-line unavailable' }, [
+        lineMedia(line.product),
+        el('div', { class: 'cart-line-info' }, [
+          el('div', { class: 'title' }, [text(title)]),
+          el('div', { class: 'attrs' }, [text('No longer available — it won\'t be included in your order.')]),
+          removeBtn
+        ])
+      ]));
+    });
+
+    const subtotal = lines.reduce((s, l) => s + l.lineTotal, 0);
+    subtotalEl.textContent = ChuwuContent.formatPrice(subtotal);
+    checkoutBtn.classList.toggle('hidden', !lines.length);
   }
 
-  async function refreshCart() {
-    try {
-      currentCart = await ChuwuShopify.getCurrentCart();
-    } catch (err) {
-      console.error('Could not load cart:', err);
-      currentCart = null;
-    }
+  function refresh() {
     updateBadges();
     renderPanel();
+    return Promise.resolve();
   }
 
-  async function removeLine(lineId) {
-    try {
-      currentCart = await ChuwuShopify.removeCartLine(lineId);
-      updateBadges();
-      renderPanel();
-    } catch (err) {
-      console.error('Could not remove cart line:', err);
-    }
-  }
+  // Set while the click that opened the panel (e.g. "Add to Cart") is still bubbling, so the
+  // outside-click handler below doesn't immediately close it again.
+  let justOpened = false;
 
   function openPanel() {
     const panel = document.getElementById('cart-panel');
-    if (panel) panel.classList.add('open');
+    if (!panel) return;
+    panel.classList.add('open');
+    justOpened = true;
+    setTimeout(() => { justOpened = false; }, 0);
   }
   function closePanel() {
     const panel = document.getElementById('cart-panel');
@@ -117,15 +114,21 @@
     const closeBtn = document.getElementById('cart-close');
     if (closeBtn) closeBtn.addEventListener('click', closePanel);
 
+    // Clicks on the +/−/Remove buttons re-render the panel, detaching the clicked node — ignore
+    // those so the panel doesn't close mid-edit.
     document.addEventListener('click', function (e) {
       const panel = document.getElementById('cart-panel');
-      if (!panel || !panel.classList.contains('open')) return;
-      if (panel.contains(e.target) || e.target.closest('.cart-toggle')) return;
+      if (!panel || !panel.classList.contains('open') || justOpened) return;
+      if (!e.target.isConnected || panel.contains(e.target) || e.target.closest('.cart-toggle')) return;
       closePanel();
     });
 
-    refreshCart();
+    updateBadges();
+    ChuwuContent.ready.then(refresh);
   });
 
-  window.ChuwuCartUI = { refresh: refreshCart, open: openPanel };
+  document.addEventListener('chuwu:cart', refresh);
+  window.addEventListener('storage', function (e) { if (e.key === 'chuwu_cart_v1') refresh(); });
+
+  window.ChuwuCartUI = { refresh: refresh, open: openPanel };
 })();

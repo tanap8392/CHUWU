@@ -1,0 +1,16 @@
+{
+  "promotions": [
+    {
+      "name": "Example — 10% off first order",
+      "active": false,
+      "code": "WELCOME10",
+      "auto_apply": false,
+      "type": "percent",
+      "value": 10,
+      "min_subtotal": 0,
+      "applies_to": "all",
+      "starts": "",
+      "ends": ""
+    }
+  ]
+}

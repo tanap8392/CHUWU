@@ -1,0 +1,25 @@
+{
+  "seo": {
+    "title": "Shop Signature Blends — CHUWU 初·五",
+    "description": "Five signature CHUWU fragrances, each composed around the Five Elements for a specific intention: love, wealth, career, health and overall balance."
+  },
+  "signature": {
+    "eyebrow": "Signature Blends",
+    "title": "Five Scents, Five Intentions",
+    "lede": "No reading required. Each signature blend is composed around the Five Elements associated with a specific intention — pick the one that speaks to what you need most right now."
+  },
+  "element_scents": {
+    "eyebrow": "Shop by Element",
+    "title": "Scents for Every Element",
+    "lede": "Three scents for each of the Five Elements. Already know which element you're missing? Pick yours here — or take a free Bazi reading to find out."
+  },
+  "personalized": {
+    "eyebrow": "Or, Make It Yours",
+    "title": "Personalize Your Own Blend",
+    "lede": "Take a short Bazi reading and build a fragrance around exactly what your chart needs — choose your own notes, we bottle it just for you."
+  },
+  "closing": {
+    "text": "Not sure which is right for you?",
+    "cta_label": "Get a Free Bazi Reading"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "seo": {
+    "title": "Bazi Scent Customizer — CHUWU 初·五",
+    "description": "Enter your birth date and time to reveal your Bazi Five Element balance, then build a fragrance around what you lack."
+  },
+  "header": {
+    "eyebrow": "Bazi Scent Customizer",
+    "title": "Discover the Element You're Missing",
+    "lede": "Enter your birth date and time (as precisely as you know it) to calculate your Bazi (八字) — your Four Pillars of Destiny — and see which of the Five Elements your chart could use more of."
+  },
+  "recommend": {
+    "eyebrow": "Recommended For You",
+    "title": "Scents for Your Missing Element",
+    "lede": "Your reading shows which of the Five Elements your chart could use more of — here are the CHUWU scents built for exactly that element.",
+    "explainer": "Each element below also has a \"supporting\" scent shown when it's genuinely useful — drawn from the element that generates yours in the Sheng (生) cycle, e.g. Wood feeds Fire. It's only shown when that supporting element isn't already the strongest one in your own chart, so it never suggests piling more of something you already have plenty of."
+  },
+  "build": {
+    "eyebrow": "Build Your Own",
+    "title": "Compose Your Custom Blend",
+    "lede": "Notes highlighted in gold match the element(s) you're lacking; a dark border marks your preferred scent family. Pick 1–2 notes per layer (top, middle, base) — the price only depends on bottle size, not how many notes you choose."
+  },
+  "disclaimer": "This reading is offered as a lifestyle and inspirational guide drawing on traditional Five Element (Wu Xing) theory, and is not a substitute for a professional Bazi consultation."
+}

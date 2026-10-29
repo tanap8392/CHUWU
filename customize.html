@@ -59,9 +59,27 @@
   .family-card .zh { font-family: var(--serif); color: var(--gold); font-size: 0.85rem; display: block; margin: 2px 0; }
   .family-card .desc { font-size: 0.72rem; color: #8a847c; display: block; }
   .family-card.selected .desc { color: var(--grey); }
+
+  .scent-card { background: #fff; border: 1px solid rgba(45,42,40,0.08); border-radius: 4px; padding: 26px 24px; }
+  .scent-card h3 { display: flex; align-items: center; gap: 10px; }
+  .scent-card .el-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+  .scent-code { font-family: var(--serif); font-size: 1.3rem; }
+  .scent-inspired { font-size: 0.8rem; color: #8a847c; margin-top: 2px; }
+  .scent-notes { font-size: 0.88rem; margin-top: 10px; }
+  .scent-price-row { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; }
+  .scent-price { font-weight: 600; }
+  .scent-cta { padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; border: 1px solid var(--charcoal); background: var(--charcoal); color: var(--ivory); cursor: not-allowed; opacity: 0.55; font-family: var(--sans); }
+  .scent-cta.active { cursor: pointer; opacity: 1; }
+  .scent-cta.active:hover { background: var(--ink); border-color: var(--ink); }
+  .supporting-card { border-style: dashed; background: #FBF8F2; }
+  .supporting-tag { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+  .preview-badge { font-size: 0.66rem; letter-spacing: 0.05em; text-transform: uppercase; color: #b3392a; border: 1px solid #b3392a; border-radius: 3px; padding: 1px 6px; margin-left: 8px; }
+  .family-tag { display: inline-block; font-size: 0.72rem; color: #8a847c; margin-top: 8px; }
+  .family-tag.family-match { color: var(--charcoal); font-weight: 600; }
+  .scent-card.family-highlight { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
 </style>
 </head>
-<body>
+<body data-content-page="customize">
 
 <header class="site-nav">
   <div class="nav-row">
@@ -69,7 +87,7 @@
       <span></span><span></span><span></span>
     </button>
     <a href="index.html" class="nav-logo">
-      <img src="assets/img/logo.svg" alt="CHUWU 初·五" style="height:40px;width:auto">
+      <img data-logo="dark" src="assets/img/logo.svg" alt="CHUWU 初·五" style="height:40px;width:auto">
     </a>
     <button class="cart-toggle cart-toggle-mobile" aria-label="View cart">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -118,9 +136,9 @@
 
 <section class="hero" style="padding-bottom:50px">
   <div class="container">
-    <p class="eyebrow">Bazi Scent Customizer</p>
-    <h1>Discover the Element You're Missing</h1>
-    <p class="lede">Enter your birth date and time (as precisely as you know it) to calculate your Bazi (八字) — your Four Pillars of Destiny — and see which of the Five Elements your chart could use more of.</p>
+    <p class="eyebrow" data-cms="customize.header.eyebrow">Bazi Scent Customizer</p>
+    <h1 data-cms="customize.header.title">Discover the Element You're Missing</h1>
+    <p class="lede" data-cms="customize.header.lede">Enter your birth date and time (as precisely as you know it) to calculate your Bazi (八字) — your Four Pillars of Destiny — and see which of the Five Elements your chart could use more of.</p>
   </div>
 </section>
 
@@ -176,28 +194,31 @@
 <section id="recommend-section" class="hidden">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow">Recommended For You</p>
-      <h2>Scents to Restore Your Balance</h2>
-      <p>Based on your lacking element(s), here's what we suggest for each area of life.</p>
-      <p class="muted" style="font-size:0.85rem;max-width:640px;margin:12px auto 0">
-        Each area of life below is traditionally governed by one or two of the Five Elements — for
-        example, Love Luck is tied to Fire and Earth. When one of those elements is also one your
-        reading shows you're lacking, we mark it <b>"Matches Your Reading"</b> — meaning that area is
-        an especially direct fit for your chart, not just a general suggestion. Areas without the
-        badge still offer helpful notes; they're simply less specific to what your own reading is
-        missing.
+      <p class="eyebrow" data-cms="customize.recommend.eyebrow">Recommended For You</p>
+      <h2 data-cms="customize.recommend.title">Scents for Your Missing Element</h2>
+      <p data-cms="customize.recommend.lede">Your reading shows which of the Five Elements your chart could use more of — here are the CHUWU scents built for exactly that element.</p>
+      <p class="muted" style="font-size:0.85rem;max-width:640px;margin:12px auto 0" data-cms="customize.recommend.explainer">
+        Each element below also has a "supporting" scent shown when it's genuinely useful — drawn
+        from the element that generates yours in the Sheng (生) cycle, e.g. Wood feeds Fire. It's
+        only shown when that supporting element isn't already the strongest one in your own chart,
+        so it never suggests piling more of something you already have plenty of.
       </p>
     </div>
-    <div class="grid-3" id="aspect-grid"></div>
+    <div class="grid-3" id="scent-grid"></div>
+
+    <div id="supporting-wrap" class="hidden" style="margin-top:36px">
+      <div class="divider"></div>
+      <div class="grid-3" id="supporting-grid" style="margin-top:28px"></div>
+    </div>
   </div>
 </section>
 
 <section id="build-section" class="alt hidden">
   <div class="container" style="max-width:760px">
     <div class="section-head">
-      <p class="eyebrow">Build Your Own</p>
-      <h2>Compose Your Custom Blend</h2>
-      <p>Notes highlighted in gold match the element(s) you're lacking; a dark border marks your preferred scent family. Pick 1–2 notes per layer (top, middle, base) — the price only depends on bottle size, not how many notes you choose.</p>
+      <p class="eyebrow" data-cms="customize.build.eyebrow">Build Your Own</p>
+      <h2 data-cms="customize.build.title">Compose Your Custom Blend</h2>
+      <p data-cms="customize.build.lede">Notes highlighted in gold match the element(s) you're lacking; a dark border marks your preferred scent family. Pick 1–2 notes per layer (top, middle, base) — the price only depends on bottle size, not how many notes you choose.</p>
     </div>
 
     <div class="layer-block">
@@ -231,15 +252,15 @@
 
 <section>
   <div class="container center">
-    <p class="note-disclaimer">This reading is offered as a lifestyle and inspirational guide drawing on traditional Five Element (Wu Xing) theory, and is not a substitute for a professional Bazi consultation.</p>
+    <p class="note-disclaimer" data-cms="customize.disclaimer">This reading is offered as a lifestyle and inspirational guide drawing on traditional Five Element (Wu Xing) theory, and is not a substitute for a professional Bazi consultation.</p>
   </div>
 </section>
 
 <footer class="site-footer">
   <div class="container">
     <div>
-      <img src="assets/img/logo-light.svg" alt="CHUWU 初·五" style="height:56px;width:auto">
-      <p class="muted" style="margin-top:14px;max-width:240px">Inspired by Five Elements, rooted in balance.</p>
+      <img data-logo="light" src="assets/img/logo-light.svg" alt="CHUWU 初·五" style="height:56px;width:auto">
+      <p class="muted" style="margin-top:14px;max-width:240px" data-cms="settings.brand.tagline">Inspired by Five Elements, rooted in balance.</p>
     </div>
     <div>
       <h4>Explore</h4>
@@ -249,9 +270,9 @@
     </div>
     <div>
       <h4>Contact</h4>
-      <a href="mailto:chuwu.fragrance@gmail.com">chuwu.fragrance@gmail.com</a>
-      <a href="https://wa.me/6580285156" target="_blank" rel="noopener">WhatsApp: +65 8028 5156</a>
-      <a href="#" class="footer-social" aria-label="Instagram" target="_blank" rel="noopener">
+      <a href="mailto:chuwu.fragrance@gmail.com" data-contact="email">chuwu.fragrance@gmail.com</a>
+      <a href="https://wa.me/6580285156" data-contact="whatsapp" target="_blank" rel="noopener">WhatsApp: +65 8028 5156</a>
+      <a href="#" class="footer-social" data-contact="instagram" aria-label="Instagram" target="_blank" rel="noopener">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:middle;margin-right:6px">
           <rect x="2" y="2" width="20" height="20" rx="5"/>
           <circle cx="12" cy="12" r="4.5"/>
@@ -265,9 +286,12 @@
 
 <script src="assets/js/notes-data.js"></script>
 <script src="assets/js/recommend.js"></script>
+<script src="assets/js/scent-catalog.js"></script>
+<script src="assets/js/scent-recommend.js"></script>
 <script src="assets/js/cities-data.js"></script>
 <script src="assets/js/bazi-engine.js"></script>
-<script src="assets/js/shopify-client.js"></script>
+<script src="assets/js/site-content.js"></script>
+<script src="assets/js/cart.js"></script>
 <script src="assets/js/cart-ui.js"></script>
 <script src="assets/js/customize.js"></script>
 <script src="assets/js/main.js"></script>

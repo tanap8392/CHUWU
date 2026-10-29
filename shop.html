@@ -43,7 +43,7 @@
   }
 </style>
 </head>
-<body>
+<body data-content-page="shop">
 
 <header class="site-nav">
   <div class="nav-row">
@@ -51,7 +51,7 @@
       <span></span><span></span><span></span>
     </button>
     <a href="index.html" class="nav-logo">
-      <img src="assets/img/logo.svg" alt="CHUWU 初·五" style="height:40px;width:auto">
+      <img data-logo="dark" src="assets/img/logo.svg" alt="CHUWU 初·五" style="height:40px;width:auto">
     </a>
     <button class="cart-toggle cart-toggle-mobile" aria-label="View cart">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -100,9 +100,9 @@
 
 <section class="hero" style="padding-bottom:50px">
   <div class="container">
-    <p class="eyebrow">Signature Blends</p>
-    <h1>Five Scents, Five Intentions</h1>
-    <p class="lede">No reading required. Each signature blend is composed around the Five Elements associated with a specific intention — pick the one that speaks to what you need most right now.</p>
+    <p class="eyebrow" data-cms="shop.signature.eyebrow">Signature Blends</p>
+    <h1 data-cms="shop.signature.title">Five Scents, Five Intentions</h1>
+    <p class="lede" data-cms="shop.signature.lede">No reading required. Each signature blend is composed around the Five Elements associated with a specific intention — pick the one that speaks to what you need most right now.</p>
   </div>
 </section>
 
@@ -114,25 +114,37 @@
   </div>
 </section>
 
-<section class="shop-divider">
+<section id="element-scents-section" class="shop-divider hidden">
   <div class="container">
     <div class="divider-line"></div>
     <div class="center">
-      <p class="eyebrow">Or, Make It Yours</p>
-      <h2>Personalize Your Own Blend</h2>
-      <p class="lede" style="max-width:560px;margin:0 auto">Take a short Bazi reading and build a fragrance around exactly what your chart needs — choose your own notes, we bottle it just for you.</p>
+      <p class="eyebrow" data-cms="shop.element_scents.eyebrow">Shop by Element</p>
+      <h2 data-cms="shop.element_scents.title">Scents for Every Element</h2>
+      <p class="lede" style="max-width:560px;margin:0 auto" data-cms="shop.element_scents.lede"></p>
+    </div>
+    <div class="grid-3" id="shop-grid-elements" style="margin-top:44px"></div>
+  </div>
+</section>
+
+<section class="shop-divider" data-personalized-section>
+  <div class="container">
+    <div class="divider-line"></div>
+    <div class="center">
+      <p class="eyebrow" data-cms="shop.personalized.eyebrow">Or, Make It Yours</p>
+      <h2 data-cms="shop.personalized.title">Personalize Your Own Blend</h2>
+      <p class="lede" style="max-width:560px;margin:0 auto" data-cms="shop.personalized.lede">Take a short Bazi reading and build a fragrance around exactly what your chart needs — choose your own notes, we bottle it just for you.</p>
     </div>
   </div>
 </section>
 
 <section style="padding-top:36px">
   <div class="container">
-    <div class="grid-3" id="shop-grid-personalized">
+    <div class="grid-3" id="shop-grid-personalized" data-personalized-section>
       <p class="muted center" id="shop-loading-personalized">Loading…</p>
     </div>
     <div class="center" style="margin-top:52px">
-      <p class="muted">Not sure which is right for you?</p>
-      <a href="customize.html" class="btn btn-gold">Get a Free Bazi Reading</a>
+      <p class="muted" data-cms="shop.closing.text">Not sure which is right for you?</p>
+      <a href="customize.html" class="btn btn-gold" data-cms="shop.closing.cta_label">Get a Free Bazi Reading</a>
     </div>
   </div>
 </section>
@@ -140,8 +152,8 @@
 <footer class="site-footer">
   <div class="container">
     <div>
-      <img src="assets/img/logo-light.svg" alt="CHUWU 初·五" style="height:56px;width:auto">
-      <p class="muted" style="margin-top:14px;max-width:240px">Inspired by Five Elements, rooted in balance.</p>
+      <img data-logo="light" src="assets/img/logo-light.svg" alt="CHUWU 初·五" style="height:56px;width:auto">
+      <p class="muted" style="margin-top:14px;max-width:240px" data-cms="settings.brand.tagline">Inspired by Five Elements, rooted in balance.</p>
     </div>
     <div>
       <h4>Explore</h4>
@@ -151,9 +163,9 @@
     </div>
     <div>
       <h4>Contact</h4>
-      <a href="mailto:chuwu.fragrance@gmail.com">chuwu.fragrance@gmail.com</a>
-      <a href="https://wa.me/6580285156" target="_blank" rel="noopener">WhatsApp: +65 8028 5156</a>
-      <a href="#" class="footer-social" aria-label="Instagram" target="_blank" rel="noopener">
+      <a href="mailto:chuwu.fragrance@gmail.com" data-contact="email">chuwu.fragrance@gmail.com</a>
+      <a href="https://wa.me/6580285156" data-contact="whatsapp" target="_blank" rel="noopener">WhatsApp: +65 8028 5156</a>
+      <a href="#" class="footer-social" data-contact="instagram" aria-label="Instagram" target="_blank" rel="noopener">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:middle;margin-right:6px">
           <rect x="2" y="2" width="20" height="20" rx="5"/>
           <circle cx="12" cy="12" r="4.5"/>
@@ -165,7 +177,8 @@
   <div class="footer-bottom">© <span data-year></span> CHUWU 初·五. All rights reserved.</div>
 </footer>
 
-<script src="assets/js/shopify-client.js"></script>
+<script src="assets/js/site-content.js"></script>
+<script src="assets/js/cart.js"></script>
 <script src="assets/js/cart-ui.js"></script>
 <script src="assets/js/shop.js"></script>
 <script src="assets/js/main.js"></script>

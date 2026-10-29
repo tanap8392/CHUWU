@@ -76,12 +76,8 @@
     });
   }
 
-  function formatPrice(amount, currencyCode) {
-    try {
-      return new Intl.NumberFormat(undefined, { style: 'currency', currency: currencyCode }).format(amount);
-    } catch (e) {
-      return `${amount} ${currencyCode}`;
-    }
+  function formatPrice(amount) {
+    return ChuwuContent.formatPrice(amount);
   }
 
   function renderSizePicker() {
@@ -90,7 +86,7 @@
     blendSizes.forEach(size => {
       const card = el('div', { class: 'family-card', 'data-size': size.label }, [
         el('span', { class: 'label' }, [document.createTextNode(size.label)]),
-        el('span', { class: 'zh' }, [document.createTextNode(formatPrice(size.price, size.currency))]),
+        el('span', { class: 'zh' }, [document.createTextNode(formatPrice(size.price))]),
         size.availableForSale ? text('') : el('span', { class: 'desc' }, [document.createTextNode('Sold out')])
       ]);
       if (size.availableForSale) {
@@ -110,37 +106,39 @@
 
   function text(t) { return document.createTextNode(t); }
 
-  function loadBlendSizes() {
-    ChuwuShopify.fetchProducts()
-      .then(products => {
-        blendSizes = products
-          .filter(p => /personalized chu wu blend/i.test(p.title))
-          .map(p => {
-            const variant = p.variants.nodes[0];
-            const sizeMatch = p.title.match(/(\d+\s*ml)/i);
-            return {
-              label: sizeMatch ? sizeMatch[1].replace(/\s+/g, '') : p.title,
-              variantId: variant.id,
-              price: variant.price.amount,
-              currency: p.priceRange.minVariantPrice.currencyCode,
-              availableForSale: variant.availableForSale
-            };
-          })
-          .sort((a, b) => parseInt(a.label) - parseInt(b.label));
-        renderSizePicker();
-      })
-      .catch(err => console.error('Could not load blend sizes from Shopify:', err));
+  // Bottle sizes are the "personalized" products in content/products.json.
+  function loadBlendSizes(products) {
+    blendSizes = products
+      .filter(p => p.type === 'personalized' && p.status !== 'hidden')
+      .map(p => ({
+        label: p.size || p.name,
+        productId: p.id,
+        price: p.price,
+        availableForSale: p.status === 'active'
+      }))
+      .sort((a, b) => a.price - b.price);
+    renderSizePicker();
   }
 
   populateBirthPlace();
   populateShichen();
   populateFamilyPicker();
-  loadBlendSizes();
 
-  fetch('content/notes-stock.json')
-    .then(r => r.json())
-    .then(data => ChuwuNotes.applyStock(data.notes))
-    .catch(err => console.error('Could not load ingredient stock data, defaulting to in-stock:', err));
+  // The reading needs the dashboard's note library, scent catalogue and bottle sizes, so the
+  // Calculate button stays disabled until they've loaded.
+  let customBlendEnabled = true;
+  let elementScentsEnabled = true;
+  const calcBtn = document.querySelector('#bazi-form button[type="submit"]');
+  calcBtn.disabled = true;
+  ChuwuContent.ready.then(data => {
+    ChuwuNotes.setNotes(data.notes);
+    ChuwuScents.setFromProducts(data.products);
+    loadBlendSizes(data.products);
+    const features = (data.settings && data.settings.features) || {};
+    customBlendEnabled = features.custom_blend !== false;
+    elementScentsEnabled = features.element_scents !== false;
+    calcBtn.disabled = false;
+  });
 
   function el(tag, attrs, children) {
     const node = document.createElement(tag);
@@ -207,49 +205,84 @@
   const STOCK_ORDER = { in_stock: 0, low_stock: 1, sold_out: 2 };
   const STOCK_SUFFIX = { low_stock: ' (low stock)', sold_out: ' (sold out)' };
 
-  function renderAspects(result, preferredFamily) {
-    const grid = document.getElementById('aspect-grid');
+  // Reading details saved with any item added from this page, so the order shows why it was picked.
+  function readingAttributes() {
+    const attributes = [];
+    if (selectedFamily) attributes.push({ key: 'Scent Preference', value: selectedFamily });
+    if (lastBaziResult) {
+      attributes.push({ key: 'Day Master', value: `${lastBaziResult.dayMaster.stem} (${lastBaziResult.dayMaster.element})` });
+      attributes.push({ key: 'Lacking Elements', value: lastBaziResult.lackingElements.join(', ') });
+    }
+    if (lastBirthPlace) attributes.push({ key: 'Place of Birth', value: lastBirthPlace });
+    return attributes;
+  }
+
+  function addedFeedback(btn, restore) {
+    btn.disabled = true;
+    btn.textContent = 'Added ✓';
+    if (window.ChuwuCartUI) window.ChuwuCartUI.open();
+    setTimeout(() => { btn.disabled = false; restore(); }, 1800);
+  }
+
+  function scentCta(scent) {
+    if (scent.status === 'active') {
+      const label = `Add to Cart — ${formatPrice(scent.price)}`;
+      const btn = el('button', { class: 'scent-cta active' }, [document.createTextNode(label)]);
+      btn.addEventListener('click', () => {
+        ChuwuCart.add(scent.id, 1, readingAttributes());
+        addedFeedback(btn, () => { btn.textContent = label; });
+      });
+      return btn;
+    }
+    return el('span', { class: 'scent-cta' }, [document.createTextNode(scent.status === 'sold_out' ? 'Sold Out' : 'Coming Soon')]);
+  }
+
+  function scentCard(scent, { supporting, preferredFamily } = {}) {
+    const preview = scent.status === 'coming_soon'
+      ? el('span', { class: 'preview-badge' }, [document.createTextNode('Preview pricing')])
+      : null;
+    const isFamilyMatch = preferredFamily && scent.family === preferredFamily;
+    const familyTag = el('span', { class: 'family-tag' + (isFamilyMatch ? ' family-match' : '') }, [
+      document.createTextNode(scent.family + (isFamilyMatch ? ' · your preference' : ''))
+    ]);
+
+    return el('div', { class: 'scent-card' + (supporting ? ' supporting-card' : '') + (isFamilyMatch ? ' family-highlight' : '') }, [
+      ...(supporting ? [el('div', { class: 'supporting-tag' }, [document.createTextNode('Supporting — nourishes your ' + supporting)])] : []),
+      el('h3', {}, [
+        el('span', { class: 'el-swatch', style: `background:${ELEMENT_COLOR[scent.element]}` }, []),
+        el('span', { class: 'scent-code' }, [document.createTextNode(scent.code)]),
+        ...(preview ? [preview] : [])
+      ]),
+      familyTag,
+      ...(scent.inspired_by ? [el('p', { class: 'scent-inspired' }, [document.createTextNode('Inspired by ' + scent.inspired_by)])] : []),
+      el('p', { class: 'scent-notes' }, [document.createTextNode(scent.notes || '')]),
+      el('div', { class: 'scent-price-row' }, [
+        el('span', { class: 'scent-price' }, [document.createTextNode(formatPrice(scent.price) + ' · ' + scent.size)]),
+        scentCta(scent)
+      ])
+    ]);
+  }
+
+  function renderElementScents(result, preferredFamily) {
+    const grid = document.getElementById('scent-grid');
+    const supportingWrap = document.getElementById('supporting-wrap');
+    const supportingGrid = document.getElementById('supporting-grid');
     grid.innerHTML = '';
-    const recs = ChuwuRecommend.recommendForBazi(result, preferredFamily);
-    recs.forEach(aspect => {
-      const layerBlocks = ['top', 'middle', 'base'].map(layer => {
-        const scentGroups = aspect.scents.map(s => s[layer]).filter(g => g.notes.length);
-        if (!scentGroups.length) return null;
-        const chips = [];
-        const fallbacks = [];
-        scentGroups.forEach(g => {
-          const ordered = g.notes.slice().sort((a, b) => (STOCK_ORDER[a.stock] || 0) - (STOCK_ORDER[b.stock] || 0));
-          ordered.slice(0, 3).forEach(n => {
-            const suffix = STOCK_SUFFIX[n.stock] || '';
-            chips.push(el('span', { class: 'note-chip' }, [document.createTextNode(n.name + suffix)]));
-          });
-          if (g.isFallback) {
-            fallbacks.push(`${g.element} (supports ${aspect.targetElements[0]})`);
-          }
+    supportingGrid.innerHTML = '';
+    const recs = ChuwuScentRecommend.recommendScents(result, preferredFamily);
+
+    recs.forEach(rec => {
+      rec.scents.forEach(scent => {
+        grid.appendChild(scentCard(scent, { preferredFamily }));
+      });
+      if (rec.supporting) {
+        rec.supporting.scents.forEach(scent => {
+          supportingGrid.appendChild(scentCard(scent, { supporting: rec.element, preferredFamily }));
         });
-        const blockChildren = [
-          el('div', { class: 'layer-name' }, [document.createTextNode(layer)]),
-          el('div', {}, chips)
-        ];
-        if (fallbacks.length) {
-          blockChildren.push(el('div', { class: 'fallback-note' }, [
-            document.createTextNode('No direct note for this layer — drawing from ' + fallbacks.join(', ') + '.')
-          ]));
-        }
-        return el('div', { class: 'layer-block' }, blockChildren);
-      }).filter(Boolean);
-
-      const badge = aspect.isLackingMatch
-        ? el('span', { class: 'tag', style: 'background:var(--gold);color:var(--charcoal)' }, [document.createTextNode('Matches your reading')])
-        : null;
-
-      const card = el('div', { class: 'aspect-card' }, [
-        el('h3', {}, [document.createTextNode(aspect.label + ' '), ...(badge ? [badge] : [])]),
-        el('p', { class: 'muted' }, [document.createTextNode(aspect.blurb)]),
-        ...layerBlocks
-      ]);
-      grid.appendChild(card);
+      }
     });
+
+    supportingWrap.classList.toggle('hidden', supportingGrid.children.length === 0);
   }
 
   function renderNotePickers(result, preferredFamily) {
@@ -318,47 +351,21 @@
     const ready = notesReady && selectedSize;
     btn.disabled = !ready;
     btn.textContent = ready
-      ? `Add to Cart — ${formatPrice(selectedSize.price, selectedSize.currency)}`
+      ? `Add to Cart — ${formatPrice(selectedSize.price)}`
       : (notesReady ? 'Select a Bottle Size to Continue' : 'Select 1–2 Notes Per Layer to Continue');
   }
 
   document.getElementById('request-blend').addEventListener('click', () => {
     const btn = document.getElementById('request-blend');
-    const errorEl = document.getElementById('checkout-error');
-    errorEl.classList.add('hidden');
-
     const layerText = layer => selectedNotes[layer].map(n => n.name).join(', ');
     const attributes = [
       { key: 'Top Note', value: layerText('top') },
       { key: 'Middle Note', value: layerText('middle') },
-      { key: 'Base Note', value: layerText('base') }
+      { key: 'Base Note', value: layerText('base') },
+      ...readingAttributes()
     ];
-    if (selectedFamily) attributes.push({ key: 'Scent Preference', value: selectedFamily });
-    if (lastBaziResult) {
-      attributes.push({ key: 'Day Master', value: `${lastBaziResult.dayMaster.stem} (${lastBaziResult.dayMaster.element})` });
-      attributes.push({ key: 'Lacking Elements', value: lastBaziResult.lackingElements.join(', ') });
-    }
-    if (lastBirthPlace) attributes.push({ key: 'Place of Birth', value: lastBirthPlace });
-
-    const originalText = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = 'Adding to cart…';
-
-    ChuwuShopify.addToCart(selectedSize.variantId, 1, attributes)
-      .then(() => {
-        btn.textContent = 'Added ✓';
-        if (window.ChuwuCartUI) {
-          window.ChuwuCartUI.refresh().then(() => window.ChuwuCartUI.open());
-        }
-        setTimeout(() => { btn.disabled = false; updateRequestButton(); }, 1800);
-      })
-      .catch(err => {
-        console.error(err);
-        btn.disabled = false;
-        btn.textContent = originalText;
-        errorEl.textContent = 'Something went wrong adding this to your cart. Please try again.';
-        errorEl.classList.remove('hidden');
-      });
+    ChuwuCart.add(selectedSize.productId, 1, attributes);
+    addedFeedback(btn, updateRequestButton);
   });
 
   document.getElementById('bazi-form').addEventListener('submit', function (e) {
@@ -392,10 +399,17 @@
     lastBirthPlace = placeVal || 'Not specified';
     renderPillars(result);
     renderTally(result);
-    renderAspects(result, selectedFamily);
-    renderNotePickers(result, selectedFamily);
+    const sections = ['results-section'];
+    if (elementScentsEnabled) {
+      renderElementScents(result, selectedFamily);
+      sections.push('recommend-section');
+    }
+    if (customBlendEnabled) {
+      renderNotePickers(result, selectedFamily);
+      sections.push('build-section');
+    }
 
-    ['results-section', 'recommend-section', 'build-section'].forEach(id => {
+    sections.forEach(id => {
       document.getElementById(id).classList.remove('hidden');
     });
     document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
