@@ -25,6 +25,9 @@
     if (existing) existing.quantity += quantity;
     else lines.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), productId, quantity, attributes: attrs });
     save(lines);
+    if (root.ChuwuTrack && root.ChuwuContent) {
+      root.ChuwuTrack.addToCart((root.ChuwuContent.data.products || []).find(p => p.id === productId), quantity);
+    }
   }
 
   function setQuantity(lineId, quantity) {

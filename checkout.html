@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Checkout — CHUWU 初·五</title>
 <meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CHUWU 初·五">
+<meta property="og:title" content="Checkout — CHUWU 初·五">
+<meta property="og:description" content="CHUWU (初·五) creates fragrance guided by Bazi and the Five Elements.">
+<meta property="og:image" content="https://chuwu-fragrance.netlify.app/assets/img/hero-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -77,6 +83,7 @@
   <input name="delivery_method"><textarea name="address"></textarea><textarea name="items"></textarea>
   <input name="subtotal"><input name="promotion"><input name="discount"><input name="delivery_fee"><input name="total">
   <input name="payment_method"><textarea name="notes"></textarea>
+  <input name="is_gift"><textarea name="gift_message"></textarea>
 </form>
 
 <section style="padding-top:20px">
@@ -101,6 +108,17 @@
 
         <h3 style="margin-top:20px">Payment</h3>
         <div id="payment-options"></div>
+
+        <div id="gift-section" class="hidden" style="margin-top:20px">
+          <label class="option-card" style="margin-bottom:0">
+            <input type="checkbox" id="co-gift">
+            <span>This is a gift <span class="option-meta">We'll include your message and leave prices off the packing slip.</span></span>
+          </label>
+          <div class="field hidden" id="gift-message-field" style="margin-top:10px">
+            <label for="co-gift-message">Gift Message</label>
+            <textarea id="co-gift-message" name="gift_message" rows="3" maxlength="400"></textarea>
+          </div>
+        </div>
 
         <div class="field" style="margin-top:20px">
           <label for="co-notes">Order Notes <span class="muted" style="text-transform:none;letter-spacing:0">(optional)</span></label>
@@ -142,6 +160,9 @@
       <a href="customize.html">Bazi Customize</a>
       <a href="shop.html">Shop</a>
     </div>
+    <div data-info-links class="hidden">
+      <h4>Info</h4>
+    </div>
     <div>
       <h4>Contact</h4>
       <a href="mailto:chuwu.fragrance@gmail.com" data-contact="email">chuwu.fragrance@gmail.com</a>
@@ -159,6 +180,7 @@
 </footer>
 
 <script src="assets/js/site-content.js"></script>
+<script src="assets/js/track.js"></script>
 <script src="assets/js/cart.js"></script>
 <script src="assets/js/cart-ui.js"></script>
 <script src="assets/js/vendor/qrcode.js"></script>

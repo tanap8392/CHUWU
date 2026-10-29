@@ -1,2 +1,7 @@
 [build]
   publish = "."
+
+# Order storage + the dashboard's Orders screen (see netlify/functions/).
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"

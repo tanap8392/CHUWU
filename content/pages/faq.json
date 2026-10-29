@@ -1,0 +1,34 @@
+{
+  "title": "FAQ",
+  "published": false,
+  "seo": {
+    "description": "Answers to common questions about CHUWU fragrances, Bazi readings, ordering and payment."
+  },
+  "intro": "Can’t find what you’re looking for? Message us on WhatsApp.",
+  "items": [
+    {
+      "question": "What is a Bazi reading?",
+      "answer": "Bazi (八字, \"eight characters\") describes the moment you were born as four pillars — year, month, day and hour — each made of two characters linked to the Five Elements. Counting those elements shows which ones your chart has plenty of and which it lacks."
+    },
+    {
+      "question": "Do I need to know my exact time of birth?",
+      "answer": "No. Pick the two-hour block you were born in. If you don’t know it, leave the midday estimate — your year, month and day pillars stay accurate; only the hour pillar becomes approximate."
+    },
+    {
+      "question": "How does a personalised blend work?",
+      "answer": "After your reading, choose one or two notes for each layer (top, middle and base). Notes that match the element you’re lacking are highlighted in gold. We blend and bottle your scent after your order is confirmed."
+    },
+    {
+      "question": "How do I pay?",
+      "answer": "By PayNow. After you place your order you’ll see a QR code with the amount and your order number already filled in — scan it with your banking app and confirm. No need to send us a screenshot."
+    },
+    {
+      "question": "How long until my order arrives?",
+      "answer": "[e.g. Signature blends ship within X working days of payment; personalised blends take X–X working days to blend.]"
+    },
+    {
+      "question": "Is this a professional Bazi consultation?",
+      "answer": "No — the reading is a lifestyle and inspirational guide drawing on traditional Five Element theory, not a substitute for a professional consultation."
+    }
+  ]
+}

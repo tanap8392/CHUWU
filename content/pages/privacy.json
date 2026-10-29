@@ -1,0 +1,9 @@
+{
+  "title": "Privacy Policy",
+  "published": false,
+  "seo": {
+    "description": "How CHUWU collects, uses and protects your personal data."
+  },
+  "intro": "Last updated: [date]",
+  "body": "CHUWU (“we”) respects your privacy. This policy explains what personal data we collect, why, and how you can contact us about it, in line with Singapore’s Personal Data Protection Act (PDPA).\n\n## What we collect\n\n- **When you order:** your name, email address, mobile number, delivery address, the items you order, any gift message and order notes.\n- **For personalised blends:** the details shown on your order — your chosen notes, scent preference, Day Master, the elements your chart lacks, and place of birth if you gave one. Your date and time of birth are used in your browser to calculate the reading and are not sent to us.\n- **When you browse:** if enabled, analytics and advertising tools (Google Analytics, Meta Pixel) collect information about how you use the site, such as pages viewed and items added to the cart.\n\n## How we use it\n\nTo process and deliver your order, confirm your payment, contact you about your order, and improve our website and marketing. We do not sell your personal data.\n\n## Who we share it with\n\nOnly the service providers we need to run the shop: our website host (Netlify), our delivery partner [name], and — if enabled — Google and Meta for analytics and advertising.\n\n## How long we keep it\n\nOrder records are kept for [X years] for accounting purposes, then deleted.\n\n## Your choices\n\nYou can ask to see, correct or delete the personal data we hold about you, or withdraw consent to marketing, by emailing chuwu.fragrance@gmail.com. We’ll respond within 30 days.\n\n## Contact\n\nData protection contact: [name], chuwu.fragrance@gmail.com"
+}

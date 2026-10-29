@@ -149,10 +149,17 @@
     return null;
   }
 
+  // Netlify Forms: emails you the order.
   function submitToNetlify(fields) {
     const body = new URLSearchParams({ 'form-name': 'order', ...fields }).toString();
     return fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body })
       .then(r => { if (!r.ok) throw new Error('Order form returned HTTP ' + r.status); });
+  }
+
+  // Order store: the copy the dashboard's Orders screen shows and tracks (netlify/functions/place-order.mjs).
+  function saveOrder(record) {
+    return fetch('/.netlify/functions/place-order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(record) })
+      .then(r => { if (!r.ok) throw new Error('Order store returned HTTP ' + r.status); });
   }
 
   function orderMessage(order) {
@@ -167,7 +174,8 @@
       `Email: ${order.email}`,
       `Delivery: ${order.delivery}`,
       ...(order.address ? [`Address: ${order.address}`] : []),
-      ...(order.notes ? [`Notes: ${order.notes}`] : [])
+      ...(order.notes ? [`Notes: ${order.notes}`] : []),
+      ...(order.gift ? [`Gift message: ${order.giftMessage || '(none)'}`] : [])
     ].join('\n');
   }
 
@@ -267,14 +275,17 @@
       notes: form.notes.value.trim(),
       items: itemsText(lines),
       total: t.total,
-      payment: selectedPayment.key
+      payment: selectedPayment.key,
+      gift: $('co-gift').checked,
+      giftMessage: $('co-gift').checked ? $('co-gift-message').value.trim() : ''
     };
 
     const btn = $('place-order');
     btn.disabled = true;
     btn.textContent = 'Placing order…';
 
-    submitToNetlify({
+    const promotion = t.promotion ? `${t.promotion.name}${t.promotion.code ? ' (' + t.promotion.code + ')' : ''}` : '';
+    const emailed = submitToNetlify({
       order_id: order.id,
       created_at: new Date().toISOString(),
       name: order.name,
@@ -284,17 +295,50 @@
       address: order.address,
       items: order.items,
       subtotal: t.subtotal.toFixed(2),
-      promotion: t.promotion ? `${t.promotion.name}${t.promotion.code ? ' (' + t.promotion.code + ')' : ''}` : '',
+      promotion,
       discount: t.discount.toFixed(2),
       delivery_fee: t.deliveryFee.toFixed(2),
       total: t.total.toFixed(2),
       payment_method: selectedPayment.label,
-      notes: order.notes
-    })
-      .then(() => {
+      notes: order.notes,
+      is_gift: order.gift ? 'Yes' : 'No',
+      gift_message: order.giftMessage
+    });
+    const saved = saveOrder({
+      id: order.id,
+      name: order.name,
+      email: order.email,
+      phone: order.phone,
+      delivery_method: order.delivery,
+      address: order.address,
+      items: lines.map(l => ({
+        product_id: l.productId,
+        title: ChuwuContent.productTitle(l.product),
+        quantity: l.quantity,
+        unit_price: l.unitPrice,
+        line_total: l.lineTotal,
+        attributes: l.attributes
+      })),
+      subtotal: t.subtotal,
+      discount: t.discount,
+      delivery_fee: t.deliveryFee,
+      total: t.total,
+      promotion,
+      payment_method: selectedPayment.label,
+      notes: order.notes,
+      is_gift: order.gift,
+      gift_message: order.giftMessage
+    });
+
+    // The order counts as received if either copy got through: the email or the dashboard's store.
+    Promise.allSettled([emailed, saved])
+      .then(results => {
+        results.filter(r => r.status === 'rejected').forEach(r => console.error(r.reason));
+        if (results.every(r => r.status === 'rejected')) throw new Error('Order could not be sent');
         order.sent = true;
         orderPlaced = true;
         try { sessionStorage.setItem(LAST_ORDER_KEY, JSON.stringify(order)); } catch (err) { /* ignore */ }
+        if (window.ChuwuTrack) ChuwuTrack.purchase(order.id, t.total, lines);
         ChuwuCart.clear();
       })
       .catch(err => {
@@ -320,6 +364,14 @@
     $('checkout-main').classList.remove('hidden');
     renderOptions();
     renderSummary();
+    if (window.ChuwuTrack) ChuwuTrack.beginCheckout(currentTotals().total, currentLines());
+
+    if (checkoutSettings().gift_option !== false) {
+      $('gift-section').classList.remove('hidden');
+      $('co-gift').addEventListener('change', () => {
+        $('gift-message-field').classList.toggle('hidden', !$('co-gift').checked);
+      });
+    }
 
     $('apply-promo').addEventListener('click', () => {
       appliedCode = $('co-promo').value.trim();

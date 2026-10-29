@@ -10,7 +10,10 @@
     "email": "chuwu.fragrance@gmail.com",
     "whatsapp_number": "6580285156",
     "whatsapp_display": "+65 8028 5156",
-    "instagram_url": ""
+    "instagram_url": "",
+    "facebook_url": "",
+    "tiktok_url": "",
+    "xiaohongshu_url": ""
   },
   "announcement": {
     "enabled": false,
@@ -43,6 +46,11 @@
       "instructions": "Your order number is your PayNow reference, so we can match your payment to your order — no need to send us a screenshot. We'll start preparing your order once payment is received."
     },
     "delivery_options": [],
-    "thank_you_message": "Thank you — we've received your order."
+    "thank_you_message": "Thank you — we've received your order.",
+    "gift_option": true
+  },
+  "marketing": {
+    "meta_pixel_id": "",
+    "ga4_id": ""
   }
 }

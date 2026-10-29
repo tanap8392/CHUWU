@@ -41,10 +41,31 @@
     return btn;
   }
 
+  // Main photo, plus thumbnails to switch between it and any extra photos (Products → More photos).
+  function mediaFor(p) {
+    const photos = [p.image].concat((p.gallery || []).map(g => (typeof g === 'string' ? g : g && g.image))).filter(Boolean);
+    const box = el('div', { class: 'product-media' }, []);
+    if (!photos.length) {
+      box.appendChild(el('div', { class: 'bottle', style: 'background:linear-gradient(180deg,#C8B38A,#2D2A28)' }, []));
+    } else {
+      box.appendChild(el('img', { src: photos[0], alt: p.name || p.code, style: 'width:100%;height:100%;object-fit:cover' }, []));
+    }
+    if (p.badge) box.appendChild(el('span', { class: 'product-badge' }, [text(p.badge)]));
+    if (photos.length < 2) return [box];
+
+    const thumbs = el('div', { class: 'product-thumbs' }, []);
+    photos.forEach((src, i) => {
+      const b = el('button', { type: 'button', 'aria-label': 'Photo ' + (i + 1), class: i === 0 ? 'active' : '' }, [el('img', { src, alt: '' }, [])]);
+      b.addEventListener('click', () => {
+        box.querySelector('img').src = src;
+        thumbs.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
+      });
+      thumbs.appendChild(b);
+    });
+    return [box, thumbs];
+  }
+
   function productCard(p) {
-    const media = p.image
-      ? el('img', { src: p.image, alt: p.name || p.code, style: 'width:100%;height:100%;object-fit:cover' }, [])
-      : el('div', { class: 'bottle', style: 'background:linear-gradient(180deg,#C8B38A,#2D2A28)' }, []);
 
     const elements = p.type === 'element_scent' ? [p.element] : (p.elements || []);
     const tagEls = elements.map(e =>
@@ -73,7 +94,7 @@
     body.push(el('div', { class: 'price-row' }, [priceEl(p), buyButton(p)]));
 
     return el('div', { class: 'product-card' + (p.status === 'sold_out' ? ' sold_out' : '') }, [
-      el('div', { class: 'product-media' }, [media]),
+      ...mediaFor(p),
       el('div', { class: 'product-body' }, body)
     ]);
   }

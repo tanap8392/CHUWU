@@ -3,12 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Content Manager — CHUWU 初·五</title>
+  <meta name="robots" content="noindex" />
+  <title>Dashboard — CHUWU 初·五</title>
   <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/admin/admin.css">
 </head>
 <body>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <!-- Used by the live previews: Markdown for info pages, PayNow QR for the checkout settings. -->
+  <script src="/assets/js/vendor/marked.js"></script>
+  <script src="/assets/js/vendor/qrcode.js"></script>
+  <script src="/assets/js/paynow-qr.js"></script>
+  <script src="/admin/previews.js"></script>
   <script>
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on("init", function (user) {
@@ -20,5 +27,13 @@
       });
     }
   </script>
+
+  <div class="chuwu-dock">
+    <a href="/" target="_blank" rel="noopener" class="light">View site ↗</a>
+    <a href="/admin/orders.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>
+      Orders
+    </a>
+  </div>
 </body>
 </html>

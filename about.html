@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About CHUWU — CHUWU 初·五</title>
+<meta name="description" content="">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CHUWU 初·五">
+<meta property="og:title" content="About CHUWU — CHUWU 初·五">
+<meta property="og:description" content="CHUWU (初·五) creates fragrance guided by Bazi and the Five Elements.">
+<meta property="og:image" content="https://chuwu-fragrance.netlify.app/assets/img/hero-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-info-page="about">
+
+<header class="site-nav">
+  <div class="nav-row">
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="nav-logo">
+      <img data-logo="dark" src="assets/img/logo.svg" alt="CHUWU 初·五" style="height:40px;width:auto">
+    </a>
+    <button class="cart-toggle cart-toggle-mobile" aria-label="View cart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 6h15l-1.5 9h-12z"/>
+        <path d="M6 6l-1-3H2"/>
+        <circle cx="9.5" cy="19" r="1.2" fill="currentColor" stroke="none"/>
+        <circle cx="17.5" cy="19" r="1.2" fill="currentColor" stroke="none"/>
+      </svg>
+      <span class="cart-count" data-cart-count>0</span>
+    </button>
+    <nav class="links">
+      <a href="index.html" data-page="index.html">Home</a>
+      <a href="customize.html" data-page="customize.html">Bazi Customize</a>
+      <a href="shop.html" data-page="shop.html">Shop</a>
+      <button class="cart-toggle" aria-label="View cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 6h15l-1.5 9h-12z"/>
+          <path d="M6 6l-1-3H2"/>
+          <circle cx="9.5" cy="19" r="1.2" fill="currentColor" stroke="none"/>
+          <circle cx="17.5" cy="19" r="1.2" fill="currentColor" stroke="none"/>
+        </svg>
+        <span class="cart-count" data-cart-count>0</span>
+      </button>
+      <a href="customize.html" class="nav-cta">Find Your Element</a>
+    </nav>
+  </div>
+  <nav class="mobile-menu" id="mobile-menu">
+    <a href="index.html" data-page="index.html">Home</a>
+    <a href="customize.html" data-page="customize.html">Bazi Customize</a>
+    <a href="shop.html" data-page="shop.html">Shop</a>
+    <a href="customize.html" class="nav-cta">Find Your Element</a>
+  </nav>
+  <div class="cart-panel" id="cart-panel">
+    <div class="cart-panel-header">
+      <h4>Your Cart</h4>
+      <button class="cart-close" id="cart-close" aria-label="Close cart">&times;</button>
+    </div>
+    <div id="cart-lines"></div>
+    <div class="cart-subtotal-row">
+      <span>Subtotal</span>
+      <span id="cart-subtotal">—</span>
+    </div>
+    <a href="#" id="cart-checkout" class="btn btn-primary hidden" style="width:100%;justify-content:center">Checkout</a>
+  </div>
+</header>
+
+<section class="hero" style="padding:70px 0 40px">
+  <div class="container">
+    <h1 id="info-title">About CHUWU</h1>
+  </div>
+</section>
+
+<section style="padding-top:40px">
+  <div class="container" style="max-width:720px" id="info-body"></div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div>
+      <img data-logo="light" src="assets/img/logo-light.svg" alt="CHUWU 初·五" style="height:56px;width:auto">
+      <p class="muted" style="margin-top:14px;max-width:240px" data-cms="settings.brand.tagline">Inspired by Five Elements, rooted in balance.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <a href="index.html">Home</a>
+      <a href="customize.html">Bazi Customize</a>
+      <a href="shop.html">Shop</a>
+    </div>
+    <div data-info-links class="hidden">
+      <h4>Info</h4>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <a href="mailto:chuwu.fragrance@gmail.com" data-contact="email">chuwu.fragrance@gmail.com</a>
+      <a href="https://wa.me/6580285156" data-contact="whatsapp" target="_blank" rel="noopener">WhatsApp: +65 8028 5156</a>
+      <a href="#" class="footer-social" data-contact="instagram" aria-label="Instagram" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:middle;margin-right:6px">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="4.5"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>Instagram
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">© <span data-year></span> CHUWU 初·五. All rights reserved.</div>
+</footer>
+
+<script src="assets/js/site-content.js"></script>
+<script src="assets/js/track.js"></script>
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/cart-ui.js"></script>
+<script src="assets/js/vendor/marked.js"></script>
+<script src="assets/js/info-page.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

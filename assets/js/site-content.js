@@ -6,6 +6,7 @@
    file fails to load. Scripts that need products, notes or settings wait on ChuwuContent.ready. */
 (function (root) {
   const FILES = ['settings', 'home', 'shop', 'customize', 'products', 'promotions', 'notes'];
+  const INFO_PAGES = ['about', 'faq', 'shipping', 'privacy'];
   const data = {};
 
   function fetchJSON(name) {
@@ -112,8 +113,36 @@
       n.href = whatsappLink();
       n.textContent = 'WhatsApp: ' + (c.whatsapp_display || c.whatsapp_number);
     });
+    // Social links only show once their URL is filled in.
     document.querySelectorAll('[data-contact="instagram"]').forEach(n => {
       if (c.instagram_url) n.href = c.instagram_url;
+      else n.classList.add('hidden');
+      SOCIALS.slice().reverse().forEach(([key, label]) => {
+        if (!c[key]) return;
+        const a = document.createElement('a');
+        a.href = c[key];
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = label;
+        n.insertAdjacentElement('afterend', a);
+      });
+    });
+  }
+
+  const SOCIALS = [['facebook_url', 'Facebook'], ['tiktok_url', 'TikTok'], ['xiaohongshu_url', 'Xiaohongshu 小红书']];
+
+  // Footer "Info" column: the info pages switched on in the dashboard (Info Pages → Show on site).
+  function applyInfoLinks() {
+    const published = INFO_PAGES.filter(slug => data.pages[slug] && data.pages[slug].published);
+    document.querySelectorAll('[data-info-links]').forEach(col => {
+      if (!published.length) return;
+      published.forEach(slug => {
+        const a = document.createElement('a');
+        a.href = slug + '.html';
+        a.textContent = data.pages[slug].title || slug;
+        col.appendChild(a);
+      });
+      col.classList.remove('hidden');
     });
   }
 
@@ -127,20 +156,24 @@
   }
 
   const raw = {};
-  const ready = Promise.all(FILES.map(name =>
+  const ready = Promise.all(FILES.concat(INFO_PAGES.map(slug => 'pages/' + slug)).map(name =>
     fetchJSON(name)
       .then(json => { raw[name] = json; })
       .catch(err => { console.error('Could not load content:', err); raw[name] = {}; })
   )).then(() => {
+    const pages = {};
+    INFO_PAGES.forEach(slug => { pages[slug] = raw['pages/' + slug]; delete raw['pages/' + slug]; });
     Object.assign(data, raw, {
       products: normalizeProducts(raw.products.products),
       promotions: raw.promotions.promotions || [],
-      notes: raw.notes.notes || []
+      notes: raw.notes.notes || [],
+      pages
     });
     const apply = () => {
       applyTheme();
       applyAnnouncement();
       applyBrandAndContact();
+      applyInfoLinks();
       applySeo();
       applyBindings();
     };
@@ -149,5 +182,5 @@
     return data;
   });
 
-  root.ChuwuContent = { ready, data, get, formatPrice, productTitle, whatsappLink };
+  root.ChuwuContent = { ready, data, get, formatPrice, productTitle, whatsappLink, INFO_PAGES };
 })(typeof window !== 'undefined' ? window : globalThis);

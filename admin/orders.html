@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Orders — CHUWU 初·五</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/admin/orders.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="/admin/" class="brand"><img src="/assets/img/logo.svg" alt="CHUWU"><span>Orders</span></a>
+      <nav>
+        <a href="/admin/">Content editor</a>
+        <a href="/" target="_blank" rel="noopener">View site ↗</a>
+        <span id="user-email" class="muted"></span>
+        <button id="logout" class="link hidden">Log out</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div id="gate" class="gate hidden"></div>
+
+    <div id="app" class="hidden">
+      <section class="stats" id="stats"></section>
+
+      <section class="toolbar">
+        <div class="tabs" id="tabs" role="tablist"></div>
+        <div class="tools">
+          <input type="search" id="search" placeholder="Search order no., name, phone, email…">
+          <button class="btn" id="refresh" title="Reload orders">↻ Refresh</button>
+          <button class="btn" id="export">Export CSV</button>
+        </div>
+      </section>
+
+      <section id="list" class="list"></section>
+      <p id="empty" class="empty hidden"></p>
+    </div>
+
+    <p id="loading" class="empty">Loading…</p>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script src="/admin/orders.js"></script>
+</body>
+</html>
