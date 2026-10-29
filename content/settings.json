@@ -16,8 +16,8 @@
     "xiaohongshu_url": ""
   },
   "announcement": {
-    "enabled": false,
-    "text": "",
+    "enabled": true,
+    "text": "NEW LAUNCH EXCLUSIVE",
     "link": ""
   },
   "theme": {
@@ -33,7 +33,7 @@
     "grey": "#CFCBC3"
   },
   "features": {
-    "custom_blend": true,
+    "custom_blend": false,
     "element_scents": true
   },
   "currency": "SGD",
