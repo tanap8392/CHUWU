@@ -314,6 +314,7 @@ a.announcement-bar:hover { background: var(--ink); }
 .form-msg.ok { color: var(--wood); }
 .paynow-box { background: #fff; border: 1px solid var(--gold); border-radius: 4px; padding: 24px; margin: 24px 0; text-align: left; }
 .paynow-box img { max-width: 220px; display: block; margin: 16px auto; }
+.paynow-box img.paynow-qr { width: 240px; max-width: 100%; image-rendering: pixelated; }
 .paynow-box dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 0; font-size: 0.95rem; }
 .paynow-box dt { color: #8a847c; }
 .paynow-box dd { margin: 0; font-weight: 500; overflow-wrap: anywhere; }

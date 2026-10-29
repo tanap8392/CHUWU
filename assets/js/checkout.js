@@ -2,8 +2,9 @@
    Netlify Forms (it appears under Netlify → Forms → "order", and Netlify can email it to you).
    After the order is placed the customer sees how to pay.
 
-   Payment methods are listed in PAYMENT_METHODS. Today there is PayNow (manual: the customer pays,
-   then sends a screenshot on WhatsApp). To add card payments later, add an entry whose `after`
+   Payment methods are listed in PAYMENT_METHODS. Today there is PayNow: the confirmation page shows
+   a QR made for the order (paynow-qr.js), and you match incoming payments to orders by the order
+   number in the PayNow reference. To add card payments later, add an entry whose `after`
    step sends the customer to a Stripe Checkout page created by a small Netlify Function. */
 (function () {
   const LAST_ORDER_KEY = 'chuwu_last_order';
@@ -189,31 +190,53 @@
 
     const p = settings.paynow || {};
     const box = el('div', { class: 'paynow-box' });
+    const paynowReady = order.payment === 'paynow' && (p.uen_or_mobile || p.qr_image);
+    box.appendChild(el('h3', {}, [paynowReady ? 'Pay by PayNow' : 'Payment']));
+
+    // A QR made for this order (amount + order number filled in) when a PayNow number/UEN is set;
+    // otherwise the fixed QR image uploaded in the dashboard, if any.
+    const qrText = paynowReady && ChuwuPayNow.payload({ proxy: p.uen_or_mobile, amount: order.total, reference: order.id, name: p.payee_name });
+    const qrSrc = qrText ? ChuwuPayNow.toPngDataUrl(qrText, 360) : (paynowReady && p.qr_image) || null;
+    if (qrSrc) {
+      box.appendChild(el('p', { class: 'center', style: 'margin:0 0 4px' }, [
+        qrText
+          ? 'Scan with your banking app — the amount and reference are already filled in.'
+          : 'Scan with your banking app, and use your order number as the reference.'
+      ]));
+      box.appendChild(el('img', { src: qrSrc, alt: 'PayNow QR code for order ' + order.id, class: 'paynow-qr' }));
+      // On a phone the customer can't scan their own screen: save the QR, then open it from the
+      // banking app's "scan from photo/gallery" option.
+      if (qrText) {
+        box.appendChild(el('p', { class: 'center', style: 'margin:0 0 18px' }, [
+          el('a', { class: 'btn', href: qrSrc, download: `CHUWU-PayNow-${order.id}.png` }, ['Save QR to Photos']),
+          el('span', { class: 'option-meta', style: 'margin-top:8px' }, ['Paying on this phone? Save the QR, then choose "scan from gallery" in your banking app.'])
+        ]));
+      }
+    }
+
     const rows = [['Order number', order.id], ['Amount', money(order.total)]];
-    if (order.payment === 'paynow') {
-      box.appendChild(el('h3', {}, ['Pay by PayNow']));
+    if (paynowReady) {
       if (p.payee_name) rows.push(['Pay to', p.payee_name]);
-      if (p.uen_or_mobile) rows.push(['PayNow UEN / mobile', p.uen_or_mobile]);
+      if (p.uen_or_mobile) rows.push(['PayNow to', p.uen_or_mobile]);
       rows.push(['Reference', order.id]);
-    } else {
-      box.appendChild(el('h3', {}, ['Payment']));
     }
     box.appendChild(el('dl', {}, rows.flatMap(([k, v]) => [el('dt', {}, [k]), el('dd', {}, [v])])));
-    if (order.payment === 'paynow' && p.qr_image) box.appendChild(el('img', { src: p.qr_image, alt: 'PayNow QR code' }));
-    const instructions = order.payment === 'paynow' && (p.payee_name || p.uen_or_mobile || p.qr_image)
-      ? p.instructions
-      : 'We\'ll send you payment details on WhatsApp shortly.';
+    const instructions = paynowReady ? p.instructions : 'We\'ll send you payment details on WhatsApp shortly.';
     if (instructions) box.appendChild(el('p', { class: 'muted', style: 'margin:16px 0 0;font-size:0.88rem' }, [instructions]));
     wrap.appendChild(box);
 
-    const waText = order.sent
-      ? `Hi CHUWU! I've placed order ${order.id} (${money(order.total)}). Here's my payment screenshot.`
-      : orderMessage(order);
-    wrap.appendChild(el('p', { class: 'center' }, [
-      el('a', { class: 'btn btn-primary', href: ChuwuContent.whatsappLink(waText), target: '_blank', rel: 'noopener' }, [
-        order.sent ? 'Send Payment Screenshot on WhatsApp' : 'Send Order on WhatsApp'
-      ])
-    ]));
+    // If the order couldn't be submitted, WhatsApp is how it reaches us. Otherwise it's just a way
+    // to ask a question — no payment screenshot needed.
+    if (order.sent) {
+      wrap.appendChild(el('p', { class: 'center muted', style: 'font-size:0.88rem' }, [
+        'Questions about your order? ',
+        el('a', { href: ChuwuContent.whatsappLink(`Hi CHUWU! A question about order ${order.id}:`), target: '_blank', rel: 'noopener', style: 'text-decoration:underline' }, ['WhatsApp us'])
+      ]));
+    } else {
+      wrap.appendChild(el('p', { class: 'center' }, [
+        el('a', { class: 'btn btn-primary', href: ChuwuContent.whatsappLink(orderMessage(order)), target: '_blank', rel: 'noopener' }, ['Send Order on WhatsApp'])
+      ]));
+    }
     wrap.appendChild(el('p', { class: 'center', style: 'margin-top:16px' }, [el('a', { href: 'shop.html', style: 'text-decoration:underline' }, ['Continue shopping'])]));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }

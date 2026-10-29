@@ -18,16 +18,16 @@
     "link": ""
   },
   "theme": {
-    "ivory": "#F5F2EB",
-    "charcoal": "#2D2A28",
     "gold": "#C8B38A",
-    "grey": "#CFCBC3",
     "ink": "#24394B",
+    "metal": "#9AA3AA",
+    "ivory": "#F5F2EB",
+    "earth": "#A9835A",
+    "charcoal": "#2D2A28",
     "wood": "#4E6B4F",
     "fire": "#B4523E",
-    "earth": "#A9835A",
-    "metal": "#9AA3AA",
-    "water": "#33627A"
+    "water": "#33627A",
+    "grey": "#CFCBC3"
   },
   "features": {
     "custom_blend": true,
@@ -37,14 +37,12 @@
   "checkout": {
     "paynow": {
       "enabled": true,
-      "payee_name": "",
-      "uen_or_mobile": "",
+      "payee_name": "LIX XIX YX",
+      "uen_or_mobile": "96272353",
       "qr_image": "",
-      "instructions": "Please include your order number as the PayNow reference, then send us a screenshot of the payment on WhatsApp. We'll confirm your order and start preparing it once payment is received."
+      "instructions": "Your order number is your PayNow reference, so we can match your payment to your order — no need to send us a screenshot. We'll start preparing your order once payment is received."
     },
-    "delivery_options": [
-      { "label": "Delivery (Singapore)", "fee": 0, "free_over": null, "needs_address": true }
-    ],
+    "delivery_options": [],
     "thank_you_message": "Thank you — we've received your order."
   }
 }

@@ -1,5 +1,9 @@
 # CHUWU dashboard (Decap CMS at /admin). Every save commits a content/*.json file to GitHub,
 # and Netlify redeploys the site from GitHub — changes are live about a minute later.
+# Lets the dashboard run on this computer (npx decap-server + a local web server) and edit
+# the files here directly. Only used on localhost; the live site ignores it.
+local_backend: true
+
 backend:
   name: git-gateway
   branch: main
@@ -387,8 +391,8 @@ collections:
                 fields:
                   - { label: "Offer PayNow", name: "enabled", widget: "boolean", default: true }
                   - { label: "Payee name", name: "payee_name", widget: "string", required: false, hint: "The name customers will see in their banking app." }
-                  - { label: "PayNow UEN or mobile number", name: "uen_or_mobile", widget: "string", required: false }
-                  - { label: "PayNow QR code", name: "qr_image", widget: "image", required: false }
+                  - { label: "PayNow UEN or mobile number", name: "uen_or_mobile", widget: "string", required: false, hint: "A Singapore mobile (e.g. 96272353) or your business UEN. Used to make the QR code for each order." }
+                  - { label: "Fixed PayNow QR image (usually leave empty)", name: "qr_image", widget: "image", required: false, hint: "Not needed when the number/UEN above is filled in: the site makes a QR for each order with the amount and order number already filled in. Only used if the number/UEN is left empty." }
                   - { label: "Payment instructions", name: "instructions", widget: "text" }
               - label: "Delivery options"
                 name: "delivery_options"
