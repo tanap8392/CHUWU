@@ -3,8 +3,8 @@
     "name": "CHUWU",
     "name_zh": "初·五",
     "tagline": "Inspired by Five Elements, rooted in balance.",
-    "logo": "assets/img/logo.svg",
-    "logo_light": "assets/img/logo-light.svg"
+    "logo": "/assets/img/logo.svg",
+    "logo_light": "/assets/img/logo-light.svg"
   },
   "contact": {
     "email": "chuwu.fragrance@gmail.com",

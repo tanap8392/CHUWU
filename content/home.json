@@ -12,8 +12,8 @@
     "primary_link": "customize.html",
     "secondary_label": "Shop Signature Blends",
     "secondary_link": "shop.html",
-    "video": "assets/video/hero.mp4",
-    "poster": "assets/img/hero-poster.jpg"
+    "video": "/assets/video/hero.mp4",
+    "poster": "/assets/img/hero-poster.jpg"
   },
   "philosophy": {
     "eyebrow": "The Philosophy",

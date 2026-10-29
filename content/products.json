@@ -17,7 +17,7 @@
       "size": "30ml",
       "price": 39.9,
       "compare_at_price": null,
-      "image": "assets/img/products/chi-xia.png",
+      "image": "/assets/img/products/chi-xia.png",
       "status": "active"
     },
     {
@@ -37,7 +37,7 @@
       "size": "30ml",
       "price": 39.9,
       "compare_at_price": null,
-      "image": "assets/img/products/jin-liu.png",
+      "image": "/assets/img/products/jin-liu.png",
       "status": "active"
     },
     {
@@ -57,7 +57,7 @@
       "size": "30ml",
       "price": 39.9,
       "compare_at_price": null,
-      "image": "assets/img/products/bei-chen.png",
+      "image": "/assets/img/products/bei-chen.png",
       "status": "active"
     },
     {
@@ -77,7 +77,7 @@
       "size": "30ml",
       "price": 39.9,
       "compare_at_price": null,
-      "image": "assets/img/products/qing-ling.png",
+      "image": "/assets/img/products/qing-ling.png",
       "status": "active"
     },
     {
@@ -100,7 +100,7 @@
       "size": "30ml",
       "price": 49.9,
       "compare_at_price": null,
-      "image": "assets/img/products/wu-xing.png",
+      "image": "/assets/img/products/wu-xing.png",
       "status": "active"
     },
     {
