@@ -94,7 +94,10 @@
     bar.className = 'announcement-bar';
     bar.textContent = a.text;
     if (a.link) bar.setAttribute('href', a.link);
-    document.body.insertBefore(bar, document.body.firstChild);
+    // Inside the sticky header, so it stays visible while scrolling.
+    const header = document.querySelector('header.site-nav');
+    if (header) header.insertBefore(bar, header.firstChild);
+    else document.body.insertBefore(bar, document.body.firstChild);
   }
 
   function applyBrandAndContact() {

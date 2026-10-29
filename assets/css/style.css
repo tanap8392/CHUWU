@@ -383,3 +383,5 @@ a.announcement-bar:hover { background: var(--ink); }
 .faq-item[open] summary::after { content: '−'; }
 .faq-item .prose { margin-top: 10px; }
 .faq-item .prose p:last-child { margin-bottom: 0; }
+/* The cart dropdown sits below the header; push it down when the announcement bar is showing. */
+header.site-nav:has(.announcement-bar) .cart-panel { top: 112px; }

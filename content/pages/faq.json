@@ -1,6 +1,6 @@
 {
   "title": "FAQ",
-  "published": false,
+  "published": true,
   "seo": {
     "description": "Answers to common questions about CHUWU fragrances, Bazi readings, ordering and payment."
   },
@@ -24,7 +24,7 @@
     },
     {
       "question": "How long until my order arrives?",
-      "answer": "[e.g. Signature blends ship within X working days of payment; personalised blends take X–X working days to blend.]"
+      "answer": "Once your payment is confirmed we’ll let you know on WhatsApp when your order is on its way. Personalised blends are made to order, so they take a little longer than signature blends."
     },
     {
       "question": "Is this a professional Bazi consultation?",
