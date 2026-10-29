@@ -33,7 +33,7 @@
     "grey": "#CFCBC3"
   },
   "features": {
-    "custom_blend": true,
+    "custom_blend": false,
     "element_scents": true
   },
   "currency": "SGD",
