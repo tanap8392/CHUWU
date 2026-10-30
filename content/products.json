@@ -163,17 +163,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.5
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/j02-2.jpg"
+      ],
       "status": "coming_soon",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/J02.jpg",
+      "image": "/assets/img/uploads/j02.jpg",
       "element": "Metal",
       "description": "A bright, spicy-green citrus — pink pepper and bergamot lead into a pear-sweetened orange blossom heart, closing on warm musky neroli. Fresh, unisex, Mediterranean."
     },
