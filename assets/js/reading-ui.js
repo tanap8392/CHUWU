@@ -224,6 +224,27 @@
     box.classList.remove('hidden');
   }
 
+  // Email alert for the team: Netlify Forms emails each "reading-signup" submission (the same
+  // notification as orders). Fire and forget — the reading doesn't wait for it.
+  function notifySignup(details) {
+    const f = ChuwuReading.analyse(current.adjusted, details.gender, current.year).facts;
+    const fields = {
+      'form-name': 'reading-signup',
+      email: details.email,
+      name: details.name || '',
+      news_opt_in: details.marketing ? 'Yes' : 'No',
+      gender: details.gender,
+      birth_date: current.birth.date,
+      birth_time: current.birth.time + ' block',
+      birth_place: current.birth.place || 'Not specified',
+      chart: f.pillars.map(p => p.characters).join(' '),
+      day_master: `${f.dayMaster.stem} ${f.dayMaster.element} (${f.strength.label})`,
+      lacking: f.lacking.join(', ')
+    };
+    fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(fields).toString() })
+      .catch(() => { /* the sign-up is still saved by the reading function */ });
+  }
+
   // ---------------------------------------------------------------- form
   function onSubmit(e) {
     e.preventDefault();
@@ -240,6 +261,7 @@
     err.textContent = '';
     storage(s => s.setItem(READER_KEY, JSON.stringify({ name: details.name, email: details.email, gender: details.gender })));
     if (root.ChuwuTrack && ChuwuTrack.lead) ChuwuTrack.lead();
+    notifySignup(details);
     startReading(details, storage(s => JSON.parse(s.getItem(cacheKey(details.gender)))));
   }
 

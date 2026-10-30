@@ -266,6 +266,13 @@
   </div>
 </section>
 
+<!-- Netlify Forms reads this hidden form at deploy time; each free-reading sign-up is submitted
+     to it by assets/js/reading-ui.js, so Netlify emails it (and lists it under Forms → reading-signup). -->
+<form name="reading-signup" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input name="bot-field"><input name="email"><input name="name"><input name="news_opt_in"><input name="gender">
+  <input name="birth_date"><input name="birth_time"><input name="birth_place"><input name="chart"><input name="day_master"><input name="lacking">
+</form>
+
 <section id="reading-section" class="alt hidden">
   <div class="container" style="max-width:920px">
     <div class="section-head">
