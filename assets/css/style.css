@@ -417,3 +417,6 @@ h1, h2, h3, h4, .price, .scent-code { font-variant-numeric: lining-nums; }
 .product-badge { z-index: 2; }
 /* The dots are only for touch screens; with a mouse, hovering shows the second photo. */
 @media (hover: hover) { .media-dots { display: none; } }
+/* Shop by Element as the first section (signature blends hidden): no divider above it. */
+#element-scents-section.first-section { padding-top: 70px; }
+#element-scents-section.first-section .divider-line { display: none; }

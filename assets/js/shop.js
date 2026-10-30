@@ -47,7 +47,7 @@
 
     if (p.type === 'element_scent') {
       body.push(el('h3', {}, [text(`${p.code} · ${p.element} ${ELEMENT_ZH[p.element] || ''}`)]));
-      body.push(el('p', { class: 'muted', style: 'font-size:0.9rem' }, [text([p.profile, p.family].filter(Boolean).join(' · '))]));
+      body.push(el('p', { class: 'muted', style: 'font-size:0.9rem' }, [text([...new Set([p.profile, p.family].filter(Boolean))].join(' · '))]));
       body.push(el('div', { class: 'product-tags' }, tagEls));
       if (p.inspired_by) body.push(el('p', { class: 'muted', style: 'font-size:0.85rem' }, [text('Similar in scent to ' + p.inspired_by)]));
       if (p.description) body.push(el('p', { class: 'muted', style: 'font-size:0.85rem' }, [text(p.description)]));
@@ -85,6 +85,15 @@
 
     fill('shop-grid', ofType('signature'));
     fill('shop-grid-personalized', ofType('personalized').sort((a, b) => a.price - b.price));
+
+    // Sections with nothing to show are hidden rather than left as an empty heading. With no
+    // signature blends, the element scents become the top of the page, without the divider line.
+    const hideAll = sel => document.querySelectorAll(sel).forEach(n => n.classList.add('hidden'));
+    if (!ofType('signature').length) {
+      hideAll('[data-signature-section]');
+      document.getElementById('element-scents-section').classList.add('first-section');
+    }
+    if (!ofType('personalized').length) hideAll('[data-personalized-section]');
 
     // Every element scent that isn't hidden is listed, including ones still "coming soon".
     const elementScents = ofType('element_scent');

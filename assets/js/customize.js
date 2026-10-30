@@ -240,7 +240,7 @@
   function scentCard(scent, { supporting, preferredFamily } = {}) {
     const isFamilyMatch = preferredFamily && scent.family === preferredFamily;
     const familyTag = el('span', { class: 'family-tag' + (isFamilyMatch ? ' family-match' : '') }, [
-      document.createTextNode([scent.profile, scent.family].filter(Boolean).join(' · ') + (isFamilyMatch ? ' · your preference' : ''))
+      document.createTextNode([...new Set([scent.profile, scent.family].filter(Boolean))].join(' · ') + (isFamilyMatch ? ' · your preference' : ''))
     ]);
     const price = el('span', { class: 'scent-price' }, []);
     const picker = ChuwuProductUI.sizePicker(scent, entry => ChuwuProductUI.renderPrice(price, entry));

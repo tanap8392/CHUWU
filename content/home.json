@@ -7,10 +7,10 @@
     "cn_mark": "初 · 五",
     "eyebrow": "Inspired by Five Elements, Rooted in Balance",
     "title": "Fragrance, Tuned to\nYour Elemental Balance",
-    "lede": "CHUWU reads your Bazi (八字) to reveal which of the Five Elements — Wood, Fire, Earth, Metal, Water — your chart is missing, then translates that insight into scent. Build a fragrance around what you lack, or choose a signature blend crafted for a specific intention.",
+    "lede": "CHUWU reads your Bazi (八字) to reveal which of the Five Elements — Wood, Fire, Earth, Metal, Water — your chart is missing, then translates that insight into scent. Fifteen fragrances, three for each element — find the one your chart needs most.",
     "primary_label": "Discover Your Element",
     "primary_link": "customize.html",
-    "secondary_label": "Shop Signature Blends",
+    "secondary_label": "Shop Our Scents",
     "secondary_link": "shop.html",
     "video": "/assets/video/hero.mp4",
     "poster": "/assets/img/hero-poster.jpg"
@@ -20,20 +20,54 @@
     "title": "Five Elements, One Story",
     "body": "Wu Xing (五行) describes the five forces — Wood, Fire, Earth, Metal, Water — that circulate through every birth chart. Most people carry more of some and less of others. CHUWU exists to gently restore what's missing, one note at a time.",
     "elements": [
-      { "element": "Wood", "glyph": "木", "theme": "Growth", "line": "Vitality, ambition, new beginnings." },
-      { "element": "Fire", "glyph": "火", "theme": "Passion", "line": "Warmth, magnetism, visibility." },
-      { "element": "Earth", "glyph": "土", "theme": "Stability", "line": "Grounding, trust, steady relationships." },
-      { "element": "Metal", "glyph": "金", "theme": "Clarity", "line": "Precision, discipline, holding value." },
-      { "element": "Water", "glyph": "水", "theme": "Flow", "line": "Wisdom, adaptability, opportunity." }
+      {
+        "element": "Wood",
+        "glyph": "木",
+        "theme": "Growth",
+        "line": "Vitality, ambition, new beginnings."
+      },
+      {
+        "element": "Fire",
+        "glyph": "火",
+        "theme": "Passion",
+        "line": "Warmth, magnetism, visibility."
+      },
+      {
+        "element": "Earth",
+        "glyph": "土",
+        "theme": "Stability",
+        "line": "Grounding, trust, steady relationships."
+      },
+      {
+        "element": "Metal",
+        "glyph": "金",
+        "theme": "Clarity",
+        "line": "Precision, discipline, holding value."
+      },
+      {
+        "element": "Water",
+        "glyph": "水",
+        "theme": "Flow",
+        "line": "Wisdom, adaptability, opportunity."
+      }
     ]
   },
   "how": {
     "eyebrow": "How It Works",
     "title": "From Birth Chart to Bottle",
     "steps": [
-      { "title": "Share Your Birth Details", "body": "Enter your date and time of birth. We calculate your full Bazi — the Four Pillars of your chart." },
-      { "title": "Discover What You Lack", "body": "We tally your Five Elements and identify which are underrepresented, with recommendations for Love, Wealth, Career, Health and Overall Balance." },
-      { "title": "Build or Choose Your Scent", "body": "Compose your own top, middle and base notes from the elements you need — or pick a premade blend from the Shop." }
+      {
+        "title": "Share Your Birth Details",
+        "body": "Enter your date and time of birth. We calculate your full Bazi — the Four Pillars of your chart."
+      },
+      {
+        "title": "Discover What You Lack",
+        "body": "We tally your Five Elements and identify which are underrepresented, with recommendations for Love, Wealth, Career, Health and Overall Balance."
+      },
+      {
+        "title": "Build or Choose Your Scent",
+        "body": "Compose your own top, middle and base notes from the elements you need — or pick a premade blend from the Shop."
+      }
     ],
     "cta_label": "Start Your Reading",
     "cta_link": "customize.html"
