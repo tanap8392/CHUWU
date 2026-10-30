@@ -91,10 +91,12 @@
 
   // Order of the sections on an element-scent card (Site Settings → Product card layout).
   // Sections left out of the list are hidden.
-  const CARD_SECTIONS = ['profile', 'element', 'mix', 'description', 'notes', 'similar'];
+  // The scent family is always recorded (it drives the Shop filter) but only shown when added here.
+  const CARD_SECTIONS = ['profile', 'family', 'element', 'mix', 'description', 'notes', 'similar'];
+  const DEFAULT_LAYOUT = ['profile', 'element', 'mix', 'description', 'notes', 'similar'];
   function cardLayout() {
     const order = ChuwuContent.get('settings.card_layout');
-    return Array.isArray(order) && order.length ? order.filter(k => CARD_SECTIONS.includes(k)) : CARD_SECTIONS;
+    return Array.isArray(order) && order.length ? order.filter(k => CARD_SECTIONS.includes(k)) : DEFAULT_LAYOUT;
   }
 
   root.ChuwuProductUI = { renderPrice, sizePicker, media, elementMix, cardLayout };

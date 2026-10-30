@@ -92,7 +92,7 @@
   }
 
   // Card section order from the published Site Settings (Product card layout).
-  const DEFAULT_LAYOUT = ['profile', 'element', 'mix', 'description', 'notes', 'similar'];
+  const DEFAULT_LAYOUT = ['profile', 'element', 'mix', 'description', 'notes', 'similar'];  // family hidden by default
   let layout = DEFAULT_LAYOUT;
   fetch('/content/settings.json', { cache: 'no-cache' }).then(r => r.json())
     .then(s => { if (Array.isArray(s.card_layout) && s.card_layout.length) layout = s.card_layout; }).catch(() => {});
@@ -103,10 +103,10 @@
 
   function scentSection(key, p, elements) {
     switch (key) {
-      case 'profile': {
+      case 'profile': return p.profile ? h('p', { key, className: 'muted', style: { fontSize: '0.9rem' } }, p.profile) : null;
+      case 'family': {
         const FAMILY = { Fresh: 'Fresh & Citrus', Woody: 'Woody & Spicy', Sweet: 'Sweet & Gourmand', Musky: 'Musky & Sensual' };
-        const line = [...new Set([p.profile, FAMILY[p.family] || p.family].filter(Boolean))].join(' · ');
-        return line ? h('p', { key, className: 'muted', style: { fontSize: '0.9rem' } }, line) : null;
+        return p.family ? h('p', { key, className: 'family-line' }, FAMILY[p.family] || p.family) : null;
       }
       case 'element': return elements.length ? h('div', { key, className: 'product-tags' }, elementTags(elements)) : null;
       case 'mix': return mixBar(p.element_mix);

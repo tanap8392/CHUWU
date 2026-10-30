@@ -459,3 +459,4 @@ h1, h2, h3, h4, .price, .scent-code { font-variant-numeric: lining-nums; }
   .filter-label { flex: 0 0 120px; }
   .filter-chips { flex-wrap: nowrap; }
 }
+.family-line { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin: -2px 0 8px; }

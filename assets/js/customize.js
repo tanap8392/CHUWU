@@ -248,11 +248,15 @@
     // shown by the coloured dot next to the code, so there's no separate element tag here.
     const sections = {
       profile: () => {
-        const line = [...new Set([scent.profile, family ? family.label : scent.family].filter(Boolean))].join(' · ');
-        return line || isFamilyMatch
-          ? el('span', { class: 'family-tag' + (isFamilyMatch ? ' family-match' : '') }, [document.createTextNode(line + (isFamilyMatch ? ' · your preference' : ''))])
+        const showsFamily = ChuwuProductUI.cardLayout().includes('family');
+        const note = isFamilyMatch && !showsFamily ? ' · matches your preference' : '';
+        return scent.profile || note
+          ? el('span', { class: 'family-tag' + (note ? ' family-match' : '') }, [document.createTextNode((scent.profile || '') + note)])
           : null;
       },
+      family: () => (family || isFamilyMatch
+        ? el('span', { class: 'family-tag' + (isFamilyMatch ? ' family-match' : '') }, [document.createTextNode((family ? family.label : scent.family) + (isFamilyMatch ? ' · your preference' : ''))])
+        : null),
       element: () => null,
       mix: () => ChuwuProductUI.elementMix(scent),
       description: () => (scent.description ? el('p', { class: 'scent-desc' }, [document.createTextNode(scent.description)]) : null),

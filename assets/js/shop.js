@@ -51,10 +51,8 @@
       body.push(el('h3', {}, [text(`${p.code} · ${p.element} ${ELEMENT_ZH[p.element] || ''}`)]));
       // Shown in the order set at Site Settings → Product card layout.
       const sections = {
-        profile: () => {
-          const line = [...new Set([p.profile, FAMILY_LABEL[p.family] || p.family].filter(Boolean))].join(' · ');
-          return line ? el('p', { class: 'muted', style: 'font-size:0.9rem' }, [text(line)]) : null;
-        },
+        profile: () => (p.profile ? el('p', { class: 'muted', style: 'font-size:0.9rem' }, [text(p.profile)]) : null),
+        family: () => (p.family ? el('p', { class: 'family-line' }, [text(FAMILY_LABEL[p.family] || p.family)]) : null),
         element: () => el('div', { class: 'product-tags' }, tagEls),
         mix: () => ChuwuProductUI.elementMix(p),
         description: () => (p.description ? el('p', { class: 'muted', style: 'font-size:0.85rem' }, [text(p.description)]) : null),
