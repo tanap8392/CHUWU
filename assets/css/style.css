@@ -531,3 +531,5 @@ h1, h2, h3, h4, .price, .scent-code { font-variant-numeric: lining-nums; }
   .reading-months { grid-template-columns: 1fr 1fr; }
   .month-card, .luck-card, .god-card, .theme-card { break-inside: avoid; }
 }
+.birth-reset { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; font-size: 0.82rem; color: #726c65; text-decoration: underline; text-underline-offset: 3px; }
+.birth-reset:hover { color: var(--charcoal); }

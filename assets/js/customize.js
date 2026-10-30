@@ -475,6 +475,47 @@
     sections.forEach(id => {
       document.getElementById(id).classList.remove('hidden');
     });
-    document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+    saveBirth({ date: dateVal, time: shichenVal, place: placeVal || '', family: selectedFamily });
+    document.getElementById('birth-reset').classList.remove('hidden');
+    if (!restoring) document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
   });
+
+  // ---------------------------------------------------------------- remembered birth details
+  // The last birth details used on this device are kept, so a refresh or a return visit shows the
+  // results (and any saved free reading) again without re-entering them. "Start over" forgets them.
+  const BIRTH_KEY = 'chuwu_birth';
+  let restoring = false;
+  function saveBirth(b) { try { localStorage.setItem(BIRTH_KEY, JSON.stringify(b)); } catch (e) { /* storage blocked */ } }
+  function savedBirth() { try { return JSON.parse(localStorage.getItem(BIRTH_KEY)); } catch (e) { return null; } }
+
+  function restoreBirth() {
+    const b = savedBirth();
+    if (!b || !b.date) return;
+    document.getElementById('birth-date').value = b.date;
+    if (b.time) document.getElementById('birth-shichen').value = b.time;
+    document.getElementById('birth-place').value = b.place || '';
+    if (b.family) {
+      const card = document.querySelector(`.family-card[data-family="${b.family}"]`);
+      if (card) { card.classList.add('selected'); selectedFamily = b.family; }
+    }
+    restoring = true;
+    document.getElementById('bazi-form').requestSubmit();
+    restoring = false;
+  }
+
+  document.getElementById('birth-reset').addEventListener('click', () => {
+    try { localStorage.removeItem(BIRTH_KEY); } catch (e) { /* ignore */ }
+    document.getElementById('bazi-form').reset();
+    document.getElementById('birth-shichen').value = DEFAULT_SHICHEN;
+    document.querySelectorAll('.family-card').forEach(c => c.classList.remove('selected'));
+    selectedFamily = null;
+    ['results-section', 'recommend-section', 'reading-section', 'build-section'].forEach(id => {
+      const node = document.getElementById(id);
+      if (node) node.classList.add('hidden');
+    });
+    document.getElementById('birth-reset').classList.add('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  ChuwuContent.ready.then(restoreBirth);
 })();
