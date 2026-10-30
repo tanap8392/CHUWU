@@ -330,6 +330,14 @@ collections:
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Intro text", name: "lede", widget: "text" }
               - { label: "Small print", name: "explainer", widget: "text" }
+          - label: "Also balancing section"
+            name: "also"
+            widget: "object"
+            hint: "The second group: other scents that carry elements this chart could use more of."
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Intro text", name: "lede", widget: "text" }
           - label: "Build your own section"
             name: "build"
             widget: "object"

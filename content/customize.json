@@ -12,7 +12,12 @@
     "eyebrow": "Recommended For You",
     "title": "Scents for Your Missing Element",
     "lede": "Your reading shows which of the Five Elements your chart could use more of — here are the CHUWU scents built for exactly that element.",
-    "explainer": "Each element below also has a \"supporting\" scent shown when it's genuinely useful — drawn from the element that generates yours in the Sheng (生) cycle, e.g. Wood feeds Fire. It's only shown when that supporting element isn't already the strongest one in your own chart, so it never suggests piling more of something you already have plenty of."
+    "explainer": "Each scent is scored by how well its blend of elements fills the gaps in your chart — its balance match. Scents built mostly on an element you already have plenty of aren't suggested."
+  },
+  "also": {
+    "eyebrow": "Also Balancing",
+    "title": "More Scents for Your Chart",
+    "lede": "These carry other elements your chart could use more of. The match shows how well each blend fills your gaps."
   },
   "build": {
     "eyebrow": "Build Your Own",

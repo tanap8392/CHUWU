@@ -237,7 +237,18 @@
     return el('span', { class: 'scent-cta' }, [document.createTextNode(scent.status === 'sold_out' ? 'Sold Out' : 'Coming Soon')]);
   }
 
-  function scentCard(scent, { supporting, preferredFamily } = {}) {
+  // "Balance match 85% · Adds ● Metal ● Fire ● Wood" — how well this scent fills the chart's gaps.
+  function matchLine(rec) {
+    return el('div', { class: 'match-line' }, [
+      el('span', { class: 'match-badge' }, [document.createTextNode(`Balance match ${rec.match}%`)]),
+      ...(rec.adds.length ? [el('span', { class: 'match-adds' }, [
+        document.createTextNode('Adds '),
+        ...rec.adds.map(e => el('span', { class: 'match-el' }, [el('i', { style: `background:${ELEMENT_COLOR[e]}` }, []), document.createTextNode(e)]))
+      ])] : [])
+    ]);
+  }
+
+  function scentCard(scent, { preferredFamily, rec } = {}) {
     const isFamilyMatch = !!preferredFamily && scent.families.includes(preferredFamily);
     const familyLabels = scent.families.map(k => (ChuwuNotes.FAMILIES.find(f => f.key === k) || { label: k }).label);
     const price = el('span', { class: 'scent-price' }, []);
@@ -265,14 +276,14 @@
     };
     const ordered = ChuwuProductUI.cardLayout().map(key => sections[key]()).filter(Boolean);
 
-    return el('div', { class: 'scent-card' + (supporting ? ' supporting-card' : '') + (isFamilyMatch ? ' family-highlight' : '') }, [
+    return el('div', { class: 'scent-card' + (isFamilyMatch ? ' family-highlight' : '') }, [
       ChuwuProductUI.media(scent, 'scent-media'),
       el('div', { class: 'scent-body' }, [
-        ...(supporting ? [el('div', { class: 'supporting-tag' }, [document.createTextNode('Supporting — nourishes your ' + supporting)])] : []),
         el('h3', {}, [
           el('span', { class: 'el-swatch', style: `background:${ELEMENT_COLOR[scent.element]}` }, []),
           el('span', { class: 'scent-code' }, [document.createTextNode(scent.code)])
         ]),
+        ...(rec ? [matchLine(rec)] : []),
         ...ordered,
         ...(picker.node ? [picker.node] : []),
         el('div', { class: 'scent-price-row' }, [price, scentCta(scent, picker)])
@@ -282,24 +293,14 @@
 
   function renderElementScents(result, preferredFamily) {
     const grid = document.getElementById('scent-grid');
-    const supportingWrap = document.getElementById('supporting-wrap');
-    const supportingGrid = document.getElementById('supporting-grid');
+    const alsoWrap = document.getElementById('also-wrap');
+    const alsoGrid = document.getElementById('also-grid');
+    const { primary, also } = ChuwuScentRecommend.recommendScents(result, preferredFamily);
     grid.innerHTML = '';
-    supportingGrid.innerHTML = '';
-    const recs = ChuwuScentRecommend.recommendScents(result, preferredFamily);
-
-    recs.forEach(rec => {
-      rec.scents.forEach(scent => {
-        grid.appendChild(scentCard(scent, { preferredFamily }));
-      });
-      if (rec.supporting) {
-        rec.supporting.scents.forEach(scent => {
-          supportingGrid.appendChild(scentCard(scent, { supporting: rec.element, preferredFamily }));
-        });
-      }
-    });
-
-    supportingWrap.classList.toggle('hidden', supportingGrid.children.length === 0);
+    alsoGrid.innerHTML = '';
+    primary.forEach(rec => grid.appendChild(scentCard(rec.scent, { preferredFamily, rec })));
+    also.forEach(rec => alsoGrid.appendChild(scentCard(rec.scent, { preferredFamily, rec })));
+    alsoWrap.classList.toggle('hidden', also.length === 0);
   }
 
   function renderNotePickers(result, preferredFamily) {

@@ -243,7 +243,11 @@
         d.recommend ? h('section', { key: 'r' }, h('div', { className: 'container' }, [
           sectionHead(d.recommend.eyebrow, d.recommend.title, d.recommend.lede, 'r'),
           h('p', { key: 'x', className: 'muted center', style: { fontSize: '0.85rem', maxWidth: '640px', margin: '0 auto 30px' } }, d.recommend.explainer),
-          placeholderGrid(3, 'Recommended scent')
+          placeholderGrid(3, 'Recommended scent'),
+          d.also ? h('div', { key: 'also', style: { marginTop: '48px' } }, [
+            sectionHead(d.also.eyebrow, d.also.title, d.also.lede, 'also'),
+            placeholderGrid(3, 'Also balancing')
+          ]) : null
         ])) : null,
         d.build ? h('section', { key: 'b', className: 'alt' }, h('div', { className: 'container', style: { maxWidth: '760px' } }, [
           sectionHead(d.build.eyebrow, d.build.title, d.build.lede, 'b'),
