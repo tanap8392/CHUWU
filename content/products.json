@@ -145,11 +145,11 @@
         }
       ],
       "gallery": [
-        "/assets/img/uploads/j01-2.jpg"
+        "/assets/img/products/listing/J01-2.jpg"
       ],
-      "status": "coming_soon",
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/uploads/j01.jpg",
+      "image": "/assets/img/products/listing/J01.jpg",
       "element": "Metal",
       "description": "The purest aldehydic-citrus expression in the collection — crisp, soapy, and unmistakably classic, with no dilution to soften its iconic \"clean\" signature."
     },
@@ -164,7 +164,7 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.5
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
@@ -173,11 +173,11 @@
         }
       ],
       "gallery": [
-        "/assets/img/uploads/j02-2.jpg"
+        "/assets/img/products/listing/J02-2.jpg"
       ],
-      "status": "coming_soon",
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/uploads/j02.jpg",
+      "image": "/assets/img/products/listing/J02.jpg",
       "element": "Metal",
       "description": "A bright, spicy-green citrus — pink pepper and bergamot lead into a pear-sweetened orange blossom heart, closing on warm musky neroli. Fresh, unisex, Mediterranean."
     },
@@ -191,17 +191,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
-      "status": "coming_soon",
+      "gallery": [
+        "/assets/img/products/listing/J03-2.jpg"
+      ],
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/J03.jpg",
+      "image": "/assets/img/products/listing/J03.jpg",
       "element": "Metal",
       "description": "A lighter, breezier neroli — citrus and green petitgrain open into a luminous orange blossom heart, closing on soft amberwood. Sunny, minimalist, easy to wear."
     },
@@ -215,17 +219,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
-      "status": "coming_soon",
+      "gallery": [
+        "/assets/img/products/listing/M01-2.jpg"
+      ],
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/M01.jpg",
+      "image": "/assets/img/products/listing/M01.jpg",
       "element": "Wood",
       "description": "A dreamy, water-inspired floral — green tea and bergamot open into a creamy osmanthus-jasmine heart, closing on soft mate and musk. Elegant and quietly distinctive."
     },
@@ -239,17 +247,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
-      "status": "coming_soon",
+      "gallery": [
+        "/assets/img/products/listing/M02-2.jpg"
+      ],
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/M02.jpg",
+      "image": "/assets/img/products/listing/M02.jpg",
       "element": "Wood",
       "description": "A rugged '80s classic — sharp herbal lavender and citrus over a mossy, woody-leather base. Masculine, timeless, still iconic today."
     },
@@ -263,17 +275,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
-      "status": "coming_soon",
+      "gallery": [
+        "/assets/img/products/listing/M03-2.jpg"
+      ],
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/M03.jpg",
+      "image": "/assets/img/products/listing/M03.jpg",
       "element": "Wood",
       "description": "A dark, sensual oriental — earthy truffle and black currant lead into a spicy floral heart, resting on rich chocolate-patchouli. Luxurious, dramatic, unmistakably Tom Ford."
     },
@@ -287,17 +303,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
-      "status": "coming_soon",
+      "gallery": [
+        "/assets/img/products/listing/S01-2.jpg"
+      ],
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/S01.jpg",
+      "image": "/assets/img/products/listing/S01.jpg",
       "element": "Water",
       "description": "An intense, avant-garde marine scent — bright citrus opens into a salty, metallic wave of seaweed before settling into a dense, musky-woody amber base. Bold, oceanic, and long-lasting."
     },
@@ -311,17 +331,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
-      "status": "coming_soon",
+      "gallery": [
+        "/assets/img/products/listing/S02-2.jpg"
+      ],
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/S02.jpg",
+      "image": "/assets/img/products/listing/S02.jpg",
       "element": "Water",
       "description": "A crisp, mineral coastal scent — the crunch of sea salt meets earthy sage for a clean, breezy, unisex signature that feels like a walk along a windswept shoreline."
     },
@@ -335,17 +359,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
-      "status": "coming_soon",
+      "gallery": [
+        "/assets/img/products/listing/S03-2.jpg"
+      ],
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/S03.jpg",
+      "image": "/assets/img/products/listing/S03.jpg",
       "element": "Water",
       "description": "A rain-soaked garden in a bottle — sharp green blackcurrant leaf gives way to a lush, dew-kissed rose, settling into a soft musky base. Romantic, referential, and a niche perfumery landmark."
     },
@@ -359,17 +387,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
-      "status": "coming_soon",
+      "gallery": [
+        "/assets/img/products/listing/H01-2.jpg"
+      ],
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/H01.jpg",
+      "image": "/assets/img/products/listing/H01.jpg",
       "element": "Fire",
       "description": "A \"wet garden\" fragrance — spicy ginger and cardamom over a watery, melon-like freshness, closing on clean vetiver. Light, unisex, effortlessly summery."
     },
@@ -383,17 +415,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
-      "status": "coming_soon",
+      "gallery": [
+        "/assets/img/products/listing/H02-2.jpg"
+      ],
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/H02.jpg",
+      "image": "/assets/img/products/listing/H02.jpg",
       "element": "Fire",
       "description": "The iconic '80s power scent — dark plum and spice open into an intoxicating white-floral heart, grounded by warm amber and musk. Bold, unapologetic, unforgettable."
     },
@@ -407,17 +443,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
-      "status": "coming_soon",
+      "gallery": [
+        "/assets/img/products/listing/H03-2.jpg"
+      ],
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/H03.jpg",
+      "image": "/assets/img/products/listing/H03.jpg",
       "element": "Fire",
       "description": "A boozy cigar-lounge fragrance — whiskey and warm spice open into a smoky tobacco-oud base. Dark, opulent, and deeply masculine."
     },
@@ -431,17 +471,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
-      "status": "coming_soon",
+      "gallery": [
+        "/assets/img/products/listing/T01-2.jpg"
+      ],
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/T01.jpg",
+      "image": "/assets/img/products/listing/T01.jpg",
       "element": "Earth",
       "description": "A rich, smoky-sweet vanilla built on real wood rather than sugar — creamy coconut and warm beeswax deepen into a resinous, almond-tinged base. Gourmand for those who find candy-vanilla too simple."
     },
@@ -455,17 +499,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
-      "status": "coming_soon",
+      "gallery": [
+        "/assets/img/products/listing/T02-2.jpg"
+      ],
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/T02.jpg",
+      "image": "/assets/img/products/listing/T02.jpg",
       "element": "Earth",
       "description": "A cool, confident leather fragrance — herbal lavender meets soft almond and iris, resting on a warm, ambery leather base. Sleek, statement-making, unapologetically bold."
     },
@@ -479,17 +527,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
-      "status": "coming_soon",
+      "gallery": [
+        "/assets/img/products/listing/T03-2.jpg"
+      ],
+      "status": "active",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/T03.jpg",
+      "image": "/assets/img/products/listing/T03.jpg",
       "element": "Earth",
       "description": "A boozy dessert fragrance — rum and dark chocolate melt into caramel and sandalwood. Indulgent, dark, and dangerously addictive."
     }
