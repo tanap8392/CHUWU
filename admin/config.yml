@@ -366,6 +366,16 @@ collections:
               - { label: "Marketing consent checkbox", name: "consent", widget: "string" }
               - { label: "Button", name: "button", widget: "string" }
               - { label: "Privacy note under the button", name: "privacy_note", widget: "text" }
+              - label: "Next-year preview starts"
+                name: "next_from_month"
+                widget: "select"
+                default: 11
+                hint: "From the 1st of this month, the reading adds a short preview of the coming Bazi year. It stays until the new year begins at 立春 (about 4 February), when that year becomes the main Year Ahead."
+                options:
+                  - { label: "September", value: 9 }
+                  - { label: "October", value: 10 }
+                  - { label: "November (last two months of the year)", value: 11 }
+                  - { label: "December", value: 12 }
               - { label: "While writing", name: "loading", widget: "string" }
               - { label: "If readings aren't switched on yet", name: "not_ready", widget: "text" }
               - { label: "Offer title", name: "cta_title", widget: "string" }

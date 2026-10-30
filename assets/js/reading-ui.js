@@ -9,7 +9,18 @@
    Texts come from content/customize.json → reading (Page Content → Bazi Reading Page). */
 (function (root) {
   const API = '/.netlify/functions/bazi-reading';
-  const SECTIONS = ['profile', 'luck', 'year'];
+  const BASE_SECTIONS = ['profile', 'luck', 'year'];
+
+  // The next-year brief shows from the start month (Page Content → Bazi Reading Page → "Next-year
+  // preview starts", default November) until the new Bazi year begins at 立春 (about 4 February),
+  // when that year becomes the main "Year Ahead" instead.
+  function nextYearOpen() {
+    const sg = new Date(Date.now() + 8 * 3600000);
+    const from = Number(t('next_from_month', 11)) || 11; // 1 = January … 12 = December
+    const ry = readingYear();
+    return sg.getUTCFullYear() > ry || sg.getUTCMonth() + 1 >= from;
+  }
+  const sections = () => (nextYearOpen() ? BASE_SECTIONS.concat('next') : BASE_SECTIONS);
   const READER_KEY = 'chuwu_reader';
   const ELEMENT_COLOR = { Wood: 'var(--wood)', Fire: 'var(--fire)', Earth: 'var(--earth)', Metal: 'var(--metal)', Water: 'var(--water)' };
   const ZH = { Wood: '木', Fire: '火', Earth: '土', Metal: '金', Water: '水' };
@@ -115,7 +126,18 @@
       ])
     ];
   }
-  const RENDER = { profile: renderProfile, luck: renderLuck, year: renderYear };
+  function renderNext(r) {
+    return [
+      ...paragraphs(r.overview),
+      el('div', { class: 'reading-themes' }, (r.themes || []).map(x => el('div', { class: 'theme-card' }, [el('h4', {}, [x.area]), el('p', {}, [x.text])]))),
+      el('h4', {}, ['Months to watch']),
+      el('div', { class: 'reading-months' }, (r.key_months || []).map(m => el('div', { class: 'month-card' }, [
+        el('div', { class: 'month-head' }, [el('span', { class: 'month-pillar' }, [m.pillar]), el('span', { class: 'month-dates' }, [m.dates])]),
+        el('p', {}, [m.text])
+      ])))
+    ];
+  }
+  const RENDER = { profile: renderProfile, luck: renderLuck, year: renderYear, next: renderNext };
 
   function fill(key, reading) {
     const body = document.querySelector(`#reading-${key} .reading-body`);
@@ -129,15 +151,22 @@
     if (retry) body.querySelector('button').addEventListener('click', retry);
   }
 
+  // e.g. "Preview · 丁未 Fire Goat year" — worked out locally, so it shows before the text arrives.
+  function nextYearLabel(y) {
+    const ny = ChuwuReading.yearAhead(ChuwuBazi.computeBazi(current.adjusted), y);
+    return `Preview · ${ny.pillar} ${ny.stemElement} ${ny.animal} year`;
+  }
+
   function startReading(details, stored) {
     const year = current.year;
     const out = $('reading-output');
-    out.replaceChildren(
+    out.replaceChildren(...[
       sectionShell('profile', 'Who You Are', 'Day Master & Ten Gods'),
       sectionShell('luck', 'Your Luck Pillars 大运', 'Ten-year chapters'),
       sectionShell('year', `Your ${year} Year Ahead`, 'Year & month by month 流年流月'),
+      nextYearOpen() ? sectionShell('next', `Looking Ahead to ${year + 1}`, nextYearLabel(year + 1)) : null,
       el('div', { class: 'reading-actions' }, [el('button', { type: 'button', class: 'btn', id: 'reading-print' }, ['Save or print my reading'])])
-    );
+    ].filter(Boolean));
     out.classList.remove('hidden');
     $('reading-form').classList.add('hidden');
     $('reading-print').addEventListener('click', () => window.print());
@@ -145,7 +174,7 @@
 
     const saved = stored || {};
     const save = () => storage(s => s.setItem(cacheKey(details.gender), JSON.stringify(saved)));
-    SECTIONS.forEach(function load(key) {
+    sections().forEach(function load(key) {
       if (saved[key]) { fill(key, saved[key]); return; }
       fetch(API, {
         method: 'POST',
@@ -223,7 +252,7 @@
     if (r.gender) { const g = form.querySelector(`input[name="gender"][value="${r.gender}"]`); if (g) g.checked = true; }
     // Same chart read before in this browser: show it straight away.
     const stored = r.gender && storage(s => JSON.parse(s.getItem(cacheKey(r.gender))));
-    if (stored && SECTIONS.every(k => stored[k])) startReading({ name: r.name, email: r.email, gender: r.gender, marketing: false }, stored);
+    if (stored && sections().every(k => stored[k])) startReading({ name: r.name, email: r.email, gender: r.gender, marketing: false }, stored);
     $('reading-section').classList.remove('hidden');
   }
 

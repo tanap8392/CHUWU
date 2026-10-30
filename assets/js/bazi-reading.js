@@ -230,5 +230,6 @@
     };
   }
 
-  root.ChuwuReading = { analyse, tenGod, relation, ZH, ANIMALS };
+  // The pillar and 12 solar months of any year, against this chart (used for the next-year brief).
+  root.ChuwuReading = { analyse, yearAhead, tenGod, relation, ZH, ANIMALS };
 })(typeof window !== 'undefined' ? window : globalThis);

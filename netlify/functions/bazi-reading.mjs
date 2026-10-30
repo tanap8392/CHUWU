@@ -1,7 +1,8 @@
 // CHUWU (初·五) — the free Bazi reading, unlocked with an email address on the Bazi page.
 //
 // The browser sends the birth details, gender, email and which part of the reading it wants
-// ("profile", "luck" or "year"; the page asks for all three at once). This function:
+// ("profile", "luck", "year", and from November "next" — a brief preview of the coming Bazi
+// year; the page asks for all of them at once). This function:
 //   1. saves the email to the "subscribers" store (Orders screen → Subscribers);
 //   2. recalculates the chart itself with the site's own Bazi code (assets/js/…), so the facts
 //      can't be tampered with;
@@ -66,6 +67,19 @@ const SECTIONS = {
       overview: str,
       pillars: list(obj({ pillar: str, ages: str, title: str, text: str })),
       current_focus: str
+    })
+  },
+  next: {
+    effort: 'low',
+    pick: f => ({ dayMaster: f.dayMaster, zodiac: f.zodiac, strength: f.strength, lacking: f.lacking, nextYear: f.nextYear, luckPillars: f.luck.pillars.map(p => ({ pillar: p.pillar, years: p.years })) }),
+    task: `Write a brief preview of the coming year (nextYear) — shorter than a full year reading:
+- overview: one paragraph (about 90 words) on how next year's pillar meets this chart: its Ten Gods, elements and any clash or harmony with the chart's branches, and which luck pillar covers it (from the years given).
+- themes: four items, area exactly one of Career, Wealth, Relationships, Wellbeing; text one sentence each. Wellbeing means rest, energy and balance — never illness.
+- key_months: the three most notable of next year's twelve solar months (strong clashes, harmonies or favourable elements), in calendar order. pillar and dates exactly as given; text one or two sentences.`,
+    schema: obj({
+      overview: str,
+      themes: list(obj({ area: str, text: str })),
+      key_months: list(obj({ pillar: str, dates: str, text: str }))
     })
   },
   year: {
@@ -149,7 +163,8 @@ export default async (req) => {
 
   const year = readingYear();
   const adjusted = globalThis.ChuwuCities.adjustForTrueSolarTime(v.birth, v.place);
-  const { facts } = globalThis.ChuwuReading.analyse(adjusted, v.gender, year);
+  const { facts, chart } = globalThis.ChuwuReading.analyse(adjusted, v.gender, year);
+  facts.nextYear = globalThis.ChuwuReading.yearAhead(chart, year + 1);
 
   // 1. Subscriber (one record per email; birth details kept for a follow-up personal reading).
   const subscribers = getStore({ name: 'subscribers', consistency: 'strong' });
