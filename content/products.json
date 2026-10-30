@@ -231,19 +231,19 @@
       "element_mix": [
         {
           "element": "Metal",
-          "votes": 40
+          "votes": 57
         },
         {
           "element": "Wood",
-          "votes": 10
+          "votes": 14
         },
         {
           "element": "Earth",
-          "votes": 10
+          "votes": 14
         },
         {
           "element": "Water",
-          "votes": 10
+          "votes": 14
         }
       ],
       "type": "element_scent",
@@ -274,6 +274,24 @@
         "/assets/img/uploads/m01-2.jpg"
       ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Metal",
+          "votes": 8
+        },
+        {
+          "element": "Wood",
+          "votes": 64
+        },
+        {
+          "element": "Water",
+          "votes": 20
+        },
+        {
+          "element": "Fire",
+          "votes": 8
+        }
+      ],
       "type": "element_scent",
       "image": "/assets/img/uploads/m01.jpg",
       "element": "Wood",
@@ -302,6 +320,28 @@
         "/assets/img/uploads/m02-2.jpg"
       ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Wood",
+          "votes": 60
+        },
+        {
+          "element": "Metal",
+          "votes": 12
+        },
+        {
+          "element": "Fire",
+          "votes": 20
+        },
+        {
+          "element": "Earth",
+          "votes": 4
+        },
+        {
+          "element": "Water",
+          "votes": 4
+        }
+      ],
       "type": "element_scent",
       "image": "/assets/img/uploads/m02.jpg",
       "element": "Wood",
@@ -330,6 +370,28 @@
         "/assets/img/uploads/m03-2.jpg"
       ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Metal",
+          "votes": 18
+        },
+        {
+          "element": "Wood",
+          "votes": 50
+        },
+        {
+          "element": "Fire",
+          "votes": 14
+        },
+        {
+          "element": "Earth",
+          "votes": 9
+        },
+        {
+          "element": "Water",
+          "votes": 9
+        }
+      ],
       "type": "element_scent",
       "image": "/assets/img/uploads/m03.jpg",
       "element": "Wood",
