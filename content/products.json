@@ -130,16 +130,18 @@
       "badge": "",
       "family": "Fresh",
       "profile": "Floral Aldehyde",
-      "inspired_by": "",
+      "inspired_by": "Chanel No 5 L’Eau",
       "code": "J01",
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
       "gallery": [
@@ -149,7 +151,7 @@
       "type": "element_scent",
       "image": "/assets/img/uploads/j01.jpg",
       "element": "Metal",
-      "description": "Similar with Chanel No 5 L’Eau\n\nThe purest aldehydic-citrus expression in the collection — crisp, soapy, and unmistakably classic, with no dilution to soften its iconic \"clean\" signature."
+      "description": "The purest aldehydic-citrus expression in the collection — crisp, soapy, and unmistakably classic, with no dilution to soften its iconic \"clean\" signature."
     },
     {
       "notes": "Top: Bergamot, Mandarin Orange, Italian Lemon, Pink Pepper\nMiddle: Orange Blossom, Cypress, Pear, Black Pepper\nBase: Neroli, White Musk",
@@ -161,17 +163,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.5
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/j02-2.jpg"
+      ],
       "status": "coming_soon",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/J02.jpg",
+      "image": "/assets/img/uploads/j02.jpg",
       "element": "Metal",
       "description": "A bright, spicy-green citrus — pink pepper and bergamot lead into a pear-sweetened orange blossom heart, closing on warm musky neroli. Fresh, unisex, Mediterranean."
     },
