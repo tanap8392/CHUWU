@@ -16,17 +16,18 @@
     document.dispatchEvent(new CustomEvent('chuwu:cart'));
   }
 
-  // Identical items (same product + same blend details) stack into one line.
-  function add(productId, quantity, attributes) {
+  // Identical items (same product, size and blend details) stack into one line. `size` is only
+  // given for products sold in several sizes (e.g. "10ml" / "30ml").
+  function add(productId, quantity, attributes, size) {
     const lines = load();
     const attrs = (attributes || []).filter(a => a.value);
     const sig = JSON.stringify(attrs);
-    const existing = lines.find(l => l.productId === productId && JSON.stringify(l.attributes) === sig);
+    const existing = lines.find(l => l.productId === productId && (l.size || null) === (size || null) && JSON.stringify(l.attributes) === sig);
     if (existing) existing.quantity += quantity;
-    else lines.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), productId, quantity, attributes: attrs });
+    else lines.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), productId, size: size || null, quantity, attributes: attrs });
     save(lines);
     if (root.ChuwuTrack && root.ChuwuContent) {
-      root.ChuwuTrack.addToCart((root.ChuwuContent.data.products || []).find(p => p.id === productId), quantity);
+      root.ChuwuTrack.addToCart((root.ChuwuContent.data.products || []).find(p => p.id === productId), quantity, size);
     }
   }
 
@@ -50,8 +51,10 @@
     const unavailable = [];
     load().forEach(l => {
       const product = byId[l.productId];
-      if (product && product.status === 'active') {
-        lines.push({ ...l, product, unitPrice: product.price, lineTotal: round2(product.price * l.quantity) });
+      // A size that was removed from the product in the dashboard makes the line unavailable.
+      const sz = product && root.ChuwuContent.sizeOf(product, l.size);
+      if (product && product.status === 'active' && sz) {
+        lines.push({ ...l, product, size: sz.size, unitPrice: sz.price, lineTotal: round2(sz.price * l.quantity) });
       } else {
         unavailable.push({ ...l, product: product || null });
       }

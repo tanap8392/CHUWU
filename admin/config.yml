@@ -129,11 +129,21 @@ collections:
                       - { label: "Spicy & Warm", value: "Spicy" }
                       - { label: "Sweet & Gourmand", value: "Sweet" }
                       - { label: "Musky & Sensual", value: "Musky" }
-                  - { label: "Inspired by", name: "inspired_by", widget: "string", required: false }
-                  - { label: "Notes", name: "notes", widget: "text" }
-                  - { label: "Size", name: "size", widget: "string", default: "10ml" }
-                  - *price
-                  - *compare
+                  - { label: "Scent profile", name: "profile", widget: "string", required: false, hint: "e.g. Floral Aldehyde, Woody Spicy" }
+                  - { label: "Inspired by", name: "inspired_by", widget: "string", required: false, hint: "The perfume it's inspired by. Leave empty to hide the line." }
+                  - { label: "Description", name: "description", widget: "text", required: false, hint: "A short write-up shown on the Shop and recommendation cards." }
+                  - { label: "Notes", name: "notes", widget: "text", hint: "One line each, e.g. Top: Lemon, Bergamot (Enter) Middle: … (Enter) Base: …" }
+                  - label: "Sizes & prices"
+                    name: "sizes"
+                    label_singular: "Size"
+                    widget: "list"
+                    summary: "{{fields.size}} — S${{fields.price}}"
+                    hint: "Customers pick one of these sizes. Put the smallest first — it's the one selected to start with."
+                    default: [{ size: "10ml", price: 24.9 }, { size: "30ml", price: 49.9 }]
+                    fields:
+                      - { label: "Size", name: "size", widget: "string", hint: "e.g. 10ml" }
+                      - { label: "Price (SGD)", name: "price", widget: "number", value_type: "float", min: 0, step: 0.1 }
+                      - { label: "Original price", name: "compare_at_price", widget: "number", value_type: "float", min: 0, step: 0.1, required: false, hint: "Fill in to show this size on sale (crossed-out price)." }
                   - *image
                   - *gallery
                   - *badge

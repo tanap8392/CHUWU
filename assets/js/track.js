@@ -40,11 +40,13 @@
   const currency = () => (root.ChuwuContent && ChuwuContent.get('settings.currency')) || 'SGD';
   const gaItems = lines => lines.map(l => ({ item_id: l.productId, item_name: l.product.name || l.product.code, price: l.unitPrice, quantity: l.quantity }));
 
-  function addToCart(product, quantity) {
+  function addToCart(product, quantity, size) {
     if (!product) return;
-    const value = product.price * quantity;
+    const sz = root.ChuwuContent.sizeOf(product, size);
+    const price = sz ? sz.price : product.price;
+    const value = price * quantity;
     if (pixel) root.fbq('track', 'AddToCart', { content_ids: [product.id], content_type: 'product', value, currency: currency() });
-    if (ga) root.gtag('event', 'add_to_cart', { currency: currency(), value, items: [{ item_id: product.id, item_name: product.name || product.code, price: product.price, quantity }] });
+    if (ga) root.gtag('event', 'add_to_cart', { currency: currency(), value, items: [{ item_id: product.id, item_name: product.name || product.code, item_variant: size || undefined, price, quantity }] });
   }
 
   function beginCheckout(total, lines) {

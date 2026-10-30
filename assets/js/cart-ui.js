@@ -55,7 +55,7 @@
       const attrsText = line.attributes.map(a => a.key + ': ' + a.value).join(' · ');
       const removeBtn = el('button', { class: 'cart-line-remove' }, [text('Remove')]);
       removeBtn.addEventListener('click', () => ChuwuCart.remove(line.id));
-      const info = [el('div', { class: 'title' }, [text(ChuwuContent.productTitle(line.product))])];
+      const info = [el('div', { class: 'title' }, [text(ChuwuContent.productTitle(line.product, line.size))])];
       if (attrsText) info.push(el('div', { class: 'attrs' }, [text(attrsText)]));
       info.push(el('div', { class: 'qty-price' }, [qtyControl(line), el('span', {}, [text(ChuwuContent.formatPrice(line.lineTotal))])]));
       info.push(removeBtn);
@@ -65,7 +65,7 @@
     unavailable.forEach(function (line) {
       const removeBtn = el('button', { class: 'cart-line-remove' }, [text('Remove')]);
       removeBtn.addEventListener('click', () => ChuwuCart.remove(line.id));
-      const title = line.product ? ChuwuContent.productTitle(line.product) : 'Item';
+      const title = line.product ? ChuwuContent.productTitle(line.product, line.size) : 'Item';
       linesEl.appendChild(el('div', { class: 'cart-line unavailable' }, [
         lineMedia(line.product),
         el('div', { class: 'cart-line-info' }, [

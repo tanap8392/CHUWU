@@ -93,7 +93,7 @@
       const attrs = l.attributes.map(a => a.key + ': ' + a.value).join(' · ');
       linesWrap.appendChild(el('div', { class: 'summary-row' }, [
         el('span', {}, [
-          `${l.quantity} × ${ChuwuContent.productTitle(l.product)}`,
+          `${l.quantity} × ${ChuwuContent.productTitle(l.product, l.size)}`,
           ...(attrs ? [el('span', { class: 'option-meta' }, [attrs])] : [])
         ]),
         el('span', {}, [money(l.lineTotal)])
@@ -132,7 +132,7 @@
 
   function itemsText(lines) {
     return lines.map(l => {
-      const head = `${l.quantity} × ${ChuwuContent.productTitle(l.product)} — ${money(l.lineTotal)}`;
+      const head = `${l.quantity} × ${ChuwuContent.productTitle(l.product, l.size)} — ${money(l.lineTotal)}`;
       return [head, ...l.attributes.map(a => `    ${a.key}: ${a.value}`)].join('\n');
     }).join('\n');
   }
@@ -313,7 +313,8 @@
       address: order.address,
       items: lines.map(l => ({
         product_id: l.productId,
-        title: ChuwuContent.productTitle(l.product),
+        title: ChuwuContent.productTitle(l.product, l.size),
+        size: l.size || '',
         quantity: l.quantity,
         unit_price: l.unitPrice,
         line_total: l.lineTotal,

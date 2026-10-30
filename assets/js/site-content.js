@@ -31,20 +31,36 @@
   }
 
   // Element scents are keyed by their code (J01, M02…); other products carry an explicit id.
+  // A product with a `sizes` list (e.g. 10ml / 30ml) is sold in each of those sizes at its own
+  // price; `price` and `size` then hold the first (smallest) size, for "from" prices and sorting.
   function normalizeProducts(list) {
-    return (list || []).map(p => ({
-      ...p,
-      id: p.id || p.code,
-      price: Number(p.price) || 0,
-      compare_at_price: Number(p.compare_at_price) > 0 ? Number(p.compare_at_price) : null,
-      status: p.status || 'active'
-    }));
+    return (list || []).map(p => {
+      const sizes = (Array.isArray(p.sizes) ? p.sizes : [])
+        .map(s => ({ size: String(s.size || '').trim(), price: Number(s.price) || 0, compare_at_price: Number(s.compare_at_price) > 0 ? Number(s.compare_at_price) : null }))
+        .filter(s => s.size && s.price > 0);
+      return {
+        ...p,
+        id: p.id || p.code,
+        sizes,
+        size: sizes.length ? sizes[0].size : p.size,
+        price: sizes.length ? sizes[0].price : Number(p.price) || 0,
+        compare_at_price: sizes.length ? sizes[0].compare_at_price : (Number(p.compare_at_price) > 0 ? Number(p.compare_at_price) : null),
+        status: p.status || 'active'
+      };
+    });
   }
 
-  function productTitle(p) {
-    if (p.type === 'signature') return `${p.name}${p.name_zh ? ' (' + p.name_zh + ')' : ''} — ${p.size}`;
-    if (p.type === 'element_scent') return `${p.code} · ${p.element} — ${p.size}`;
-    return `${p.name} — ${p.size}`;
+  // The size entry a cart line refers to; products without a sizes list have just one.
+  function sizeOf(p, size) {
+    if (!p.sizes || !p.sizes.length) return { size: p.size, price: p.price, compare_at_price: p.compare_at_price };
+    return p.sizes.find(s => s.size === size) || null;
+  }
+
+  function productTitle(p, size) {
+    const sz = size || p.size;
+    if (p.type === 'signature') return `${p.name}${p.name_zh ? ' (' + p.name_zh + ')' : ''} — ${sz}`;
+    if (p.type === 'element_scent') return `${p.code} · ${p.element} — ${sz}`;
+    return `${p.name} — ${sz}`;
   }
 
   function whatsappLink(message) {
@@ -185,5 +201,5 @@
     return data;
   });
 
-  root.ChuwuContent = { ready, data, get, formatPrice, productTitle, whatsappLink, INFO_PAGES };
+  root.ChuwuContent = { ready, data, get, formatPrice, productTitle, sizeOf, whatsappLink, INFO_PAGES };
 })(typeof window !== 'undefined' ? window : globalThis);

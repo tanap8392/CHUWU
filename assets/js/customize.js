@@ -224,13 +224,13 @@
     setTimeout(() => { btn.disabled = false; restore(); }, 1800);
   }
 
-  function scentCta(scent) {
+  // `picker` is the card's size picker; Add to Cart uses whichever size is selected.
+  function scentCta(scent, picker) {
     if (scent.status === 'active') {
-      const label = `Add to Cart — ${formatPrice(scent.price)}`;
-      const btn = el('button', { class: 'scent-cta active' }, [document.createTextNode(label)]);
+      const btn = el('button', { class: 'scent-cta active' }, [document.createTextNode('Add to Cart')]);
       btn.addEventListener('click', () => {
-        ChuwuCart.add(scent.id, 1, readingAttributes());
-        addedFeedback(btn, () => { btn.textContent = label; });
+        ChuwuCart.add(scent.id, 1, readingAttributes(), scent.sizes && scent.sizes.length ? picker.selected().size : null);
+        addedFeedback(btn, () => { btn.textContent = 'Add to Cart'; });
       });
       return btn;
     }
@@ -238,27 +238,28 @@
   }
 
   function scentCard(scent, { supporting, preferredFamily } = {}) {
-    const preview = scent.status === 'coming_soon'
-      ? el('span', { class: 'preview-badge' }, [document.createTextNode('Preview pricing')])
-      : null;
     const isFamilyMatch = preferredFamily && scent.family === preferredFamily;
     const familyTag = el('span', { class: 'family-tag' + (isFamilyMatch ? ' family-match' : '') }, [
-      document.createTextNode(scent.family + (isFamilyMatch ? ' · your preference' : ''))
+      document.createTextNode([scent.profile, scent.family].filter(Boolean).join(' · ') + (isFamilyMatch ? ' · your preference' : ''))
     ]);
+    const price = el('span', { class: 'scent-price' }, []);
+    const picker = ChuwuProductUI.sizePicker(scent, entry => ChuwuProductUI.renderPrice(price, entry));
+    ChuwuProductUI.renderPrice(price, picker.selected());
 
     return el('div', { class: 'scent-card' + (supporting ? ' supporting-card' : '') + (isFamilyMatch ? ' family-highlight' : '') }, [
-      ...(supporting ? [el('div', { class: 'supporting-tag' }, [document.createTextNode('Supporting — nourishes your ' + supporting)])] : []),
-      el('h3', {}, [
-        el('span', { class: 'el-swatch', style: `background:${ELEMENT_COLOR[scent.element]}` }, []),
-        el('span', { class: 'scent-code' }, [document.createTextNode(scent.code)]),
-        ...(preview ? [preview] : [])
-      ]),
-      familyTag,
-      ...(scent.inspired_by ? [el('p', { class: 'scent-inspired' }, [document.createTextNode('Inspired by ' + scent.inspired_by)])] : []),
-      el('p', { class: 'scent-notes' }, [document.createTextNode(scent.notes || '')]),
-      el('div', { class: 'scent-price-row' }, [
-        el('span', { class: 'scent-price' }, [document.createTextNode(formatPrice(scent.price) + ' · ' + scent.size)]),
-        scentCta(scent)
+      ...(scent.image ? [el('div', { class: 'scent-media' }, [el('img', { src: scent.image, alt: scent.code + ' ' + scent.element, loading: 'lazy' }, [])])] : []),
+      el('div', { class: 'scent-body' }, [
+        ...(supporting ? [el('div', { class: 'supporting-tag' }, [document.createTextNode('Supporting — nourishes your ' + supporting)])] : []),
+        el('h3', {}, [
+          el('span', { class: 'el-swatch', style: `background:${ELEMENT_COLOR[scent.element]}` }, []),
+          el('span', { class: 'scent-code' }, [document.createTextNode(scent.code)])
+        ]),
+        familyTag,
+        ...(scent.inspired_by ? [el('p', { class: 'scent-inspired' }, [document.createTextNode('Inspired by ' + scent.inspired_by)])] : []),
+        ...(scent.description ? [el('p', { class: 'scent-desc' }, [document.createTextNode(scent.description)])] : []),
+        el('p', { class: 'scent-notes' }, [document.createTextNode(scent.notes || '')]),
+        ...(picker.node ? [picker.node] : []),
+        el('div', { class: 'scent-price-row' }, [price, scentCta(scent, picker)])
       ])
     ]);
   }

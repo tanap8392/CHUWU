@@ -385,3 +385,15 @@ a.announcement-bar:hover { background: var(--ink); }
 .faq-item .prose p:last-child { margin-bottom: 0; }
 /* The cart dropdown sits below the header; push it down when the announcement bar is showing. */
 header.site-nav:has(.announcement-bar) .cart-panel { top: 112px; }
+
+/* ---------- Size picker (10ml / 30ml) + multi-line notes ---------- */
+.size-picker { display: flex; gap: 8px; margin: 14px 0 0; flex-wrap: wrap; }
+.size-opt {
+  border: 1px solid var(--grey); background: #fff; color: var(--charcoal); border-radius: 999px;
+  padding: 6px 16px; font: 500 0.78rem var(--sans); letter-spacing: 0.06em; cursor: pointer;
+}
+.size-opt:hover { border-color: var(--charcoal); }
+.size-opt.active { background: var(--charcoal); border-color: var(--charcoal); color: var(--ivory); }
+.notes-block { white-space: pre-line; line-height: 1.6; margin-top: 6px; }
+/* Cormorant's default old-style figures make codes like "M01" read as "Mo1"; use full-height figures. */
+h1, h2, h3, h4, .price, .scent-code { font-variant-numeric: lining-nums; }
