@@ -117,7 +117,17 @@ collections:
                 summary: "{{fields.code}} — {{fields.element}} — {{fields.status}}"
                 fields:
                   - { label: "Code", name: "code", widget: "string", hint: "e.g. J01. J=Metal, M=Wood, S=Water, H=Fire, T=Earth. Don't change it once on sale." }
-                  - { label: "Element", name: "element", widget: "select", options: *elements }
+                  - { label: "Main element", name: "element", widget: "select", options: *elements, hint: "Filled in automatically from the Element mix below (the element with the most votes) — that's the one recommendations use." }
+                  - label: "Element mix"
+                    name: "element_mix"
+                    label_singular: "Element"
+                    widget: "list"
+                    required: false
+                    summary: "{{fields.element}}: {{fields.votes}}"
+                    hint: "Votes for each element in this scent, from the catalogue. Shown on the listing as a colour bar with percentages."
+                    fields:
+                      - { label: "Element", name: "element", widget: "select", options: *elements }
+                      - { label: "Votes", name: "votes", widget: "number", value_type: "int", min: 0 }
                   - label: "Scent family"
                     name: "family"
                     widget: "select"

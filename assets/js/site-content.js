@@ -38,9 +38,17 @@
       const sizes = (Array.isArray(p.sizes) ? p.sizes : [])
         .map(s => ({ size: String(s.size || '').trim(), price: Number(s.price) || 0, compare_at_price: Number(s.compare_at_price) > 0 ? Number(s.compare_at_price) : null }))
         .filter(s => s.size && s.price > 0);
+      // Element mix (Products → Element mix): votes per element. The element with the most votes is
+      // the scent's main element, which is what recommendations and the element tag use.
+      const mix = (Array.isArray(p.element_mix) ? p.element_mix : [])
+        .map(m => ({ element: m.element, votes: Number(m.votes) || 0 }))
+        .filter(m => m.element && m.votes > 0);
+      const main = mix.length ? mix.reduce((a, b) => (b.votes > a.votes ? b : a)).element : p.element;
       return {
         ...p,
         id: p.id || p.code,
+        element: main,
+        element_mix: mix,
         sizes,
         size: sizes.length ? sizes[0].size : p.size,
         price: sizes.length ? sizes[0].price : Number(p.price) || 0,

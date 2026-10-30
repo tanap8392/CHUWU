@@ -71,6 +71,7 @@
         p.type === 'element_scent' ? h('p', { key: 'fa', className: 'muted', style: { fontSize: '0.9rem' } }, [p.profile, p.family].filter(Boolean).join(' · ')) : null,
         elements.length ? h('div', { key: 'tags', className: 'product-tags' }, elements.map(e =>
           h('span', { key: e, className: 'tag', style: { background: `var(${ELEMENT_VAR[e]})`, color: '#fff' } }, e))) : null,
+        mixBar(p.element_mix),
         p.inspired_by ? h('p', { key: 'ib', className: 'muted', style: { fontSize: '0.85rem' } }, 'Similar in scent to ' + p.inspired_by) : null,
         p.description ? h('p', { key: 'd', className: 'muted', style: { fontSize: '0.85rem' } }, p.description) : null,
         p.notes ? h('div', { key: 'n', className: 'note-line notes-block' }, p.notes) : null,
@@ -89,6 +90,18 @@
               : p.type === 'personalized' ? 'Personalize' : 'Add to Cart')
         ])
       ])
+    ]);
+  }
+
+  // Same element-mix bar as the Shop page: share of votes per element, largest first.
+  function mixBar(mix) {
+    const list = (mix || []).filter(m => m && m.element && Number(m.votes) > 0).sort((a, b) => b.votes - a.votes);
+    if (!list.length) return null;
+    const total = list.reduce((s, m) => s + Number(m.votes), 0);
+    const pct = m => Math.round((Number(m.votes) / total) * 100);
+    return h('div', { key: 'mix', className: 'element-mix' }, [
+      h('div', { key: 'b', className: 'mix-bar' }, list.map((m, i) => h('span', { key: i, style: { width: pct(m) + '%', background: `var(${ELEMENT_VAR[m.element]})` } }))),
+      h('div', { key: 'l', className: 'mix-legend' }, list.map((m, i) => h('span', { key: i }, [h('i', { key: 'd', style: { background: `var(${ELEMENT_VAR[m.element]})` } }), `${m.element} ${pct(m)}%`])))
     ]);
   }
 

@@ -420,3 +420,11 @@ h1, h2, h3, h4, .price, .scent-code { font-variant-numeric: lining-nums; }
 /* Shop by Element as the first section (signature blends hidden): no divider above it. */
 #element-scents-section.first-section { padding-top: 70px; }
 #element-scents-section.first-section .divider-line { display: none; }
+
+/* ---------- Element mix bar (Products → Element mix) ---------- */
+.element-mix { margin: 12px 0 14px; }
+.mix-bar { display: flex; height: 6px; border-radius: 999px; overflow: hidden; background: #EFEBE1; gap: 2px; }
+.mix-bar span { display: block; height: 100%; }
+.mix-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 7px; font-size: 0.74rem; color: #6b655e; }
+.mix-legend span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.mix-legend i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }

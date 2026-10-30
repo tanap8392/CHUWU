@@ -49,6 +49,8 @@
       body.push(el('h3', {}, [text(`${p.code} · ${p.element} ${ELEMENT_ZH[p.element] || ''}`)]));
       body.push(el('p', { class: 'muted', style: 'font-size:0.9rem' }, [text([...new Set([p.profile, p.family].filter(Boolean))].join(' · '))]));
       body.push(el('div', { class: 'product-tags' }, tagEls));
+      const mix = ChuwuProductUI.elementMix(p);
+      if (mix) body.push(mix);
       if (p.inspired_by) body.push(el('p', { class: 'muted', style: 'font-size:0.85rem' }, [text('Similar in scent to ' + p.inspired_by)]));
       if (p.description) body.push(el('p', { class: 'muted', style: 'font-size:0.85rem' }, [text(p.description)]));
       if (p.notes) body.push(el('div', { class: 'note-line notes-block' }, [text(p.notes)]));

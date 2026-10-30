@@ -66,5 +66,28 @@
     return box;
   }
 
-  root.ChuwuProductUI = { renderPrice, sizePicker, media };
+  // Whole-number percentages that always add up to 100 (largest-remainder rounding).
+  function percentages(mix) {
+    const total = mix.reduce((s, m) => s + m.votes, 0);
+    const raw = mix.map(m => (m.votes / total) * 100);
+    const out = raw.map(Math.floor);
+    let left = 100 - out.reduce((s, n) => s + n, 0);
+    raw.map((r, i) => [r - Math.floor(r), i]).sort((a, b) => b[0] - a[0]).forEach(([, i]) => { if (left-- > 0) out[i]++; });
+    return out;
+  }
+
+  // "Element mix": a bar in the element colours, sized by each element's share, plus a legend.
+  // Largest share first. Returns null when the product has no mix recorded.
+  function elementMix(p) {
+    const mix = (p.element_mix || []).slice().sort((a, b) => b.votes - a.votes);
+    if (!mix.length) return null;
+    const pct = percentages(mix);
+    const color = e => `var(--${String(e).toLowerCase()})`;
+    return el('div', { class: 'element-mix', title: 'Element mix' }, [
+      el('div', { class: 'mix-bar' }, mix.map((m, i) => el('span', { style: `width:${pct[i]}%;background:${color(m.element)}` }, []))),
+      el('div', { class: 'mix-legend' }, mix.map((m, i) => el('span', {}, [el('i', { style: `background:${color(m.element)}` }, []), `${m.element} ${pct[i]}%`])))
+    ]);
+  }
+
+  root.ChuwuProductUI = { renderPrice, sizePicker, media, elementMix };
 })(typeof window !== 'undefined' ? window : globalThis);
