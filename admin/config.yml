@@ -305,7 +305,7 @@ collections:
 
       - file: "content/customize.json"
         name: "customize"
-        label: "Bazi Customize Page"
+        label: "Bazi Reading Page"
         fields:
           - label: "Search & sharing"
             name: "seo"
