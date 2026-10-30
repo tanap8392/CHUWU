@@ -148,6 +148,12 @@
         "/assets/img/uploads/j01-2.jpg"
       ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Metal",
+          "votes": 100
+        }
+      ],
       "type": "element_scent",
       "image": "/assets/img/uploads/j01.jpg",
       "element": "Metal",
@@ -176,6 +182,24 @@
         "/assets/img/uploads/j02-2.jpg"
       ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Metal",
+          "votes": 60
+        },
+        {
+          "element": "Fire",
+          "votes": 20
+        },
+        {
+          "element": "Wood",
+          "votes": 10
+        },
+        {
+          "element": "Water",
+          "votes": 10
+        }
+      ],
       "type": "element_scent",
       "image": "/assets/img/uploads/j02.jpg",
       "element": "Metal",
@@ -204,6 +228,24 @@
         "/assets/img/uploads/j03-2.jpg"
       ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Metal",
+          "votes": 40
+        },
+        {
+          "element": "Wood",
+          "votes": 10
+        },
+        {
+          "element": "Earth",
+          "votes": 10
+        },
+        {
+          "element": "Water",
+          "votes": 10
+        }
+      ],
       "type": "element_scent",
       "image": "/assets/img/uploads/j03.jpg",
       "element": "Metal",
@@ -219,17 +261,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/m01-2.jpg"
+      ],
       "status": "coming_soon",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/M01.jpg",
+      "image": "/assets/img/uploads/m01.jpg",
       "element": "Wood",
       "description": "A dreamy, water-inspired floral — green tea and bergamot open into a creamy osmanthus-jasmine heart, closing on soft mate and musk. Elegant and quietly distinctive."
     },
@@ -252,10 +298,12 @@
           "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/m02-2.jpg"
+      ],
       "status": "coming_soon",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/M02.jpg",
+      "image": "/assets/img/uploads/m02.jpg",
       "element": "Wood",
       "description": "A rugged '80s classic — sharp herbal lavender and citrus over a mossy, woody-leather base. Masculine, timeless, still iconic today."
     },
@@ -269,17 +317,21 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/m03-2.jpg"
+      ],
       "status": "coming_soon",
       "type": "element_scent",
-      "image": "/assets/img/products/scents/M03.jpg",
+      "image": "/assets/img/uploads/m03.jpg",
       "element": "Wood",
       "description": "A dark, sensual oriental — earthy truffle and black currant lead into a spicy floral heart, resting on rich chocolate-patchouli. Luxurious, dramatic, unmistakably Tom Ford."
     },
