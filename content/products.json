@@ -670,17 +670,35 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/t01-2.jpg"
+      ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Wood",
+          "votes": 20
+        },
+        {
+          "element": "Earth",
+          "votes": 70
+        },
+        {
+          "element": "Water",
+          "votes": 10
+        }
+      ],
       "type": "element_scent",
-      "image": "/assets/img/products/scents/T01.jpg",
+      "image": "/assets/img/uploads/t01.jpg",
       "element": "Earth",
       "description": "A rich, smoky-sweet vanilla built on real wood rather than sugar — creamy coconut and warm beeswax deepen into a resinous, almond-tinged base. Gourmand for those who find candy-vanilla too simple."
     },
@@ -694,17 +712,35 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/t02-2.jpg"
+      ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Wood",
+          "votes": 27
+        },
+        {
+          "element": "Fire",
+          "votes": 9
+        },
+        {
+          "element": "Earth",
+          "votes": 64
+        }
+      ],
       "type": "element_scent",
-      "image": "/assets/img/products/scents/T02.jpg",
+      "image": "/assets/img/uploads/t02.jpg",
       "element": "Earth",
       "description": "A cool, confident leather fragrance — herbal lavender meets soft almond and iris, resting on a warm, ambery leather base. Sleek, statement-making, unapologetically bold."
     },
@@ -718,17 +754,35 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/t03-2.jpg"
+      ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Wood",
+          "votes": 12
+        },
+        {
+          "element": "Fire",
+          "votes": 25
+        },
+        {
+          "element": "Earth",
+          "votes": 63
+        }
+      ],
       "type": "element_scent",
-      "image": "/assets/img/products/scents/T03.jpg",
+      "image": "/assets/img/uploads/t03.jpg",
       "element": "Earth",
       "description": "A boozy dessert fragrance — rum and dark chocolate melt into caramel and sandalwood. Indulgent, dark, and dangerously addictive."
     }
