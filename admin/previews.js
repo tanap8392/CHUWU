@@ -57,15 +57,14 @@
     const onSale = first.compare_at_price && Number(first.compare_at_price) > Number(first.price);
 
     return h('div', { className: 'product-card pv-status-' + (p.status || 'active'), key: i }, [
-      h('div', { className: 'product-media', key: 'm' }, [
+      h('div', { className: 'product-media' + (photos.length > 1 ? ' has-alt' : ''), key: 'm' }, [
         photos.length
-          ? h('img', { key: 'i', src: src(getAsset, photos[0]), style: { width: '100%', height: '100%', objectFit: 'cover' } })
+          ? h('img', { key: 'i', className: 'media-main', src: src(getAsset, photos[0]) })
           : h('div', { key: 'b', className: 'bottle', style: { background: 'linear-gradient(180deg,#C8B38A,#2D2A28)' } }),
+        photos.length > 1 ? h('img', { key: 'a', className: 'media-alt', src: src(getAsset, photos[1]) }) : null,
         p.badge ? h('span', { key: 'g', className: 'product-badge' }, p.badge) : null,
         h('span', { key: 's', className: 'pv-status-chip' }, STATUS_LABEL[p.status || 'active'])
       ]),
-      photos.length > 1 ? h('div', { className: 'product-thumbs', key: 't' },
-        photos.map((ph, j) => h('button', { key: j, className: j === 0 ? 'active' : '' }, h('img', { src: src(getAsset, ph) })))) : null,
       h('div', { className: 'product-body', key: 'body' }, [
         h('h3', { key: 'h' }, title),
         p.intention ? h('p', { key: 'in', className: 'muted', style: { fontSize: '0.9rem' } }, 'For ' + p.intention) : null,
@@ -110,7 +109,7 @@
       return h('div', { className: 'pv-page' }, [
         h('div', { key: 'stats', className: 'pv-stats' }, Object.keys(STATUS_LABEL).map(s =>
           h('div', { key: s, className: 'pv-stat pv-stat-' + s }, [h('b', { key: 'n' }, counts[s] || 0), h('span', { key: 'l' }, STATUS_LABEL[s])]))),
-        banner('This is how products appear on the Shop page. Hidden products are shown faded here but don\'t appear on the site.', 'info'),
+        banner('This is how products appear on the Shop page. Hover a photo to see its second photo. Hidden products are shown faded here but don\'t appear on the site.', 'info'),
         h('div', { key: 'c', className: 'container', style: { paddingTop: '24px' } }, [
           group('signature', 'Signature blends'),
           group('element_scent', 'Element scents'),

@@ -132,7 +132,7 @@
       "code": "J01",
       "status": "coming_soon",
       "type": "element_scent",
-      "image": "/assets/img/uploads/j01.png",
+      "image": "/assets/img/uploads/j01.jpg",
       "element": "Metal",
       "profile": "Floral Aldehyde",
       "description": "The purest aldehydic-citrus expression in the collection — crisp, soapy, and unmistakably classic, with no dilution to soften its iconic \"clean\" signature.",
@@ -146,7 +146,9 @@
           "price": 49.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/j01-2.jpg"
+      ],
       "badge": ""
     },
     {

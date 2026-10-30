@@ -247,7 +247,7 @@
     ChuwuProductUI.renderPrice(price, picker.selected());
 
     return el('div', { class: 'scent-card' + (supporting ? ' supporting-card' : '') + (isFamilyMatch ? ' family-highlight' : '') }, [
-      ...(scent.image ? [el('div', { class: 'scent-media' }, [el('img', { src: scent.image, alt: scent.code + ' ' + scent.element, loading: 'lazy' }, [])])] : []),
+      ChuwuProductUI.media(scent, 'scent-media'),
       el('div', { class: 'scent-body' }, [
         ...(supporting ? [el('div', { class: 'supporting-tag' }, [document.createTextNode('Supporting — nourishes your ' + supporting)])] : []),
         el('h3', {}, [

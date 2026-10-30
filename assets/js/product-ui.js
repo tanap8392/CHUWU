@@ -40,5 +40,31 @@
     return { node, selected: () => current };
   }
 
-  root.ChuwuProductUI = { renderPrice, sizePicker };
+  // Square product image. With a second photo (Products → More photos), hovering shows it on a
+  // computer; on a phone, where there's no hover, tapping switches photos and dots show there's more.
+  function media(p, className) {
+    const photos = [p.image].concat((p.gallery || []).map(g => (typeof g === 'string' ? g : g && g.image))).filter(Boolean);
+    const box = el('div', { class: className + (photos.length > 1 ? ' has-alt' : '') }, []);
+    const alt = p.name || ((p.code || '') + ' ' + (p.element || '')).trim();
+    if (!photos.length) {
+      box.appendChild(el('div', { class: 'bottle', style: 'background:linear-gradient(180deg,#C8B38A,#2D2A28)' }, []));
+    } else {
+      box.appendChild(el('img', { src: photos[0], alt, class: 'media-main', loading: 'lazy' }, []));
+      if (photos[1]) box.appendChild(el('img', { src: photos[1], alt: '', class: 'media-alt', loading: 'lazy', 'aria-hidden': 'true' }, []));
+    }
+    if (p.badge) box.appendChild(el('span', { class: 'product-badge' }, [p.badge]));
+    if (photos.length > 1) {
+      const dots = el('div', { class: 'media-dots', 'aria-hidden': 'true' }, [el('span', { class: 'on' }, []), el('span', {}, [])]);
+      box.appendChild(dots);
+      box.addEventListener('click', () => {
+        if (window.matchMedia('(hover: hover)').matches) return;
+        const showing = box.classList.toggle('show-alt');
+        dots.children[0].classList.toggle('on', !showing);
+        dots.children[1].classList.toggle('on', showing);
+      });
+    }
+    return box;
+  }
+
+  root.ChuwuProductUI = { renderPrice, sizePicker, media };
 })(typeof window !== 'undefined' ? window : globalThis);

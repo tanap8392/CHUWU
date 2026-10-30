@@ -19,7 +19,7 @@ body { background: var(--ivory); }
 .pv-stat-coming_soon { border-color: var(--gold); }
 .pv-stat-sold_out { border-color: var(--fire); }
 
-.pv-status-chip {
+.pv-status-chip { z-index: 2;
   position: absolute; top: 12px; right: 12px; font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase;
   padding: 4px 9px; border-radius: 999px; background: #fff; color: var(--wood); border: 1px solid currentColor;
 }
