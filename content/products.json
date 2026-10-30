@@ -407,17 +407,35 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/s01-2.jpg"
+      ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Metal",
+          "votes": 11
+        },
+        {
+          "element": "Wood",
+          "votes": 18
+        },
+        {
+          "element": "Water",
+          "votes": 71
+        }
+      ],
       "type": "element_scent",
-      "image": "/assets/img/products/scents/S01.jpg",
+      "image": "/assets/img/uploads/s01.jpg",
       "element": "Water",
       "description": "An intense, avant-garde marine scent — bright citrus opens into a salty, metallic wave of seaweed before settling into a dense, musky-woody amber base. Bold, oceanic, and long-lasting."
     },
@@ -431,17 +449,35 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/s02-2.jpg"
+      ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Wood",
+          "votes": 20
+        },
+        {
+          "element": "Metal",
+          "votes": 20
+        },
+        {
+          "element": "Water",
+          "votes": 60
+        }
+      ],
       "type": "element_scent",
-      "image": "/assets/img/products/scents/S02.jpg",
+      "image": "/assets/img/uploads/s02.jpg",
       "element": "Water",
       "description": "A crisp, mineral coastal scent — the crunch of sea salt meets earthy sage for a clean, breezy, unisex signature that feels like a walk along a windswept shoreline."
     },
@@ -455,17 +491,34 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/s03-2.jpg"
+      ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Wood",
+          "votes": 28
+        },
+        {
+          "element": "Metal",
+          "votes": 29
+        },
+        {
+          "element": "Water",
+          "votes": 43
+        }
+      ],
       "type": "element_scent",
-      "image": "/assets/img/products/scents/S03.jpg",
+      "image": "/assets/img/uploads/s03.jpg",
       "element": "Water",
       "description": "A rain-soaked garden in a bottle — sharp green blackcurrant leaf gives way to a lush, dew-kissed rose, settling into a soft musky base. Romantic, referential, and a niche perfumery landmark."
     },
