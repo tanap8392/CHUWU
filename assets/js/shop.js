@@ -52,7 +52,7 @@
       // Shown in the order set at Site Settings → Product card layout.
       const sections = {
         profile: () => (p.profile ? el('p', { class: 'muted', style: 'font-size:0.9rem' }, [text(p.profile)]) : null),
-        family: () => (p.family ? el('p', { class: 'family-line' }, [text(FAMILY_LABEL[p.family] || p.family)]) : null),
+        family: () => (p.families.length ? el('p', { class: 'family-line' }, [text(p.families.map(f => FAMILY_LABEL[f] || f).join(' · '))]) : null),
         element: () => el('div', { class: 'product-tags' }, tagEls),
         mix: () => ChuwuProductUI.elementMix(p),
         description: () => (p.description ? el('p', { class: 'muted', style: 'font-size:0.85rem' }, [text(p.description)]) : null),
@@ -98,7 +98,7 @@
     const status = document.getElementById('filter-status');
 
     const elements = ELEMENTS.filter(e => scents.some(p => p.element === e));
-    const families = Object.keys(FAMILY_LABEL).filter(f => scents.some(p => p.family === f));
+    const families = Object.keys(FAMILY_LABEL).filter(f => scents.some(p => p.families.includes(f)));
     if (!elements.includes(state.element)) state.element = 'all';
     if (!families.includes(state.family)) state.family = 'all';
 
@@ -122,7 +122,7 @@
         b.classList.toggle('active', on);
         b.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
-      const shown = scents.filter(p => (state.element === 'all' || p.element === state.element) && (state.family === 'all' || p.family === state.family));
+      const shown = scents.filter(p => (state.element === 'all' || p.element === state.element) && (state.family === 'all' || p.families.includes(state.family)));
       fill('shop-grid-elements', shown);
 
       const filtered = state.element !== 'all' || state.family !== 'all';

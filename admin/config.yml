@@ -128,10 +128,12 @@ collections:
                     fields:
                       - { label: "Element", name: "element", widget: "select", options: *elements }
                       - { label: "Votes", name: "votes", widget: "number", value_type: "int", min: 0 }
-                  - label: "Scent family"
-                    name: "family"
+                  - label: "Scent families"
+                    name: "families"
                     widget: "select"
-                    hint: "Required — decides which Shop filter this scent appears under, and matches it to the scent-preference question on the Bazi page. Whether customers see it on the card is set in Site Settings → Product card layout."
+                    multiple: true
+                    min: 1
+                    hint: "Required — pick one or more, main family first. The scent appears under each of these Shop filters and matches any of them in the Bazi preference question. Whether customers see them on the card is set in Site Settings → Product card layout."
                     options: &families
                       - { label: "Fresh & Citrus", value: "Fresh" }
                       - { label: "Floral", value: "Floral" }
@@ -481,7 +483,7 @@ collections:
           - label: "Product card layout"
             name: "card_layout"
             widget: "list"
-            hint: "The order of the sections on each element-scent card (Shop and Bazi recommendations). Drag to reorder; remove a section to hide it on every card. Add \"Scent family\" to show the family to customers."
+            hint: "The order of the sections on each element-scent card (Shop and Bazi recommendations). Drag to reorder; remove a section to hide it on every card. Add \"Scent families\" to show them to customers."
             default: ["profile", "element", "mix", "description", "notes", "similar"]
             field:
               label: "Section"
@@ -489,7 +491,7 @@ collections:
               widget: "select"
               options:
                 - { label: "Scent profile", value: "profile" }
-                - { label: "Scent family", value: "family" }
+                - { label: "Scent families", value: "family" }
                 - { label: "Element tag", value: "element" }
                 - { label: "Element mix bar", value: "mix" }
                 - { label: "Description", value: "description" }

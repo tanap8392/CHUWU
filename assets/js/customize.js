@@ -238,8 +238,8 @@
   }
 
   function scentCard(scent, { supporting, preferredFamily } = {}) {
-    const isFamilyMatch = preferredFamily && scent.family === preferredFamily;
-    const family = ChuwuNotes.FAMILIES.find(f => f.key === scent.family);
+    const isFamilyMatch = !!preferredFamily && scent.families.includes(preferredFamily);
+    const familyLabels = scent.families.map(k => (ChuwuNotes.FAMILIES.find(f => f.key === k) || { label: k }).label);
     const price = el('span', { class: 'scent-price' }, []);
     const picker = ChuwuProductUI.sizePicker(scent, entry => ChuwuProductUI.renderPrice(price, entry));
     ChuwuProductUI.renderPrice(price, picker.selected());
@@ -254,8 +254,8 @@
           ? el('span', { class: 'family-tag' + (note ? ' family-match' : '') }, [document.createTextNode((scent.profile || '') + note)])
           : null;
       },
-      family: () => (family || isFamilyMatch
-        ? el('span', { class: 'family-tag' + (isFamilyMatch ? ' family-match' : '') }, [document.createTextNode((family ? family.label : scent.family) + (isFamilyMatch ? ' · your preference' : ''))])
+      family: () => (familyLabels.length
+        ? el('span', { class: 'family-tag' + (isFamilyMatch ? ' family-match' : '') }, [document.createTextNode(familyLabels.join(' · ') + (isFamilyMatch ? ' · your preference' : ''))])
         : null),
       element: () => null,
       mix: () => ChuwuProductUI.elementMix(scent),

@@ -128,7 +128,10 @@
     {
       "notes": "Top: Aldehydes, Lemon, Neroli, Bergamot, Mandarin Orange, Lime, Orange\nMiddle: Ylang-Ylang, Jasmine, May Rose\nBase: White Musk, Orris Root, Cedar, Vanilla",
       "badge": "",
-      "family": "Fresh",
+      "families": [
+        "Fresh",
+        "Floral"
+      ],
       "profile": "Crisp Citrus & Soft Florals",
       "inspired_by": "Chanel No 5 L’Eau",
       "code": "J01",
@@ -162,7 +165,10 @@
     {
       "notes": "Top: Bergamot, Mandarin Orange, Italian Lemon, Pink Pepper\nMiddle: Orange Blossom, Cypress, Pear, Black Pepper\nBase: Neroli, White Musk",
       "badge": "",
-      "family": "Fresh",
+      "families": [
+        "Fresh",
+        "Floral"
+      ],
       "profile": "Green Neroli & Bright Citrus",
       "inspired_by": "Van Cleef & Arpels Néroli Amara",
       "code": "J02",
@@ -208,7 +214,10 @@
     {
       "notes": "Top: Bergamot, Lemon, Petitgrain\nMiddle: Neroli, Orange Blossom\nBase: Amberwood, White Musk",
       "badge": "",
-      "family": "Fresh",
+      "families": [
+        "Fresh",
+        "Floral"
+      ],
       "profile": "Airy Citrus & Orange Blossom",
       "inspired_by": "Tom Ford Neroli Portofino Acqua",
       "code": "J03",
@@ -254,7 +263,10 @@
     {
       "notes": "Top: Tea, Bergamot, Neroli, Cardamom\nMiddle: Osmanthus, Jasmine Sambac, Fig\nBase: Mate, Musk, Violet, Cedarwood",
       "badge": "",
-      "family": "Floral",
+      "families": [
+        "Floral",
+        "Fresh"
+      ],
       "profile": "Soft Tea & Golden Osmanthus",
       "inspired_by": "Memo Inlé",
       "code": "M01",
@@ -300,7 +312,10 @@
     {
       "notes": "Top: Lavender, Lemon, Bergamot, Rosemary, Mint, Lemon Verbena, Basil, Artemisia\nMiddle: Juniper, Carnation, Cinnamon, Wormwood, Coriander, Angelica, Jasmine\nBase: Oakmoss, Pine, Fir, Leather, Vetiver, Patchouli, Sandalwood, Cedar, Amber, Resins",
       "badge": "",
-      "family": "Fresh",
+      "families": [
+        "Fresh",
+        "Woody"
+      ],
       "profile": "Fresh Herbs & Deep Woods",
       "inspired_by": "Guy Laroche Drakkar Noir",
       "code": "M02",
@@ -350,7 +365,10 @@
     {
       "notes": "Top: Truffle, Black Currant, Ylang-Ylang, Jasmine, Bergamot, Mandarin\nMiddle: Black Orchid, Spices, Fruity Notes, Lotus\nBase: Dark Chocolate, Patchouli, Vanilla, Incense, Amber, Sandalwood, Vetiver, Musk",
       "badge": "",
-      "family": "Woody",
+      "families": [
+        "Woody",
+        "Floral"
+      ],
       "profile": "Dark Orchid & Rich Woods",
       "inspired_by": "Tom Ford Black Orchid",
       "code": "M03",
@@ -400,7 +418,10 @@
     {
       "notes": "Top: Bergamot, Lemon\nMiddle: Seaweed, Calone, Hedione\nBase: Musk, Ambroxan, Cedar",
       "badge": "",
-      "family": "Musky",
+      "families": [
+        "Musky",
+        "Fresh"
+      ],
       "profile": "Deep Sea & Mineral Musk",
       "inspired_by": "Orto Parisi Megamare",
       "code": "S01",
@@ -442,7 +463,10 @@
     {
       "notes": "Top: Ambrette Seeds\nMiddle: Sea Salt, Mineral Notes\nBase: Sage",
       "badge": "",
-      "family": "Fresh",
+      "families": [
+        "Fresh",
+        "Woody"
+      ],
       "profile": "Sea Salt & Earthy Sage",
       "inspired_by": "Jo Malone Sea Salt & Wood Sage",
       "code": "S02",
@@ -484,7 +508,10 @@
     {
       "notes": "Top: Blackcurrant Leaf, Cassis, Bergamot, Mandarin Orange, Petitgrain\nMiddle: Bulgarian Rose\nBase: Ambergris, Musk",
       "badge": "",
-      "family": "Floral",
+      "families": [
+        "Floral",
+        "Fresh"
+      ],
       "profile": "Dewy Rose & Green Cassis",
       "inspired_by": "Diptyque L’Ombre Dans L’Eau",
       "code": "S03",
@@ -525,7 +552,10 @@
     {
       "notes": "Top: Ginger, Ginger Flower, Cardamom, Pepper, Coriander\nMiddle: Water Notes, Floral Notes, White Ginger Lily\nBase: Citruses, Vetiver",
       "badge": "",
-      "family": "Woody",
+      "families": [
+        "Woody",
+        "Fresh"
+      ],
       "profile": "Fresh Ginger & Rainy Greens",
       "inspired_by": "Hermès Un Jardin Après la Mousson",
       "code": "H01",
@@ -571,7 +601,10 @@
     {
       "notes": "Top: Plum, Wild Berries, Coriander, Anise, Brazilian Rosewood\nMiddle: Tuberose, Incense, White Honey, Opoponax, Cinnamon, Carnation, Jasmine, Orange Flower, Rose\nBase: Vanilla, Amber, Sandalwood, Heliotrope, Musk, Vetiver, Cedar",
       "badge": "",
-      "family": "Sweet",
+      "families": [
+        "Sweet",
+        "Floral"
+      ],
       "profile": "Dark Plum & Spiced Florals",
       "inspired_by": "Dior Poison",
       "code": "H02",
@@ -621,7 +654,10 @@
     {
       "notes": "Top: Whiskey\nMiddle: Spicy Notes, Cinnamon, Coriander\nBase: Tobacco, Agarwood (Oud), Incense, Sandalwood, Patchouli, Benzoin, Vanilla, Cedar",
       "badge": "",
-      "family": "Woody",
+      "families": [
+        "Woody",
+        "Sweet"
+      ],
       "profile": "Smoky Oud & Warm Tobacco",
       "inspired_by": "Tom Ford Tobacco Oud",
       "code": "H03",
@@ -663,7 +699,10 @@
     {
       "notes": "Top: Coconut Milk, Beeswax, Black Licorice\nMiddle: Bitter Almond, Benzoin, Vanilla\nBase: Sandalwood, Guaiac Wood, Tonka Bean, Musk",
       "badge": "",
-      "family": "Sweet",
+      "families": [
+        "Sweet",
+        "Woody"
+      ],
       "profile": "Creamy Vanilla & Soft Woods",
       "inspired_by": "Serge Lutens Un Bois Vanille",
       "code": "T01",
@@ -705,7 +744,10 @@
     {
       "notes": "Top: Lavender, Clary Sage\nMiddle: Leather, Bitter Almond, Vanilla, Orris\nBase: Leather, Tonka Bean, Cashmeran, White Woods, Amber",
       "badge": "",
-      "family": "Musky",
+      "families": [
+        "Musky",
+        "Woody"
+      ],
       "profile": "Soft Leather & Bitter Almond",
       "inspired_by": "Tom Ford Fucking Fabulous",
       "code": "T02",
@@ -747,7 +789,9 @@
     {
       "notes": "Top: Rum\nMiddle: Dark Chocolate, Coffee, Almond, Heliotrope\nBase: Caramel, Sugar Cane, Sandalwood, Vanilla, Tonka, Vetiver",
       "badge": "",
-      "family": "Sweet",
+      "families": [
+        "Sweet"
+      ],
       "profile": "Dark Chocolate & Rum",
       "inspired_by": "Kilian Black Phantom",
       "code": "T03",

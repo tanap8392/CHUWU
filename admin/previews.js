@@ -106,7 +106,8 @@
       case 'profile': return p.profile ? h('p', { key, className: 'muted', style: { fontSize: '0.9rem' } }, p.profile) : null;
       case 'family': {
         const FAMILY = { Fresh: 'Fresh & Citrus', Woody: 'Woody & Spicy', Sweet: 'Sweet & Gourmand', Musky: 'Musky & Sensual' };
-        return p.family ? h('p', { key, className: 'family-line' }, FAMILY[p.family] || p.family) : null;
+        const fams = [].concat(p.families || p.family || []).filter(Boolean);
+        return fams.length ? h('p', { key, className: 'family-line' }, fams.map(f => FAMILY[f] || f).join(' · ')) : null;
       }
       case 'element': return elements.length ? h('div', { key, className: 'product-tags' }, elementTags(elements)) : null;
       case 'mix': return mixBar(p.element_mix);

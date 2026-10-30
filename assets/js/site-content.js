@@ -44,9 +44,13 @@
         .map(m => ({ element: m.element, votes: Number(m.votes) || 0 }))
         .filter(m => m.element && m.votes > 0);
       const main = mix.length ? mix.reduce((a, b) => (b.votes > a.votes ? b : a)).element : p.element;
+      // Scent families (one or more). Older entries stored a single `family`.
+      const families = [...new Set([].concat(p.families || p.family || []).filter(Boolean))];
       return {
         ...p,
         id: p.id || p.code,
+        families,
+        family: families[0] || '',
         element: main,
         element_mix: mix,
         sizes,

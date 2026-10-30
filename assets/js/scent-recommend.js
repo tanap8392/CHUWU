@@ -7,8 +7,9 @@
   // rest — same soft-ranking behaviour as recommend.js's rankByFamily, applied to the fixed catalog.
   function rankByFamily(scents, preferredFamily) {
     if (!preferredFamily) return scents.slice();
-    const matched = scents.filter(s => s.family === preferredFamily);
-    const rest = scents.filter(s => s.family !== preferredFamily);
+    const has = s => (s.families || [s.family]).includes(preferredFamily);
+    const matched = scents.filter(has);
+    const rest = scents.filter(s => !has(s));
     return matched.length ? matched.concat(rest) : scents.slice();
   }
 
