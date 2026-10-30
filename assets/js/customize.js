@@ -194,12 +194,56 @@
       lackingEl.appendChild(tag);
     });
 
+    renderCalc(result);
+
     const analysis = document.getElementById('analysis-text');
     const lackList = result.lackingElements.join(' and ');
     analysis.textContent =
       `Your chart is anchored by a ${result.dayMaster.element} Day Master, but shows the least ` +
       `${lackList} energy among the Five Elements. Bringing in ${lackList} through scent can help ` +
       `restore balance to the areas of life that element governs.`;
+  }
+
+  // "How we calculate this": the customer's 8 characters and the points each gives, then the totals.
+  // Built from the same pillars and hidden-stem weights the engine used for the bars.
+  function renderCalc(result) {
+    const wrap = document.getElementById('calc-table');
+    wrap.innerHTML = '';
+    const fmt = n => (Math.round(n * 10) / 10).toFixed(1);
+    const pts = (element, n) => el('span', { class: 'calc-pt' }, [
+      el('i', { style: `background:${ELEMENT_COLOR[element]}` }, []),
+      document.createTextNode(`${element} ${fmt(n)}`)
+    ]);
+    const row = (pillar, kind, chars, points) => el('tr', {}, [
+      el('td', { class: 'calc-pillar' }, [document.createTextNode(pillar)]),
+      el('td', { class: 'calc-kind' }, [document.createTextNode(kind)]),
+      el('td', { class: 'calc-char' }, chars),
+      el('td', {}, [el('div', { class: 'calc-points' }, points)])
+    ]);
+    const rows = [];
+    ['year', 'month', 'day', 'hour'].forEach(key => {
+      const p = result.pillars[key];
+      const name = key.charAt(0).toUpperCase() + key.slice(1);
+      rows.push(row(name, 'Stem 天干', [document.createTextNode(p.stem)], [pts(p.stemElement, 1)]));
+      const hidden = p.hiddenStems || [];
+      rows.push(row('', 'Branch 地支', [
+        document.createTextNode(p.branch),
+        el('small', {}, [document.createTextNode(' hides ' + hidden.map(h => h.stem).join(' · '))])
+      ], hidden.map(h => pts(h.element, h.weight))));
+    });
+    const order = result.elementOrder;
+    const total = order.reduce((n, e) => n + result.elementTally[e], 0);
+    rows.push(el('tr', { class: 'calc-total' }, [
+      el('td', { colspan: '4' }, [
+        el('div', { class: 'calc-total-label' }, [document.createTextNode(`Total · ${fmt(total)} points`)]),
+        el('div', { class: 'calc-points' }, order.map(e => {
+          const node = pts(e, result.elementTally[e]);
+          if (result.lackingElements.includes(e)) node.classList.add('lacking');
+          return node;
+        }))
+      ])
+    ]));
+    wrap.appendChild(el('table', { class: 'calc-table' }, [el('tbody', {}, rows)]));
   }
 
   const STOCK_ORDER = { in_stock: 0, low_stock: 1, sold_out: 2 };

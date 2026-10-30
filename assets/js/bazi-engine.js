@@ -283,7 +283,12 @@
       branch: EARTHLY_BRANCHES[branchIndex],
       stemElement: STEM_ELEMENT[stemIndex],
       branchElement: BRANCH_ELEMENT[branchIndex],
-      label: HEAVENLY_STEMS[stemIndex] + EARTHLY_BRANCHES[branchIndex]
+      label: HEAVENLY_STEMS[stemIndex] + EARTHLY_BRANCHES[branchIndex],
+      // The branch's hidden stems (藏干) with the share of its point each one carries — the same
+      // weights the element tally below uses (shown on the page under "How we calculate this").
+      hiddenStems: HIDDEN_STEMS[branchIndex].map(function (pair) {
+        return { stem: HEAVENLY_STEMS[pair[0]], element: STEM_ELEMENT[pair[0]], weight: pair[1] };
+      })
     };
   }
 

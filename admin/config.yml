@@ -322,6 +322,15 @@ collections:
               - { label: "Eyebrow", name: "eyebrow", widget: "string" }
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Intro text", name: "lede", widget: "text" }
+          - label: "\"How we calculate this\" explainer"
+            name: "calc"
+            widget: "object"
+            collapsed: true
+            hint: "Opens under the Five Element Balance bars. The table of the customer's own 8 characters and points is filled in automatically between the intro and the note."
+            fields:
+              - { label: "Link text", name: "label", widget: "string" }
+              - { label: "Intro", name: "intro", widget: "text", hint: "Press Enter for a new paragraph." }
+              - { label: "Closing note", name: "note", widget: "text" }
           - label: "Recommended scents section"
             name: "recommend"
             widget: "object"

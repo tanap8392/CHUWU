@@ -8,6 +8,11 @@
     "title": "Discover the Element You're Missing",
     "lede": "Enter your birth date and time (as precisely as you know it) to calculate your Bazi (八字) — your Four Pillars of Destiny — and see which of the Five Elements your chart could use more of."
   },
+  "calc": {
+    "label": "How we calculate this",
+    "intro": "Your chart is made of 8 characters — a Heavenly Stem (天干) and an Earthly Branch (地支) for each of your year, month, day and hour of birth. Each character is worth one point, so your five numbers always add up to 8.\nA Heavenly Stem gives its full point to its own element. An Earthly Branch holds one to three hidden stems (藏干), so its point is shared between them — mostly to the main one (0.6, or 0.7 when there are two), the rest to the others (0.3 and 0.1). Here's how your own chart adds up:",
+    "note": "The element with the fewest points is the one your chart is lacking most. Hidden-stem weightings differ slightly between Bazi schools, and a full professional reading also weighs the season, clashes and combinations between characters — this count is a simple, transparent guide to your elemental balance."
+  },
   "recommend": {
     "eyebrow": "Recommended For You",
     "title": "Scents for Your Missing Element",
