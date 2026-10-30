@@ -255,7 +255,7 @@
           el('span', { class: 'scent-code' }, [document.createTextNode(scent.code)])
         ]),
         familyTag,
-        ...(scent.inspired_by ? [el('p', { class: 'scent-inspired' }, [document.createTextNode('Inspired by ' + scent.inspired_by)])] : []),
+        ...(scent.inspired_by ? [el('p', { class: 'scent-inspired' }, [document.createTextNode('Similar in scent to ' + scent.inspired_by)])] : []),
         ...(scent.description ? [el('p', { class: 'scent-desc' }, [document.createTextNode(scent.description)])] : []),
         el('p', { class: 'scent-notes' }, [document.createTextNode(scent.notes || '')]),
         ...(picker.node ? [picker.node] : []),

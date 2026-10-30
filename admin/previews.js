@@ -71,7 +71,7 @@
         p.type === 'element_scent' ? h('p', { key: 'fa', className: 'muted', style: { fontSize: '0.9rem' } }, [p.profile, p.family].filter(Boolean).join(' · ')) : null,
         elements.length ? h('div', { key: 'tags', className: 'product-tags' }, elements.map(e =>
           h('span', { key: e, className: 'tag', style: { background: `var(${ELEMENT_VAR[e]})`, color: '#fff' } }, e))) : null,
-        p.inspired_by ? h('p', { key: 'ib', className: 'muted', style: { fontSize: '0.85rem' } }, 'Inspired by ' + p.inspired_by) : null,
+        p.inspired_by ? h('p', { key: 'ib', className: 'muted', style: { fontSize: '0.85rem' } }, 'Similar in scent to ' + p.inspired_by) : null,
         p.description ? h('p', { key: 'd', className: 'muted', style: { fontSize: '0.85rem' } }, p.description) : null,
         p.notes ? h('div', { key: 'n', className: 'note-line notes-block' }, p.notes) : null,
         sizes.length ? h('div', { key: 'sz', className: 'size-picker' }, sizes.map((s, j) =>

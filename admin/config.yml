@@ -130,7 +130,7 @@ collections:
                       - { label: "Sweet & Gourmand", value: "Sweet" }
                       - { label: "Musky & Sensual", value: "Musky" }
                   - { label: "Scent profile", name: "profile", widget: "string", required: false, hint: "e.g. Floral Aldehyde, Woody Spicy" }
-                  - { label: "Inspired by", name: "inspired_by", widget: "string", required: false, hint: "The perfume it's inspired by. Leave empty to hide the line." }
+                  - { label: "Similar in scent to", name: "inspired_by", widget: "string", required: false, hint: "Shown as \"Similar in scent to …\" on the product. Leave empty to hide the line." }
                   - { label: "Description", name: "description", widget: "text", required: false, hint: "A short write-up shown on the Shop and recommendation cards." }
                   - { label: "Notes", name: "notes", widget: "text", hint: "One line each, e.g. Top: Lemon, Bergamot (Enter) Middle: … (Enter) Base: …" }
                   - label: "Sizes & prices"
