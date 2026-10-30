@@ -130,16 +130,18 @@
       "badge": "",
       "family": "Fresh",
       "profile": "Floral Aldehyde",
-      "inspired_by": "",
+      "inspired_by": "Chanel No 5 L’Eau",
       "code": "J01",
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
       "gallery": [
@@ -149,7 +151,7 @@
       "type": "element_scent",
       "image": "/assets/img/uploads/j01.jpg",
       "element": "Metal",
-      "description": "Similar with Chanel No 5 L’Eau\n\nThe purest aldehydic-citrus expression in the collection — crisp, soapy, and unmistakably classic, with no dilution to soften its iconic \"clean\" signature."
+      "description": "The purest aldehydic-citrus expression in the collection — crisp, soapy, and unmistakably classic, with no dilution to soften its iconic \"clean\" signature."
     },
     {
       "notes": "Top: Bergamot, Mandarin Orange, Italian Lemon, Pink Pepper\nMiddle: Orange Blossom, Cypress, Pear, Black Pepper\nBase: Neroli, White Musk",
