@@ -9,9 +9,11 @@
 //   3. asks Claude to write that part of the reading from those facts, as JSON;
 //   4. caches the result, so the same birth details always get the same reading (and cost once).
 //
-// Needs the ANTHROPIC_API_KEY environment variable (Netlify → Project configuration →
-// Environment variables). Without it, emails are still saved and the page says readings are
-// being set up.
+// Claude is reached through Netlify's AI Gateway, which sets ANTHROPIC_API_KEY and
+// ANTHROPIC_BASE_URL for functions automatically and bills usage as Netlify credits
+// (US$1 = 180 credits). Setting your own ANTHROPIC_API_KEY in Netlify switches to direct
+// Anthropic billing. If neither is available, emails are still saved and the page says readings
+// are being set up.
 import Anthropic from '@anthropic-ai/sdk';
 import { getStore } from '@netlify/blobs';
 import { createHash } from 'node:crypto';
@@ -19,7 +21,8 @@ import '../../assets/js/bazi-engine.js';
 import '../../assets/js/cities-data.js';
 import '../../assets/js/bazi-reading.js';
 
-const PROMPT_VERSION = 1;          // bump to regenerate every cached reading after changing the prompts
+// Bump a part's number to regenerate its cached readings after changing its prompt.
+const PROMPT_VERSIONS = { profile: 1, luck: 1, year: 2, months: 1, next: 1 };
 const MODEL = 'claude-opus-5';
 const LIMIT_PER_IP_PER_DAY = 12;   // fresh (uncached) sections — 4 full readings
 const LIMIT_PER_EMAIL_PER_DAY = 9; // 3 full readings
@@ -85,16 +88,23 @@ const SECTIONS = {
   year: {
     effort: 'low',
     pick: f => ({ dayMaster: f.dayMaster, zodiac: f.zodiac, strength: f.strength, lacking: f.lacking, yearAhead: f.yearAhead, currentLuckPillar: f.luck.pillars.find(p => p.current) || null }),
-    task: `Write the "Year ahead" part of the reading for the given year:
+    task: `Write the "Year ahead" part of the reading for the given year (the month-by-month part is written separately):
 - overview: one paragraph (about 110 words) on how the year's pillar meets this chart: its Ten Gods, elements and any clash or harmony with the chart's branches, and how it sits within the current luck pillar.
 - themes: four items, area exactly one of Career, Wealth, Relationships, Wellbeing; text two sentences each. Wellbeing means rest, energy and balance — never illness.
-- months: one item for each of the twelve solar months, in order. pillar and dates exactly as given; title three to five words; text two sentences (about 35 words) from that month's Ten Gods, elements and interactions.
 - scent_tip: two sentences. CHUWU's scent recommendations add the chart's least-present element (lacking); say which, and if the favourable elements differ, describe them as further elements to lean on during the year.`,
     schema: obj({
       overview: str,
       themes: list(obj({ area: str, text: str })),
-      months: list(obj({ pillar: str, dates: str, title: str, text: str })),
       scent_tip: str
+    })
+  },
+  months: {
+    effort: 'low',
+    pick: f => ({ dayMaster: f.dayMaster, strength: f.strength, months: f.yearAhead.months }),
+    task: `Write the month-by-month part of the year reading:
+- months: one item for each of the twelve solar months, in order. pillar and dates exactly as given; title three to five words; text two sentences (about 30 words) from that month's Ten Gods, elements (favourable or not) and interactions.`,
+    schema: obj({
+      months: list(obj({ pillar: str, dates: str, title: str, text: str }))
     })
   }
 };
@@ -138,11 +148,9 @@ async function write(sectionKey, facts) {
   const section = SECTIONS[sectionKey];
   const client = new Anthropic({ timeout: 55000, maxRetries: 0 }); // Netlify allows 60 s per request
   const task = section.task.replace('${direction}', facts.luck.direction);
-  const response = await client.beta.messages.create({
+  const response = await client.messages.create({
     model: MODEL,
     max_tokens: 16000,
-    betas: ['server-side-fallback-2026-07-01'],
-    fallbacks: 'default', // if a safety classifier declines, Anthropic re-runs it on a fallback model
     thinking: { type: 'adaptive' },
     output_config: { effort: section.effort, format: { type: 'json_schema', schema: section.schema } },
     system: SYSTEM,
@@ -182,7 +190,7 @@ export default async (req) => {
 
   // 2. Cached reading?
   const readings = getStore({ name: 'readings', consistency: 'strong' });
-  const key = sha(JSON.stringify({ v: PROMPT_VERSION, section: v.section, year, date: v.date, time: v.time, place: v.place, gender: v.gender }));
+  const key = sha(JSON.stringify({ v: PROMPT_VERSIONS[v.section], section: v.section, year, date: v.date, time: v.time, place: v.place, gender: v.gender }));
   const cached = await readings.get(key, { type: 'json' });
   if (cached) return json(200, { section: v.section, year, reading: cached.reading, cached: true });
 
@@ -203,7 +211,7 @@ export default async (req) => {
     await readings.setJSON(key, { reading, created_at: now, model: MODEL });
     return json(200, { section: v.section, year, reading });
   } catch (e) {
-    if (e instanceof Anthropic.RateLimitError) return json(503, { error: 'busy' });
+    if (e instanceof Anthropic.RateLimitError) return json(503, { error: 'busy' }); // incl. the AI Gateway's per-minute credit limit
     if (e instanceof Anthropic.AuthenticationError) return json(503, { error: 'not_configured' });
     if (e instanceof Anthropic.APIError) { console.error('Anthropic', e.status, e.message); return json(502, { error: 'failed' }); }
     console.error(e);

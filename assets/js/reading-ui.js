@@ -9,7 +9,7 @@
    Texts come from content/customize.json → reading (Page Content → Bazi Reading Page). */
 (function (root) {
   const API = '/.netlify/functions/bazi-reading';
-  const BASE_SECTIONS = ['profile', 'luck', 'year'];
+  const BASE_SECTIONS = ['profile', 'luck', 'year', 'months'];
 
   // The next-year brief shows from the start month (Page Content → Bazi Reading Page → "Next-year
   // preview starts", default November) until the new Bazi year begins at 立春 (about 4 February),
@@ -47,7 +47,7 @@
     const y = sg.getUTCFullYear();
     return sg.getUTCMonth() > 1 || (sg.getUTCMonth() === 1 && sg.getUTCDate() >= 4) ? y : y - 1;
   }
-  const cacheKey = gender => `chuwu_reading_v1:${current.birth.date}|${current.birth.time}|${current.birth.place}|${gender}|${current.year}`;
+  const cacheKey = gender => `chuwu_reading_v2:${current.birth.date}|${current.birth.time}|${current.birth.place}|${gender}|${current.year}`;
 
   // ---------------------------------------------------------------- free preview
   function renderTeaser() {
@@ -113,12 +113,6 @@
     return [
       ...paragraphs(r.overview),
       el('div', { class: 'reading-themes' }, (r.themes || []).map(x => el('div', { class: 'theme-card' }, [el('h4', {}, [x.area]), el('p', {}, [x.text])]))),
-      el('h4', {}, ['Month by month']),
-      el('div', { class: 'reading-months' }, (r.months || []).map(m => el('div', { class: 'month-card' }, [
-        el('div', { class: 'month-head' }, [el('span', { class: 'month-pillar' }, [m.pillar]), el('span', { class: 'month-dates' }, [m.dates])]),
-        el('div', { class: 'month-title' }, [m.title]),
-        el('p', {}, [m.text])
-      ]))),
       el('div', { class: 'reading-callout' }, [
         el('h4', {}, ['Your scent for the year']),
         ...paragraphs(r.scent_tip),
@@ -137,7 +131,14 @@
       ])))
     ];
   }
-  const RENDER = { profile: renderProfile, luck: renderLuck, year: renderYear, next: renderNext };
+  function renderMonths(r) {
+    return [el('div', { class: 'reading-months' }, (r.months || []).map(m => el('div', { class: 'month-card' }, [
+      el('div', { class: 'month-head' }, [el('span', { class: 'month-pillar' }, [m.pillar]), el('span', { class: 'month-dates' }, [m.dates])]),
+      el('div', { class: 'month-title' }, [m.title]),
+      el('p', {}, [m.text])
+    ])))];
+  }
+  const RENDER = { profile: renderProfile, luck: renderLuck, year: renderYear, months: renderMonths, next: renderNext };
 
   function fill(key, reading) {
     const body = document.querySelector(`#reading-${key} .reading-body`);
@@ -163,7 +164,8 @@
     out.replaceChildren(...[
       sectionShell('profile', 'Who You Are', 'Day Master & Ten Gods'),
       sectionShell('luck', 'Your Luck Pillars 大运', 'Ten-year chapters'),
-      sectionShell('year', `Your ${year} Year Ahead`, 'Year & month by month 流年流月'),
+      sectionShell('year', `Your ${year} Year Ahead`, 'The year 流年'),
+      sectionShell('months', `${year} Month by Month`, 'Solar months 流月'),
       nextYearOpen() ? sectionShell('next', `Looking Ahead to ${year + 1}`, nextYearLabel(year + 1)) : null,
       el('div', { class: 'reading-actions' }, [el('button', { type: 'button', class: 'btn', id: 'reading-print' }, ['Save or print my reading'])])
     ].filter(Boolean));
@@ -174,21 +176,24 @@
 
     const saved = stored || {};
     const save = () => storage(s => s.setItem(cacheKey(details.gender), JSON.stringify(saved)));
-    sections().forEach(function load(key) {
+    sections().forEach(key => {
       if (saved[key]) { fill(key, saved[key]); return; }
-      fetch(API, {
+      const attempt = tries => fetch(API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...details, ...current.birth, section: key })
       })
-        .then(r => r.json().then(data => ({ ok: r.ok, status: r.status, data })))
+        .then(r => r.json().then(data => ({ ok: r.ok, status: r.status, data }), () => ({ ok: false, status: r.status, data: {} })))
+        .catch(() => ({ ok: false, status: 0, data: {} }))
         .then(({ ok, status, data }) => {
           if (ok) { saved[key] = data.reading; save(); fill(key, data.reading); return; }
-          if (data.error === 'not_configured') fail(key, t('not_ready', 'Free readings are launching very soon — we’ve saved your email and will send yours as soon as they’re ready.'));
-          else if (status === 429 || status === 400) fail(key, data.error);
-          else fail(key, 'We couldn’t write this part of your reading just now.', () => startReading(details, saved));
-        })
-        .catch(() => fail(key, 'We couldn’t reach the reading service.', () => startReading(details, saved)));
+          if (data.error === 'not_configured') { fail(key, t('not_ready', 'Free readings are launching very soon — we’ve saved your email and will send yours as soon as they’re ready.')); return; }
+          if (status === 400 || status === 429) { fail(key, data.error); return; }
+          // Temporary problem (timeout, busy, network): try once more on its own before asking.
+          if (tries < 1) { setTimeout(() => attempt(tries + 1), 2500); return; }
+          fail(key, 'We couldn’t write this part of your reading just now.', () => startReading(details, saved));
+        });
+      attempt(0);
     });
   }
 
