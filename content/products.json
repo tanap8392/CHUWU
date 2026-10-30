@@ -532,17 +532,39 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/h01-2.jpg"
+      ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Metal",
+          "votes": 11
+        },
+        {
+          "element": "Wood",
+          "votes": 22
+        },
+        {
+          "element": "Fire",
+          "votes": 56
+        },
+        {
+          "element": "Water",
+          "votes": 11
+        }
+      ],
       "type": "element_scent",
-      "image": "/assets/img/products/scents/H01.jpg",
+      "image": "/assets/img/uploads/h01.jpg",
       "element": "Fire",
       "description": "A \"wet garden\" fragrance — spicy ginger and cardamom over a watery, melon-like freshness, closing on clean vetiver. Light, unisex, effortlessly summery."
     },
@@ -556,17 +578,43 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/h02-2.jpg"
+      ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Metal",
+          "votes": 5
+        },
+        {
+          "element": "Wood",
+          "votes": 30
+        },
+        {
+          "element": "Fire",
+          "votes": 40
+        },
+        {
+          "element": "Earth",
+          "votes": 20
+        },
+        {
+          "element": "Water",
+          "votes": 5
+        }
+      ],
       "type": "element_scent",
-      "image": "/assets/img/products/scents/H02.jpg",
+      "image": "/assets/img/uploads/h02.jpg",
       "element": "Fire",
       "description": "The iconic '80s power scent — dark plum and spice open into an intoxicating white-floral heart, grounded by warm amber and musk. Bold, unapologetic, unforgettable."
     },
@@ -580,17 +628,35 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/h03-2.jpg"
+      ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Wood",
+          "votes": 33
+        },
+        {
+          "element": "Fire",
+          "votes": 50
+        },
+        {
+          "element": "Earth",
+          "votes": 17
+        }
+      ],
       "type": "element_scent",
-      "image": "/assets/img/products/scents/H03.jpg",
+      "image": "/assets/img/uploads/h03.jpg",
       "element": "Fire",
       "description": "A boozy cigar-lounge fragrance — whiskey and warm spice open into a smoky tobacco-oud base. Dark, opulent, and deeply masculine."
     },
@@ -604,17 +670,35 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/t01-2.jpg"
+      ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Wood",
+          "votes": 20
+        },
+        {
+          "element": "Earth",
+          "votes": 70
+        },
+        {
+          "element": "Water",
+          "votes": 10
+        }
+      ],
       "type": "element_scent",
-      "image": "/assets/img/products/scents/T01.jpg",
+      "image": "/assets/img/uploads/t01.jpg",
       "element": "Earth",
       "description": "A rich, smoky-sweet vanilla built on real wood rather than sugar — creamy coconut and warm beeswax deepen into a resinous, almond-tinged base. Gourmand for those who find candy-vanilla too simple."
     },
@@ -628,17 +712,35 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/t02-2.jpg"
+      ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Wood",
+          "votes": 27
+        },
+        {
+          "element": "Fire",
+          "votes": 9
+        },
+        {
+          "element": "Earth",
+          "votes": 64
+        }
+      ],
       "type": "element_scent",
-      "image": "/assets/img/products/scents/T02.jpg",
+      "image": "/assets/img/uploads/t02.jpg",
       "element": "Earth",
       "description": "A cool, confident leather fragrance — herbal lavender meets soft almond and iris, resting on a warm, ambery leather base. Sleek, statement-making, unapologetically bold."
     },
@@ -652,17 +754,35 @@
       "sizes": [
         {
           "size": "10ml",
-          "price": 24.9
+          "price": 19.9,
+          "compare_at_price": 24.9
         },
         {
           "size": "30ml",
-          "price": 49.9
+          "price": 49.9,
+          "compare_at_price": 59.9
         }
       ],
-      "gallery": [],
+      "gallery": [
+        "/assets/img/uploads/t03-2.jpg"
+      ],
       "status": "coming_soon",
+      "element_mix": [
+        {
+          "element": "Wood",
+          "votes": 12
+        },
+        {
+          "element": "Fire",
+          "votes": 25
+        },
+        {
+          "element": "Earth",
+          "votes": 63
+        }
+      ],
       "type": "element_scent",
-      "image": "/assets/img/products/scents/T03.jpg",
+      "image": "/assets/img/uploads/t03.jpg",
       "element": "Earth",
       "description": "A boozy dessert fragrance — rum and dark chocolate melt into caramel and sandalwood. Indulgent, dark, and dangerously addictive."
     }
