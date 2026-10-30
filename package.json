@@ -1,8 +1,9 @@
 {
   "name": "chuwu-website",
   "private": true,
-  "description": "CHUWU 初·五 — static site; package.json only exists for the Netlify Functions' dependencies.",
+  "description": "CHUWU 初·五 — static site; package.json only exists for the Netlify Functions dependencies.",
   "dependencies": {
-    "@netlify/blobs": "^8.2.0"
+    "@netlify/blobs": "^8.2.0",
+    "@anthropic-ai/sdk": "^1.3.0"
   }
 }

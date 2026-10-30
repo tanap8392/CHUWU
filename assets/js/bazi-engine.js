@@ -279,6 +279,8 @@
   // ---------------------------------------------------------------------
   function makePillar(stemIndex, branchIndex) {
     return {
+      stemIndex: stemIndex,
+      branchIndex: branchIndex,
       stem: HEAVENLY_STEMS[stemIndex],
       branch: EARTHLY_BRANCHES[branchIndex],
       stemElement: STEM_ELEMENT[stemIndex],
@@ -386,6 +388,8 @@
     return {
       pillars: pillars,
       dayMaster: dayMaster,
+      birthJD_UT: birthJD_UT, // birth instant (UT); used for the luck-pillar start age
+      solarLongitude: solarLon,
       elementTally: tally,
       lackingElements: lackingElements,
       elementOrder: ELEMENT_ORDER.slice()
@@ -403,7 +407,11 @@
       solarApparentLongitude: solarApparentLongitude,
       findSolarTermJD: findSolarTermJD,
       HEAVENLY_STEMS: HEAVENLY_STEMS,
-      EARTHLY_BRANCHES: EARTHLY_BRANCHES
+      EARTHLY_BRANCHES: EARTHLY_BRANCHES,
+      STEM_ELEMENT: STEM_ELEMENT,
+      STEM_YINYANG: STEM_YINYANG,
+      HIDDEN_STEMS: HIDDEN_STEMS,
+      yinMonthStemIndex: yinMonthStemIndex
     }
   };
 

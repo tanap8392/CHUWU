@@ -829,6 +829,16 @@
       "image": "/assets/img/uploads/t03.jpg",
       "element": "Earth",
       "description": "A boozy dessert fragrance — rum and dark chocolate melt into caramel and sandalwood. Indulgent, dark, and dangerously addictive."
+    },
+    {
+      "type": "service",
+      "id": "personal-reading",
+      "name": "Personal Bazi Reading",
+      "description": "A detailed reading of your chart prepared by our team — your questions, your timing. Delivered by email or WhatsApp.",
+      "price": 0,
+      "compare_at_price": null,
+      "image": "",
+      "status": "hidden"
     }
   ]
 }

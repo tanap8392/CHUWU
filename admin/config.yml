@@ -159,6 +159,18 @@ collections:
                   - *gallery
                   - *badge
                   - *status
+              - label: "Service (e.g. Personal Bazi Reading)"
+                name: "service"
+                widget: "object"
+                summary: "{{fields.name}} — {{fields.status}}"
+                fields:
+                  - { label: "ID", name: "id", widget: "string", default: "personal-reading", hint: "Don't change it once on sale." }
+                  - { label: "Name", name: "name", widget: "string", default: "Personal Bazi Reading" }
+                  - { label: "Description", name: "description", widget: "text", required: false, hint: "What the customer gets and how it's delivered." }
+                  - *price
+                  - *compare
+                  - *image
+                  - *status
 
   # ---------------------------------------------------------------- Promotions
   - name: "promotions"
@@ -339,6 +351,27 @@ collections:
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Intro text", name: "lede", widget: "text" }
               - { label: "Small print", name: "explainer", widget: "text" }
+          - label: "Free Bazi reading"
+            name: "reading"
+            widget: "object"
+            collapsed: true
+            hint: "The free AI-written reading unlocked with an email, below the scent recommendations. The paid offer at the end uses the active Service product (Products) if there is one, otherwise a WhatsApp button."
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Intro text", name: "lede", widget: "text" }
+              - { label: "Link under the element bars", name: "jump", widget: "string" }
+              - { label: "Line above the form", name: "unlock", widget: "string" }
+              - { label: "Gender note", name: "gender_note", widget: "string" }
+              - { label: "Marketing consent checkbox", name: "consent", widget: "string" }
+              - { label: "Button", name: "button", widget: "string" }
+              - { label: "Privacy note under the button", name: "privacy_note", widget: "text" }
+              - { label: "While writing", name: "loading", widget: "string" }
+              - { label: "If readings aren't switched on yet", name: "not_ready", widget: "text" }
+              - { label: "Offer title", name: "cta_title", widget: "string" }
+              - { label: "Offer text", name: "cta_text", widget: "text" }
+              - { label: "Offer button (with a Service product on sale)", name: "cta_book_label", widget: "string" }
+              - { label: "Offer button (WhatsApp)", name: "cta_whatsapp_label", widget: "string" }
           - label: "Also balancing section"
             name: "also"
             widget: "object"

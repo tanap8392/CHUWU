@@ -459,6 +459,7 @@
 
     lastBaziResult = result;
     lastBirthPlace = placeVal || 'Not specified';
+    if (window.ChuwuReadingUI) ChuwuReadingUI.show(adjusted, { date: dateVal, time: shichenVal, place: placeVal || '' });
     renderPillars(result);
     renderTally(result);
     const sections = ['results-section'];

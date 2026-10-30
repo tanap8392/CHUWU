@@ -12,7 +12,11 @@
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <a href="/admin/" class="brand"><img src="/assets/img/logo.svg" alt="CHUWU"><span>Orders</span></a>
+      <a href="/admin/" class="brand"><img src="/assets/img/logo.svg" alt="CHUWU"><span id="brand-title">Orders</span></a>
+      <div class="view-switch" role="tablist">
+        <button class="vs active" data-view="orders" role="tab">Orders</button>
+        <button class="vs" data-view="subscribers" role="tab">Subscribers</button>
+      </div>
       <nav>
         <a href="/admin/">Content editor</a>
         <a href="/" target="_blank" rel="noopener">View site ↗</a>
@@ -39,6 +43,19 @@
 
       <section id="list" class="list"></section>
       <p id="empty" class="empty hidden"></p>
+    </div>
+
+    <div id="subs" class="hidden">
+      <section class="stats" id="sub-stats"></section>
+      <section class="toolbar">
+        <p class="muted" style="margin:0">People who unlocked a free Bazi reading. Only email those who ticked “news & offers”.</p>
+        <div class="tools">
+          <input type="search" id="sub-search" placeholder="Search email or name…">
+          <button class="btn" id="sub-export">Export CSV</button>
+        </div>
+      </section>
+      <section id="sub-list" class="list"></section>
+      <p id="sub-empty" class="empty hidden"></p>
     </div>
 
     <p id="loading" class="empty">Loading…</p>

@@ -229,6 +229,7 @@
       <p class="center" style="margin-top:10px">
         <span id="lacking-tags"></span>
       </p>
+      <p class="center" style="margin-top:14px"><a href="#reading-section" class="reading-jump" data-cms="customize.reading.jump">✦ Get your free full Bazi reading</a></p>
       <details class="calc-explainer" id="calc-explainer">
         <summary data-cms="customize.calc.label">How we calculate this</summary>
         <p class="calc-intro" data-cms="customize.calc.intro">Your chart is made of 8 characters — a Heavenly Stem (天干) and an Earthly Branch (地支) for each of your year, month, day and hour of birth. Each character is worth one point, so your five numbers always add up to 8.</p>
@@ -261,6 +262,40 @@
       </div>
       <div class="grid-3" id="also-grid"></div>
     </div>
+  </div>
+</section>
+
+<section id="reading-section" class="alt hidden">
+  <div class="container" style="max-width:920px">
+    <div class="section-head">
+      <p class="eyebrow" data-cms="customize.reading.eyebrow">Your Free Bazi Reading</p>
+      <h2 data-cms="customize.reading.title">Go Deeper Into Your Chart</h2>
+      <p data-cms="customize.reading.lede">Your personality through your Day Master and Ten Gods, your ten-year luck pillars, and the year ahead month by month — written for your chart.</p>
+    </div>
+    <div id="reading-teaser" class="reading-teaser"></div>
+
+    <form id="reading-form" class="reading-form" novalidate>
+      <p class="reading-unlock" data-cms="customize.reading.unlock">Unlock your full reading free — we'll show it here straight away.</p>
+      <div class="field-row">
+        <div class="field"><label for="rd-name">First name <span class="muted" style="text-transform:none;letter-spacing:0">(optional)</span></label><input id="rd-name" name="name" autocomplete="given-name" maxlength="60"></div>
+        <div class="field"><label for="rd-email">Email</label><input id="rd-email" name="email" type="email" autocomplete="email" required></div>
+      </div>
+      <div class="field">
+        <label>Gender</label>
+        <div class="reading-gender">
+          <label class="option-card"><input type="radio" name="gender" value="female"> Female</label>
+          <label class="option-card"><input type="radio" name="gender" value="male"> Male</label>
+        </div>
+        <p class="muted reading-note" data-cms="customize.reading.gender_note">In Bazi, gender sets the direction of your ten-year luck pillars.</p>
+      </div>
+      <label class="reading-consent"><input type="checkbox" name="marketing"> <span data-cms="customize.reading.consent">Send me CHUWU news, new scents and offers (optional — unsubscribe any time).</span></label>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px" data-cms="customize.reading.button">Unlock My Free Reading</button>
+      <p id="reading-form-error" class="form-msg error"></p>
+      <p class="muted reading-note"><span data-cms="customize.reading.privacy_note">We use your birth details to write your reading and keep your email to send you updates you've agreed to.</span> <a href="privacy.html" style="text-decoration:underline">Privacy Policy</a></p>
+    </form>
+
+    <div id="reading-output" class="hidden"></div>
+    <div id="reading-cta" class="reading-cta hidden"></div>
   </div>
 </section>
 
@@ -344,11 +379,13 @@
 <script src="assets/js/scent-recommend.js"></script>
 <script src="assets/js/cities-data.js"></script>
 <script src="assets/js/bazi-engine.js"></script>
+<script src="assets/js/bazi-reading.js"></script>
 <script src="assets/js/site-content.js"></script>
 <script src="assets/js/track.js"></script>
 <script src="assets/js/cart.js"></script>
 <script src="assets/js/cart-ui.js"></script>
 <script src="assets/js/product-ui.js"></script>
+<script src="assets/js/reading-ui.js"></script>
 <script src="assets/js/customize.js"></script>
 <script src="assets/js/main.js"></script>
 </body>

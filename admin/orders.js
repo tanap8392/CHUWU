@@ -52,8 +52,8 @@
     return user.jwt();
   }
 
-  async function api(method, body, qs) {
-    const res = await fetch(API + (qs || ''), {
+  async function api(method, body, qs, base) {
+    const res = await fetch((base || API) + (qs || ''), {
       method,
       headers: { Authorization: 'Bearer ' + (await token()), ...(body ? { 'Content-Type': 'application/json' } : {}) },
       body: body ? JSON.stringify(body) : undefined
@@ -266,6 +266,79 @@
     a.remove();
   }
 
+  // ---------------------------------------------------------------- subscribers
+  // Everyone who unlocked a free Bazi reading (netlify/functions/subscribers.mjs).
+  const SUBS_API = '/.netlify/functions/subscribers';
+  let subs = [];
+  let subQuery = '';
+  let view = 'orders';
+
+  function renderSubs() {
+    const shown = subs.filter(s => !subQuery || [s.email, s.name].join(' ').toLowerCase().includes(subQuery));
+    const optedIn = subs.filter(s => s.marketing).length;
+    const thisMonth = subs.filter(s => (s.created_at || '').slice(0, 7) === new Date().toISOString().slice(0, 7)).length;
+    const stat = (n, label, sub) => el('div', { class: 'stat' }, [el('span', { class: 'n' }, [n]), el('span', { class: 'l' }, [label]), sub ? el('span', { class: 's' }, [sub]) : null]);
+    $('sub-stats').replaceChildren(
+      stat(subs.length, 'Subscribers', 'free readings unlocked'),
+      stat(optedIn, 'Opted in to news', subs.length ? Math.round(100 * optedIn / subs.length) + '% of subscribers' : ''),
+      stat(thisMonth, 'New this month', ''),
+      stat(subs.reduce((n, s) => n + (s.readings || 0), 0), 'Readings', 'including repeat visits')
+    );
+    $('sub-list').replaceChildren(...shown.map(s => {
+      const b = s.birth || {};
+      const del = el('button', { class: 'btn danger', title: 'Delete this subscriber' }, ['Delete']);
+      del.addEventListener('click', async () => {
+        if (!confirm(`Delete ${s.email} and their saved details?`)) return;
+        try { await api('DELETE', null, '?email=' + encodeURIComponent(s.email), SUBS_API); subs = subs.filter(x => x.email !== s.email); renderSubs(); toast('Deleted'); }
+        catch (e) { toast('Couldn\'t delete: ' + e.message); }
+      });
+      return el('div', { class: 'sub-row' }, [
+        el('div', { class: 'email' }, [el('a', { href: 'mailto:' + s.email }, [s.email]), el('small', {}, [s.name || '—'])]),
+        el('div', {}, [fmtDate(s.created_at), el('small', {}, [(s.readings || 0) + ' reading' + (s.readings === 1 ? '' : 's')])]),
+        el('div', { class: 'chart' }, [s.chart ? s.chart.pillars : '—', el('small', {}, [s.chart ? `Day Master ${s.chart.dayMaster} · lacking ${s.chart.lacking}` : ''])]),
+        el('div', {}, [b.date || '—', el('small', {}, [[b.time && b.time + ' block', b.place, b.gender].filter(Boolean).join(' · ')])]),
+        el('div', {}, [el('span', { class: 'optin' + (s.marketing ? '' : ' no') }, [s.marketing ? 'News ✓' : 'No news'])]),
+        del
+      ]);
+    }));
+    $('sub-empty').classList.toggle('hidden', shown.length > 0);
+    $('sub-empty').textContent = subs.length ? 'No subscribers match.' : 'No subscribers yet. They appear here when someone unlocks a free Bazi reading.';
+  }
+
+  async function loadSubs() {
+    $('gate').classList.add('hidden');
+    $('loading').classList.remove('hidden');
+    try {
+      subs = (await api('GET', null, '', SUBS_API)).subscribers || [];
+      $('loading').classList.add('hidden');
+      $('subs').classList.remove('hidden');
+      renderSubs();
+    } catch (e) {
+      if (e.status === 401) showGate('login');
+      else if (e.status === 403) showGate('role', e.data && e.data.email);
+      else showGate('error', e.message);
+    }
+  }
+
+  function exportSubs() {
+    const cols = ['Email', 'Name', 'Joined', 'News opt-in', 'Readings', 'Birth date', 'Time block', 'Place', 'Gender', 'Pillars', 'Day Master', 'Lacking'];
+    const rows = subs.map(s => [s.email, s.name, s.created_at, s.marketing ? 'Yes' : 'No', s.readings, ...(s.birth ? [s.birth.date, s.birth.time, s.birth.place, s.birth.gender] : ['', '', '', '']),
+      ...(s.chart ? [s.chart.pillars, s.chart.dayMaster, s.chart.lacking] : ['', '', ''])]);
+    const esc = v => { const t = String(v == null ? '' : v); return /[",\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
+    const csv = '\ufeff' + [cols].concat(rows).map(r => r.map(esc).join(',')).join('\n');
+    const a = el('a', { href: URL.createObjectURL(new Blob([csv], { type: 'text/csv' })), download: `chuwu-subscribers-${new Date().toISOString().slice(0, 10)}.csv` }, []);
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+
+  function switchView(next) {
+    view = next;
+    document.querySelectorAll('.vs').forEach(b => b.classList.toggle('active', b.dataset.view === next));
+    $('brand-title').textContent = next === 'orders' ? 'Orders' : 'Subscribers';
+    $('app').classList.add('hidden');
+    $('subs').classList.add('hidden');
+    (next === 'orders' ? load : loadSubs)();
+  }
+
   // ---------------------------------------------------------------- load
   async function load() {
     $('gate').classList.add('hidden');
@@ -286,13 +359,16 @@
   function start(user) {
     $('user-email').textContent = user ? user.email : '';
     $('logout').classList.toggle('hidden', !user);
-    if (user) load();
+    if (user) (view === 'orders' ? load : loadSubs)();
     else showGate('login');
   }
 
   fetch('/content/settings.json').then(r => r.json()).then(s => { settings = s; }).catch(() => {});
   $('search').addEventListener('input', e => { query = e.target.value.trim().toLowerCase(); render(); });
   $('refresh').addEventListener('click', load);
+  document.querySelectorAll('.vs').forEach(b => b.addEventListener('click', () => switchView(b.dataset.view)));
+  $('sub-search').addEventListener('input', e => { subQuery = e.target.value.trim().toLowerCase(); renderSubs(); });
+  $('sub-export').addEventListener('click', exportSubs);
   $('export').addEventListener('click', exportCsv);
   $('logout').addEventListener('click', () => netlifyIdentity.logout());
 

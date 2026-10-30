@@ -68,5 +68,11 @@
     });
   }
 
-  root.ChuwuTrack = { addToCart, beginCheckout, purchase };
+  // Someone unlocked the free Bazi reading with their email.
+  function lead() {
+    if (pixel) root.fbq('track', 'Lead', { content_name: 'Free Bazi reading' });
+    if (ga) root.gtag('event', 'generate_lead', { method: 'Free Bazi reading' });
+  }
+
+  root.ChuwuTrack = { addToCart, beginCheckout, purchase, lead };
 })(typeof window !== 'undefined' ? window : globalThis);

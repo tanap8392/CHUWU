@@ -151,7 +151,8 @@
         h('div', { key: 'c', className: 'container', style: { paddingTop: '24px' } }, [
           group('signature', 'Signature blends'),
           group('element_scent', 'Element scents'),
-          group('personalized', 'Personalized blend sizes')
+          group('personalized', 'Personalized blend sizes'),
+          group('service', 'Services (sold from the Bazi page)')
         ])
       ]);
     }

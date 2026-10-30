@@ -29,5 +29,22 @@
     "title": "Compose Your Custom Blend",
     "lede": "Notes highlighted in gold match the element(s) you're lacking; a dark border marks your preferred scent family. Pick 1–2 notes per layer (top, middle, base) — the price only depends on bottle size, not how many notes you choose."
   },
-  "disclaimer": "This reading is offered as a lifestyle and inspirational guide drawing on traditional Five Element (Wu Xing) theory, and is not a substitute for a professional Bazi consultation."
+  "disclaimer": "This reading is offered as a lifestyle and inspirational guide drawing on traditional Five Element (Wu Xing) theory, and is not a substitute for a professional Bazi consultation.",
+  "reading": {
+    "eyebrow": "Your Free Bazi Reading",
+    "title": "Go Deeper Into Your Chart",
+    "lede": "Your personality through your Day Master and Ten Gods, your ten-year luck pillars, and the year ahead month by month — written for your chart.",
+    "jump": "✦ Get your free full Bazi reading",
+    "unlock": "Unlock your full reading free — we'll show it here straight away.",
+    "gender_note": "In Bazi, gender sets the direction of your ten-year luck pillars.",
+    "consent": "Send me CHUWU news, new scents and offers (optional — unsubscribe any time).",
+    "button": "Unlock My Free Reading",
+    "privacy_note": "We use your birth details to write your reading and keep your email to send you updates you've agreed to.",
+    "loading": "Writing your reading — this takes about half a minute…",
+    "not_ready": "Free readings are launching very soon — we've saved your email and will send yours as soon as they're ready.",
+    "cta_title": "Want a Deeper, Personal Reading?",
+    "cta_text": "This free reading is a general guide. For a detailed, personal look at your chart — your questions, your timing — our team can prepare a reading just for you.",
+    "cta_book_label": "Book a Personal Reading",
+    "cta_whatsapp_label": "Ask Us on WhatsApp"
+  }
 }
