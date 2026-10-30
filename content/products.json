@@ -127,15 +127,11 @@
     },
     {
       "notes": "Top: Aldehydes, Lemon, Neroli, Bergamot, Mandarin Orange, Lime, Orange\nMiddle: Ylang-Ylang, Jasmine, May Rose\nBase: White Musk, Orris Root, Cedar, Vanilla",
+      "badge": "",
       "family": "Fresh",
-      "inspired_by": "Chanel No 5 L’Eau",
-      "code": "J01",
-      "status": "coming_soon",
-      "type": "element_scent",
-      "image": "/assets/img/uploads/j01.jpg",
-      "element": "Metal",
       "profile": "Floral Aldehyde",
-      "description": "The purest aldehydic-citrus expression in the collection — crisp, soapy, and unmistakably classic, with no dilution to soften its iconic \"clean\" signature.",
+      "inspired_by": "",
+      "code": "J01",
       "sizes": [
         {
           "size": "10ml",
@@ -149,19 +145,43 @@
       "gallery": [
         "/assets/img/uploads/j01-2.jpg"
       ],
-      "badge": ""
+      "status": "coming_soon",
+      "type": "element_scent",
+      "image": "/assets/img/uploads/j01.jpg",
+      "element": "Metal",
+      "description": "Similar with Chanel No 5 L’Eau\n\nThe purest aldehydic-citrus expression in the collection — crisp, soapy, and unmistakably classic, with no dilution to soften its iconic \"clean\" signature."
     },
     {
       "notes": "Top: Bergamot, Mandarin Orange, Italian Lemon, Pink Pepper\nMiddle: Orange Blossom, Cypress, Pear, Black Pepper\nBase: Neroli, White Musk",
+      "badge": "",
       "family": "Floral",
+      "profile": "Floral Green",
       "inspired_by": "Van Cleef & Arpels Néroli Amara",
       "code": "J02",
+      "sizes": [
+        {
+          "size": "10ml",
+          "price": 24.9
+        },
+        {
+          "size": "30ml",
+          "price": 49.9
+        }
+      ],
+      "gallery": [],
       "status": "coming_soon",
       "type": "element_scent",
       "image": "/assets/img/products/scents/J02.jpg",
       "element": "Metal",
-      "profile": "Floral Green",
-      "description": "A bright, spicy-green citrus — pink pepper and bergamot lead into a pear-sweetened orange blossom heart, closing on warm musky neroli. Fresh, unisex, Mediterranean.",
+      "description": "A bright, spicy-green citrus — pink pepper and bergamot lead into a pear-sweetened orange blossom heart, closing on warm musky neroli. Fresh, unisex, Mediterranean."
+    },
+    {
+      "notes": "Top: Bergamot, Lemon, Petitgrain\nMiddle: Neroli, Orange Blossom\nBase: Amberwood, White Musk",
+      "badge": "",
+      "family": "Citrus",
+      "profile": "Citrus",
+      "inspired_by": "Tom Ford Neroli Portofino Acqua",
+      "code": "J03",
       "sizes": [
         {
           "size": "10ml",
@@ -173,19 +193,19 @@
         }
       ],
       "gallery": [],
-      "badge": ""
-    },
-    {
-      "notes": "Top: Bergamot, Lemon, Petitgrain\nMiddle: Neroli, Orange Blossom\nBase: Amberwood, White Musk",
-      "family": "Citrus",
-      "inspired_by": "Tom Ford Neroli Portofino Acqua",
-      "code": "J03",
       "status": "coming_soon",
       "type": "element_scent",
       "image": "/assets/img/products/scents/J03.jpg",
       "element": "Metal",
-      "profile": "Citrus",
-      "description": "A lighter, breezier neroli — citrus and green petitgrain open into a luminous orange blossom heart, closing on soft amberwood. Sunny, minimalist, easy to wear.",
+      "description": "A lighter, breezier neroli — citrus and green petitgrain open into a luminous orange blossom heart, closing on soft amberwood. Sunny, minimalist, easy to wear."
+    },
+    {
+      "notes": "Top: Tea, Bergamot, Neroli, Cardamom\nMiddle: Osmanthus, Jasmine Sambac, Fig\nBase: Mate, Musk, Violet, Cedarwood",
+      "badge": "",
+      "family": "Floral",
+      "profile": "Floral Fruity",
+      "inspired_by": "Memo Inlé",
+      "code": "M01",
       "sizes": [
         {
           "size": "10ml",
@@ -197,19 +217,19 @@
         }
       ],
       "gallery": [],
-      "badge": ""
-    },
-    {
-      "notes": "Top: Tea, Bergamot, Neroli, Cardamom\nMiddle: Osmanthus, Jasmine Sambac, Fig\nBase: Mate, Musk, Violet, Cedarwood",
-      "family": "Floral",
-      "inspired_by": "Memo Inlé",
-      "code": "M01",
       "status": "coming_soon",
       "type": "element_scent",
       "image": "/assets/img/products/scents/M01.jpg",
       "element": "Wood",
-      "profile": "Floral Fruity",
-      "description": "A dreamy, water-inspired floral — green tea and bergamot open into a creamy osmanthus-jasmine heart, closing on soft mate and musk. Elegant and quietly distinctive.",
+      "description": "A dreamy, water-inspired floral — green tea and bergamot open into a creamy osmanthus-jasmine heart, closing on soft mate and musk. Elegant and quietly distinctive."
+    },
+    {
+      "notes": "Top: Lavender, Lemon, Bergamot, Rosemary, Mint, Lemon Verbena, Basil, Artemisia\nMiddle: Juniper, Carnation, Cinnamon, Wormwood, Coriander, Angelica, Jasmine\nBase: Oakmoss, Pine, Fir, Leather, Vetiver, Patchouli, Sandalwood, Cedar, Amber, Resins",
+      "badge": "",
+      "family": "Fresh",
+      "profile": "Aromatic Fougère",
+      "inspired_by": "Guy Laroche Drakkar Noir",
+      "code": "M02",
       "sizes": [
         {
           "size": "10ml",
@@ -221,19 +241,19 @@
         }
       ],
       "gallery": [],
-      "badge": ""
-    },
-    {
-      "notes": "Top: Lavender, Lemon, Bergamot, Rosemary, Mint, Lemon Verbena, Basil, Artemisia\nMiddle: Juniper, Carnation, Cinnamon, Wormwood, Coriander, Angelica, Jasmine\nBase: Oakmoss, Pine, Fir, Leather, Vetiver, Patchouli, Sandalwood, Cedar, Amber, Resins",
-      "family": "Fresh",
-      "inspired_by": "Guy Laroche Drakkar Noir",
-      "code": "M02",
       "status": "coming_soon",
       "type": "element_scent",
       "image": "/assets/img/products/scents/M02.jpg",
       "element": "Wood",
-      "profile": "Aromatic Fougère",
-      "description": "A rugged '80s classic — sharp herbal lavender and citrus over a mossy, woody-leather base. Masculine, timeless, still iconic today.",
+      "description": "A rugged '80s classic — sharp herbal lavender and citrus over a mossy, woody-leather base. Masculine, timeless, still iconic today."
+    },
+    {
+      "notes": "Top: Truffle, Black Currant, Ylang-Ylang, Jasmine, Bergamot, Mandarin\nMiddle: Black Orchid, Spices, Fruity Notes, Lotus\nBase: Dark Chocolate, Patchouli, Vanilla, Incense, Amber, Sandalwood, Vetiver, Musk",
+      "badge": "",
+      "family": "Woody",
+      "profile": "Oriental Floral",
+      "inspired_by": "Tom Ford Black Orchid",
+      "code": "M03",
       "sizes": [
         {
           "size": "10ml",
@@ -245,19 +265,19 @@
         }
       ],
       "gallery": [],
-      "badge": ""
-    },
-    {
-      "notes": "Top: Truffle, Black Currant, Ylang-Ylang, Jasmine, Bergamot, Mandarin\nMiddle: Black Orchid, Spices, Fruity Notes, Lotus\nBase: Dark Chocolate, Patchouli, Vanilla, Incense, Amber, Sandalwood, Vetiver, Musk",
-      "family": "Woody",
-      "inspired_by": "Tom Ford Black Orchid",
-      "code": "M03",
       "status": "coming_soon",
       "type": "element_scent",
       "image": "/assets/img/products/scents/M03.jpg",
       "element": "Wood",
-      "profile": "Oriental Floral",
-      "description": "A dark, sensual oriental — earthy truffle and black currant lead into a spicy floral heart, resting on rich chocolate-patchouli. Luxurious, dramatic, unmistakably Tom Ford.",
+      "description": "A dark, sensual oriental — earthy truffle and black currant lead into a spicy floral heart, resting on rich chocolate-patchouli. Luxurious, dramatic, unmistakably Tom Ford."
+    },
+    {
+      "notes": "Top: Bergamot, Lemon\nMiddle: Seaweed, Calone, Hedione\nBase: Musk, Ambroxan, Cedar",
+      "badge": "",
+      "family": "Musky",
+      "profile": "Aromatic Aquatic",
+      "inspired_by": "Orto Parisi Megamare",
+      "code": "S01",
       "sizes": [
         {
           "size": "10ml",
@@ -269,19 +289,19 @@
         }
       ],
       "gallery": [],
-      "badge": ""
-    },
-    {
-      "notes": "Top: Bergamot, Lemon\nMiddle: Seaweed, Calone, Hedione\nBase: Musk, Ambroxan, Cedar",
-      "family": "Musky",
-      "inspired_by": "Orto Parisi Megamare",
-      "code": "S01",
       "status": "coming_soon",
       "type": "element_scent",
       "image": "/assets/img/products/scents/S01.jpg",
       "element": "Water",
-      "profile": "Aromatic Aquatic",
-      "description": "An intense, avant-garde marine scent — bright citrus opens into a salty, metallic wave of seaweed before settling into a dense, musky-woody amber base. Bold, oceanic, and long-lasting.",
+      "description": "An intense, avant-garde marine scent — bright citrus opens into a salty, metallic wave of seaweed before settling into a dense, musky-woody amber base. Bold, oceanic, and long-lasting."
+    },
+    {
+      "notes": "Top: Ambrette Seeds\nMiddle: Sea Salt, Mineral Notes\nBase: Sage",
+      "badge": "",
+      "family": "Fresh",
+      "profile": "Woody Aromatic",
+      "inspired_by": "Jo Malone Sea Salt & Wood Sage",
+      "code": "S02",
       "sizes": [
         {
           "size": "10ml",
@@ -293,19 +313,19 @@
         }
       ],
       "gallery": [],
-      "badge": ""
-    },
-    {
-      "notes": "Top: Ambrette Seeds\nMiddle: Sea Salt, Mineral Notes\nBase: Sage",
-      "family": "Fresh",
-      "inspired_by": "Jo Malone Sea Salt & Wood Sage",
-      "code": "S02",
       "status": "coming_soon",
       "type": "element_scent",
       "image": "/assets/img/products/scents/S02.jpg",
       "element": "Water",
-      "profile": "Woody Aromatic",
-      "description": "A crisp, mineral coastal scent — the crunch of sea salt meets earthy sage for a clean, breezy, unisex signature that feels like a walk along a windswept shoreline.",
+      "description": "A crisp, mineral coastal scent — the crunch of sea salt meets earthy sage for a clean, breezy, unisex signature that feels like a walk along a windswept shoreline."
+    },
+    {
+      "notes": "Top: Blackcurrant Leaf, Cassis, Bergamot, Mandarin Orange, Petitgrain\nMiddle: Bulgarian Rose\nBase: Ambergris, Musk",
+      "badge": "",
+      "family": "Floral",
+      "profile": "Floral",
+      "inspired_by": "Diptyque L’Ombre Dans L’Eau",
+      "code": "S03",
       "sizes": [
         {
           "size": "10ml",
@@ -317,19 +337,19 @@
         }
       ],
       "gallery": [],
-      "badge": ""
-    },
-    {
-      "notes": "Top: Blackcurrant Leaf, Cassis, Bergamot, Mandarin Orange, Petitgrain\nMiddle: Bulgarian Rose\nBase: Ambergris, Musk",
-      "family": "Floral",
-      "inspired_by": "Diptyque L’Ombre Dans L’Eau",
-      "code": "S03",
       "status": "coming_soon",
       "type": "element_scent",
       "image": "/assets/img/products/scents/S03.jpg",
       "element": "Water",
-      "profile": "Floral",
-      "description": "A rain-soaked garden in a bottle — sharp green blackcurrant leaf gives way to a lush, dew-kissed rose, settling into a soft musky base. Romantic, referential, and a niche perfumery landmark.",
+      "description": "A rain-soaked garden in a bottle — sharp green blackcurrant leaf gives way to a lush, dew-kissed rose, settling into a soft musky base. Romantic, referential, and a niche perfumery landmark."
+    },
+    {
+      "notes": "Top: Ginger, Ginger Flower, Cardamom, Pepper, Coriander\nMiddle: Water Notes, Floral Notes, White Ginger Lily\nBase: Citruses, Vetiver",
+      "badge": "",
+      "family": "Spicy",
+      "profile": "Woody Spicy",
+      "inspired_by": "Hermès Un Jardin Après la Mousson",
+      "code": "H01",
       "sizes": [
         {
           "size": "10ml",
@@ -341,19 +361,19 @@
         }
       ],
       "gallery": [],
-      "badge": ""
-    },
-    {
-      "notes": "Top: Ginger, Ginger Flower, Cardamom, Pepper, Coriander\nMiddle: Water Notes, Floral Notes, White Ginger Lily\nBase: Citruses, Vetiver",
-      "family": "Spicy",
-      "inspired_by": "Hermès Un Jardin Après la Mousson",
-      "code": "H01",
       "status": "coming_soon",
       "type": "element_scent",
       "image": "/assets/img/products/scents/H01.jpg",
       "element": "Fire",
-      "profile": "Woody Spicy",
-      "description": "A \"wet garden\" fragrance — spicy ginger and cardamom over a watery, melon-like freshness, closing on clean vetiver. Light, unisex, effortlessly summery.",
+      "description": "A \"wet garden\" fragrance — spicy ginger and cardamom over a watery, melon-like freshness, closing on clean vetiver. Light, unisex, effortlessly summery."
+    },
+    {
+      "notes": "Top: Plum, Wild Berries, Coriander, Anise, Brazilian Rosewood\nMiddle: Tuberose, Incense, White Honey, Opoponax, Cinnamon, Carnation, Jasmine, Orange Flower, Rose\nBase: Vanilla, Amber, Sandalwood, Heliotrope, Musk, Vetiver, Cedar",
+      "badge": "",
+      "family": "Sweet",
+      "profile": "Oriental Floral",
+      "inspired_by": "Dior Poison",
+      "code": "H02",
       "sizes": [
         {
           "size": "10ml",
@@ -365,19 +385,19 @@
         }
       ],
       "gallery": [],
-      "badge": ""
-    },
-    {
-      "notes": "Top: Plum, Wild Berries, Coriander, Anise, Brazilian Rosewood\nMiddle: Tuberose, Incense, White Honey, Opoponax, Cinnamon, Carnation, Jasmine, Orange Flower, Rose\nBase: Vanilla, Amber, Sandalwood, Heliotrope, Musk, Vetiver, Cedar",
-      "family": "Sweet",
-      "inspired_by": "Dior Poison",
-      "code": "H02",
       "status": "coming_soon",
       "type": "element_scent",
       "image": "/assets/img/products/scents/H02.jpg",
       "element": "Fire",
-      "profile": "Oriental Floral",
-      "description": "The iconic '80s power scent — dark plum and spice open into an intoxicating white-floral heart, grounded by warm amber and musk. Bold, unapologetic, unforgettable.",
+      "description": "The iconic '80s power scent — dark plum and spice open into an intoxicating white-floral heart, grounded by warm amber and musk. Bold, unapologetic, unforgettable."
+    },
+    {
+      "notes": "Top: Whiskey\nMiddle: Spicy Notes, Cinnamon, Coriander\nBase: Tobacco, Agarwood (Oud), Incense, Sandalwood, Patchouli, Benzoin, Vanilla, Cedar",
+      "badge": "",
+      "family": "Woody",
+      "profile": "Woody Spicy",
+      "inspired_by": "Tom Ford Tobacco Oud",
+      "code": "H03",
       "sizes": [
         {
           "size": "10ml",
@@ -389,19 +409,19 @@
         }
       ],
       "gallery": [],
-      "badge": ""
-    },
-    {
-      "notes": "Top: Whiskey\nMiddle: Spicy Notes, Cinnamon, Coriander\nBase: Tobacco, Agarwood (Oud), Incense, Sandalwood, Patchouli, Benzoin, Vanilla, Cedar",
-      "family": "Woody",
-      "inspired_by": "Tom Ford Tobacco Oud",
-      "code": "H03",
       "status": "coming_soon",
       "type": "element_scent",
       "image": "/assets/img/products/scents/H03.jpg",
       "element": "Fire",
-      "profile": "Woody Spicy",
-      "description": "A boozy cigar-lounge fragrance — whiskey and warm spice open into a smoky tobacco-oud base. Dark, opulent, and deeply masculine.",
+      "description": "A boozy cigar-lounge fragrance — whiskey and warm spice open into a smoky tobacco-oud base. Dark, opulent, and deeply masculine."
+    },
+    {
+      "notes": "Top: Coconut Milk, Beeswax, Black Licorice\nMiddle: Bitter Almond, Benzoin, Vanilla\nBase: Sandalwood, Guaiac Wood, Tonka Bean, Musk",
+      "badge": "",
+      "family": "Sweet",
+      "profile": "Woody Oriental",
+      "inspired_by": "Serge Lutens Un Bois Vanille",
+      "code": "T01",
       "sizes": [
         {
           "size": "10ml",
@@ -413,19 +433,19 @@
         }
       ],
       "gallery": [],
-      "badge": ""
-    },
-    {
-      "notes": "Top: Coconut Milk, Beeswax, Black Licorice\nMiddle: Bitter Almond, Benzoin, Vanilla\nBase: Sandalwood, Guaiac Wood, Tonka Bean, Musk",
-      "family": "Sweet",
-      "inspired_by": "Serge Lutens Un Bois Vanille",
-      "code": "T01",
       "status": "coming_soon",
       "type": "element_scent",
       "image": "/assets/img/products/scents/T01.jpg",
       "element": "Earth",
-      "profile": "Woody Oriental",
-      "description": "A rich, smoky-sweet vanilla built on real wood rather than sugar — creamy coconut and warm beeswax deepen into a resinous, almond-tinged base. Gourmand for those who find candy-vanilla too simple.",
+      "description": "A rich, smoky-sweet vanilla built on real wood rather than sugar — creamy coconut and warm beeswax deepen into a resinous, almond-tinged base. Gourmand for those who find candy-vanilla too simple."
+    },
+    {
+      "notes": "Top: Lavender, Clary Sage\nMiddle: Leather, Bitter Almond, Vanilla, Orris\nBase: Leather, Tonka Bean, Cashmeran, White Woods, Amber",
+      "badge": "",
+      "family": "Musky",
+      "profile": "Leather",
+      "inspired_by": "Tom Ford Fucking Fabulous",
+      "code": "T02",
       "sizes": [
         {
           "size": "10ml",
@@ -437,19 +457,19 @@
         }
       ],
       "gallery": [],
-      "badge": ""
-    },
-    {
-      "notes": "Top: Lavender, Clary Sage\nMiddle: Leather, Bitter Almond, Vanilla, Orris\nBase: Leather, Tonka Bean, Cashmeran, White Woods, Amber",
-      "family": "Musky",
-      "inspired_by": "Tom Ford Fucking Fabulous",
-      "code": "T02",
       "status": "coming_soon",
       "type": "element_scent",
       "image": "/assets/img/products/scents/T02.jpg",
       "element": "Earth",
-      "profile": "Leather",
-      "description": "A cool, confident leather fragrance — herbal lavender meets soft almond and iris, resting on a warm, ambery leather base. Sleek, statement-making, unapologetically bold.",
+      "description": "A cool, confident leather fragrance — herbal lavender meets soft almond and iris, resting on a warm, ambery leather base. Sleek, statement-making, unapologetically bold."
+    },
+    {
+      "notes": "Top: Rum\nMiddle: Dark Chocolate, Coffee, Almond, Heliotrope\nBase: Caramel, Sugar Cane, Sandalwood, Vanilla, Tonka, Vetiver",
+      "badge": "",
+      "family": "Sweet",
+      "profile": "Oriental Vanilla",
+      "inspired_by": "Kilian Black Phantom",
+      "code": "T03",
       "sizes": [
         {
           "size": "10ml",
@@ -461,31 +481,11 @@
         }
       ],
       "gallery": [],
-      "badge": ""
-    },
-    {
-      "notes": "Top: Rum\nMiddle: Dark Chocolate, Coffee, Almond, Heliotrope\nBase: Caramel, Sugar Cane, Sandalwood, Vanilla, Tonka, Vetiver",
-      "family": "Sweet",
-      "inspired_by": "Kilian Black Phantom",
-      "code": "T03",
       "status": "coming_soon",
       "type": "element_scent",
       "image": "/assets/img/products/scents/T03.jpg",
       "element": "Earth",
-      "profile": "Oriental Vanilla",
-      "description": "A boozy dessert fragrance — rum and dark chocolate melt into caramel and sandalwood. Indulgent, dark, and dangerously addictive.",
-      "sizes": [
-        {
-          "size": "10ml",
-          "price": 24.9
-        },
-        {
-          "size": "30ml",
-          "price": 49.9
-        }
-      ],
-      "gallery": [],
-      "badge": ""
+      "description": "A boozy dessert fragrance — rum and dark chocolate melt into caramel and sandalwood. Indulgent, dark, and dangerously addictive."
     }
   ]
 }
