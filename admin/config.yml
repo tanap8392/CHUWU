@@ -134,11 +134,9 @@ collections:
                     required: false
                     hint: "Used by the Shop filter and the scent-preference question on the Bazi page."
                     options: &families
-                      - { label: "Citrus", value: "Citrus" }
+                      - { label: "Fresh & Citrus", value: "Fresh" }
                       - { label: "Floral", value: "Floral" }
-                      - { label: "Woody", value: "Woody" }
-                      - { label: "Fresh & Green", value: "Fresh" }
-                      - { label: "Spicy & Warm", value: "Spicy" }
+                      - { label: "Woody & Spicy", value: "Woody" }
                       - { label: "Sweet & Gourmand", value: "Sweet" }
                       - { label: "Musky & Sensual", value: "Musky" }
                   - { label: "Scent profile", name: "profile", widget: "string", required: false, hint: "e.g. Floral Aldehyde, Woody Spicy" }

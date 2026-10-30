@@ -3,7 +3,7 @@
   const ELEMENT_COLOR_VAR = { Wood: '--wood', Fire: '--fire', Earth: '--earth', Metal: '--metal', Water: '--water' };
   const ELEMENT_ZH = { Wood: '木', Fire: '火', Earth: '土', Metal: '金', Water: '水' };
   const ELEMENTS = ['Metal', 'Wood', 'Water', 'Fire', 'Earth'];
-  const FAMILY_LABEL = { Citrus: 'Citrus', Floral: 'Floral', Woody: 'Woody', Fresh: 'Fresh & Green', Spicy: 'Spicy & Warm', Sweet: 'Sweet & Gourmand', Musky: 'Musky & Sensual' };
+  const FAMILY_LABEL = { Fresh: 'Fresh & Citrus', Floral: 'Floral', Woody: 'Woody & Spicy', Sweet: 'Sweet & Gourmand', Musky: 'Musky & Sensual' };
 
   function el(tag, attrs, children) {
     const node = document.createElement(tag);

@@ -104,7 +104,8 @@
   function scentSection(key, p, elements) {
     switch (key) {
       case 'profile': {
-        const line = [...new Set([p.profile, p.family].filter(Boolean))].join(' · ');
+        const FAMILY = { Fresh: 'Fresh & Citrus', Woody: 'Woody & Spicy', Sweet: 'Sweet & Gourmand', Musky: 'Musky & Sensual' };
+        const line = [...new Set([p.profile, FAMILY[p.family] || p.family].filter(Boolean))].join(' · ');
         return line ? h('p', { key, className: 'muted', style: { fontSize: '0.9rem' } }, line) : null;
       }
       case 'element': return elements.length ? h('div', { key, className: 'product-tags' }, elementTags(elements)) : null;

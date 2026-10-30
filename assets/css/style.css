@@ -451,3 +451,11 @@ h1, h2, h3, h4, .price, .scent-code { font-variant-numeric: lining-nums; }
   .filter-chips { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
   .filter-chip { flex: 0 0 auto; }
 }
+
+/* Desktop: each filter row on a single line, centred. */
+@media (min-width: 641px) {
+  .shop-filters { width: max-content; max-width: 100%; align-items: flex-start; }
+  .filter-row { max-width: 100%; }
+  .filter-label { flex: 0 0 120px; }
+  .filter-chips { flex-wrap: nowrap; }
+}

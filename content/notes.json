@@ -5,7 +5,7 @@
       "name": "Bergamot",
       "zh": "佛手柑",
       "element": "Metal",
-      "family": "Citrus",
+      "family": "Fresh",
       "stock": "in_stock"
     },
     {
@@ -13,7 +13,7 @@
       "name": "Lemon",
       "zh": "柠檬",
       "element": "Metal",
-      "family": "Citrus",
+      "family": "Fresh",
       "stock": "in_stock"
     },
     {
@@ -21,7 +21,7 @@
       "name": "Grapefruit",
       "zh": "葡萄柚",
       "element": "Metal",
-      "family": "Citrus",
+      "family": "Fresh",
       "stock": "in_stock"
     },
     {
@@ -29,7 +29,7 @@
       "name": "Orange",
       "zh": "橙",
       "element": "Metal",
-      "family": "Citrus",
+      "family": "Fresh",
       "stock": "in_stock"
     },
     {
@@ -37,7 +37,7 @@
       "name": "Mandarin",
       "zh": "柑橘",
       "element": "Metal",
-      "family": "Citrus",
+      "family": "Fresh",
       "stock": "in_stock"
     },
     {
@@ -45,7 +45,7 @@
       "name": "Lime",
       "zh": "青柠",
       "element": "Metal",
-      "family": "Citrus",
+      "family": "Fresh",
       "stock": "in_stock"
     },
     {
@@ -53,7 +53,7 @@
       "name": "Yuzu",
       "zh": "柚子",
       "element": "Metal",
-      "family": "Citrus",
+      "family": "Fresh",
       "stock": "in_stock"
     },
     {
@@ -157,7 +157,7 @@
       "name": "Pink Pepper",
       "zh": "粉胡椒",
       "element": "Fire",
-      "family": "Spicy",
+      "family": "Woody",
       "stock": "in_stock"
     },
     {
@@ -269,7 +269,7 @@
       "name": "Carnation",
       "zh": "康乃馨",
       "element": "Fire",
-      "family": "Spicy",
+      "family": "Woody",
       "stock": "in_stock"
     },
     {
@@ -277,7 +277,7 @@
       "name": "Cardamom",
       "zh": "豆蔻",
       "element": "Fire",
-      "family": "Spicy",
+      "family": "Woody",
       "stock": "in_stock"
     },
     {
@@ -285,7 +285,7 @@
       "name": "Cinnamon",
       "zh": "肉桂",
       "element": "Fire",
-      "family": "Spicy",
+      "family": "Woody",
       "stock": "in_stock"
     },
     {
@@ -293,7 +293,7 @@
       "name": "Nutmeg",
       "zh": "肉豆蔻",
       "element": "Fire",
-      "family": "Spicy",
+      "family": "Woody",
       "stock": "in_stock"
     },
     {
@@ -389,7 +389,7 @@
       "name": "Frankincense",
       "zh": "乳香",
       "element": "Fire",
-      "family": "Spicy",
+      "family": "Woody",
       "stock": "in_stock"
     },
     {
@@ -397,7 +397,7 @@
       "name": "Myrrh",
       "zh": "没药",
       "element": "Fire",
-      "family": "Spicy",
+      "family": "Woody",
       "stock": "in_stock"
     },
     {
@@ -405,7 +405,7 @@
       "name": "Tobacco",
       "zh": "烟草",
       "element": "Fire",
-      "family": "Spicy",
+      "family": "Woody",
       "stock": "in_stock"
     },
     {

@@ -1,18 +1,18 @@
 /* CHUWU (初·五) — perfume note library, organized by Top / Middle / Base and Five Element (五行).
    Source: brand-provided note list. Elements use English keys matched to the Bazi engine:
    Wood 木 · Fire 火 · Earth 土 · Metal 金 · Water 水
-   `family` is the scent-preference category (Citrus, Floral, Woody, Fresh, Spicy, Sweet, Musky)
+   `family` is the scent-preference category (Fresh, Floral, Woody, Sweet, Musky — see FAMILIES)
    used by the scent-preference quiz to narrow the Bazi-driven element recommendation. */
 (function (root) {
   const NOTES = {
     top: [
-      { name: 'Bergamot', zh: '佛手柑', element: 'Metal', family: 'Citrus' },
-      { name: 'Lemon', zh: '柠檬', element: 'Metal', family: 'Citrus' },
-      { name: 'Grapefruit', zh: '葡萄柚', element: 'Metal', family: 'Citrus' },
-      { name: 'Orange', zh: '橙', element: 'Metal', family: 'Citrus' },
-      { name: 'Mandarin', zh: '柑橘', element: 'Metal', family: 'Citrus' },
-      { name: 'Lime', zh: '青柠', element: 'Metal', family: 'Citrus' },
-      { name: 'Yuzu', zh: '柚子', element: 'Metal', family: 'Citrus' },
+      { name: 'Bergamot', zh: '佛手柑', element: 'Metal', family: 'Fresh' },
+      { name: 'Lemon', zh: '柠檬', element: 'Metal', family: 'Fresh' },
+      { name: 'Grapefruit', zh: '葡萄柚', element: 'Metal', family: 'Fresh' },
+      { name: 'Orange', zh: '橙', element: 'Metal', family: 'Fresh' },
+      { name: 'Mandarin', zh: '柑橘', element: 'Metal', family: 'Fresh' },
+      { name: 'Lime', zh: '青柠', element: 'Metal', family: 'Fresh' },
+      { name: 'Yuzu', zh: '柚子', element: 'Metal', family: 'Fresh' },
       { name: 'Aldehydes', zh: '醛香', element: 'Metal', family: 'Fresh' },
       { name: 'Apple', zh: '苹果', element: 'Metal', family: 'Fresh' },
       { name: 'Pear', zh: '梨', element: 'Metal', family: 'Fresh' },
@@ -25,7 +25,7 @@
       { name: 'Basil', zh: '罗勒', element: 'Wood', family: 'Fresh' },
       { name: 'Lavender', zh: '薰衣草', element: 'Wood', family: 'Floral' },
       { name: 'Juniper', zh: '杜松', element: 'Wood', family: 'Woody' },
-      { name: 'Pink Pepper', zh: '粉胡椒', element: 'Fire', family: 'Spicy' }
+      { name: 'Pink Pepper', zh: '粉胡椒', element: 'Fire', family: 'Woody' }
     ],
     middle: [
       { name: 'Rose', zh: '玫瑰', element: 'Wood', family: 'Floral' },
@@ -41,10 +41,10 @@
       { name: 'Tea', zh: '茶', element: 'Wood', family: 'Fresh' },
       { name: 'Fig', zh: '无花果', element: 'Wood', family: 'Woody' },
       { name: 'Tuberose', zh: '晚香玉', element: 'Fire', family: 'Floral' },
-      { name: 'Carnation', zh: '康乃馨', element: 'Fire', family: 'Spicy' },
-      { name: 'Cardamom', zh: '豆蔻', element: 'Fire', family: 'Spicy' },
-      { name: 'Cinnamon', zh: '肉桂', element: 'Fire', family: 'Spicy' },
-      { name: 'Nutmeg', zh: '肉豆蔻', element: 'Fire', family: 'Spicy' },
+      { name: 'Carnation', zh: '康乃馨', element: 'Fire', family: 'Woody' },
+      { name: 'Cardamom', zh: '豆蔻', element: 'Fire', family: 'Woody' },
+      { name: 'Cinnamon', zh: '肉桂', element: 'Fire', family: 'Woody' },
+      { name: 'Nutmeg', zh: '肉豆蔻', element: 'Fire', family: 'Woody' },
       { name: 'Clary Sage', zh: '快乐鼠尾草', element: 'Earth', family: 'Fresh' },
       { name: 'Honey', zh: '蜂蜜', element: 'Earth', family: 'Sweet' },
       { name: 'Heliotrope', zh: '天芥菜', element: 'Earth', family: 'Sweet' }
@@ -58,9 +58,9 @@
       { name: 'Oakmoss', zh: '橡苔', element: 'Wood', family: 'Woody' },
       { name: 'Guaiac Wood', zh: '愈创木', element: 'Wood', family: 'Woody' },
       { name: 'Amber', zh: '琥珀', element: 'Fire', family: 'Sweet' },
-      { name: 'Frankincense', zh: '乳香', element: 'Fire', family: 'Spicy' },
-      { name: 'Myrrh', zh: '没药', element: 'Fire', family: 'Spicy' },
-      { name: 'Tobacco', zh: '烟草', element: 'Fire', family: 'Spicy' },
+      { name: 'Frankincense', zh: '乳香', element: 'Fire', family: 'Woody' },
+      { name: 'Myrrh', zh: '没药', element: 'Fire', family: 'Woody' },
+      { name: 'Tobacco', zh: '烟草', element: 'Fire', family: 'Woody' },
       { name: 'Vanilla', zh: '香草', element: 'Earth', family: 'Sweet' },
       { name: 'Tonka Bean', zh: '零陵香豆', element: 'Earth', family: 'Sweet' },
       { name: 'Benzoin', zh: '安息香', element: 'Earth', family: 'Sweet' },
@@ -73,12 +73,11 @@
     ]
   };
 
+  // Five scent families, no overlap (Citrus is part of Fresh & Citrus; Spicy is part of Woody & Spicy).
   const FAMILIES = [
-    { key: 'Citrus', label: 'Citrus', zh: '柑橘', desc: 'Bright, zesty, uplifting' },
+    { key: 'Fresh', label: 'Fresh & Citrus', zh: '清新柑橘', desc: 'Bright, zesty, airy' },
     { key: 'Floral', label: 'Floral', zh: '花香', desc: 'Soft, romantic, blooming' },
-    { key: 'Woody', label: 'Woody', zh: '木质', desc: 'Grounded, earthy, warm' },
-    { key: 'Fresh', label: 'Fresh & Green', zh: '清新', desc: 'Crisp, herbal, airy' },
-    { key: 'Spicy', label: 'Spicy & Warm', zh: '辛香', desc: 'Bold, comforting, rich' },
+    { key: 'Woody', label: 'Woody & Spicy', zh: '木质辛香', desc: 'Warm, grounded, spiced' },
     { key: 'Sweet', label: 'Sweet & Gourmand', zh: '甜美', desc: 'Cozy, indulgent, soft' },
     { key: 'Musky', label: 'Musky & Sensual', zh: '麝香', desc: 'Skin-close, intimate, quiet' }
   ];
