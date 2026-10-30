@@ -131,6 +131,8 @@ collections:
                   - label: "Scent family"
                     name: "family"
                     widget: "select"
+                    required: false
+                    hint: "Used by the Shop filter and the scent-preference question on the Bazi page."
                     options: &families
                       - { label: "Citrus", value: "Citrus" }
                       - { label: "Floral", value: "Floral" }
@@ -479,6 +481,22 @@ collections:
             fields:
               - { label: "Meta Pixel ID", name: "meta_pixel_id", widget: "string", required: false, hint: "Numbers only, from Meta Events Manager → Data sources." }
               - { label: "Google Analytics 4 measurement ID", name: "ga4_id", widget: "string", required: false, hint: "Looks like G-XXXXXXXXXX, from Google Analytics → Admin → Data streams." }
+          - label: "Product card layout"
+            name: "card_layout"
+            widget: "list"
+            hint: "The order of the sections on each element-scent card (Shop and Bazi recommendations). Drag to reorder; remove a section to hide it on every card."
+            default: ["profile", "element", "mix", "description", "notes", "similar"]
+            field:
+              label: "Section"
+              name: "section"
+              widget: "select"
+              options:
+                - { label: "Scent profile & family line", value: "profile" }
+                - { label: "Element tag", value: "element" }
+                - { label: "Element mix bar", value: "mix" }
+                - { label: "Description", value: "description" }
+                - { label: "Notes", value: "notes" }
+                - { label: "Similar in scent to …", value: "similar" }
           - label: "Features"
             name: "features"
             widget: "object"

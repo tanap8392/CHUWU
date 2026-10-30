@@ -89,5 +89,13 @@
     ]);
   }
 
-  root.ChuwuProductUI = { renderPrice, sizePicker, media, elementMix };
+  // Order of the sections on an element-scent card (Site Settings → Product card layout).
+  // Sections left out of the list are hidden.
+  const CARD_SECTIONS = ['profile', 'element', 'mix', 'description', 'notes', 'similar'];
+  function cardLayout() {
+    const order = ChuwuContent.get('settings.card_layout');
+    return Array.isArray(order) && order.length ? order.filter(k => CARD_SECTIONS.includes(k)) : CARD_SECTIONS;
+  }
+
+  root.ChuwuProductUI = { renderPrice, sizePicker, media, elementMix, cardLayout };
 })(typeof window !== 'undefined' ? window : globalThis);

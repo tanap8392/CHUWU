@@ -68,15 +68,13 @@
       h('div', { className: 'product-body', key: 'body' }, [
         h('h3', { key: 'h' }, title),
         p.intention ? h('p', { key: 'in', className: 'muted', style: { fontSize: '0.9rem' } }, 'For ' + p.intention) : null,
-        p.type === 'element_scent' ? h('p', { key: 'fa', className: 'muted', style: { fontSize: '0.9rem' } }, [p.profile, p.family].filter(Boolean).join(' · ')) : null,
-        elements.length ? h('div', { key: 'tags', className: 'product-tags' }, elements.map(e =>
-          h('span', { key: e, className: 'tag', style: { background: `var(${ELEMENT_VAR[e]})`, color: '#fff' } }, e))) : null,
-        mixBar(p.element_mix),
-        p.inspired_by ? h('p', { key: 'ib', className: 'muted', style: { fontSize: '0.85rem' } }, 'Similar in scent to ' + p.inspired_by) : null,
-        p.description ? h('p', { key: 'd', className: 'muted', style: { fontSize: '0.85rem' } }, p.description) : null,
-        p.notes ? h('div', { key: 'n', className: 'note-line notes-block' }, p.notes) : null,
+        // Element scents follow Site Settings → Product card layout; other products keep a fixed order.
+        ...(p.type === 'element_scent' ? cardLayout().map(k => scentSection(k, p, elements)) : [
+          elements.length ? h('div', { key: 'tags', className: 'product-tags' }, elementTags(elements)) : null,
+          p.description ? h('p', { key: 'd', className: 'muted', style: { fontSize: '0.85rem' } }, p.description) : null
+        ]),
         sizes.length ? h('div', { key: 'sz', className: 'size-picker' }, sizes.map((s, j) =>
-          h('span', { key: j, className: 'size-opt' + (j === 0 ? ' active' : '') }, `${s.size} · ${money(s.price)}`))) : null,
+          h('span', { key: j, className: 'size-opt' + (j === 0 ? ' active' : '') }, s.size))) : null,
         ...[['Top', p.top], ['Middle', p.middle], ['Base', p.base]].filter(x => x[1]).map(([l, v]) =>
           h('div', { key: l, className: 'note-line' }, [h('b', { key: 'b' }, l + ':'), ' ' + v])),
         h('div', { key: 'pr', className: 'price-row' }, [
@@ -91,6 +89,31 @@
         ])
       ])
     ]);
+  }
+
+  // Card section order from the published Site Settings (Product card layout).
+  const DEFAULT_LAYOUT = ['profile', 'element', 'mix', 'description', 'notes', 'similar'];
+  let layout = DEFAULT_LAYOUT;
+  fetch('/content/settings.json', { cache: 'no-cache' }).then(r => r.json())
+    .then(s => { if (Array.isArray(s.card_layout) && s.card_layout.length) layout = s.card_layout; }).catch(() => {});
+  const cardLayout = () => layout;
+
+  const elementTags = elements => elements.map(e =>
+    h('span', { key: e, className: 'tag', style: { background: `var(${ELEMENT_VAR[e]})`, color: '#fff' } }, e));
+
+  function scentSection(key, p, elements) {
+    switch (key) {
+      case 'profile': {
+        const line = [...new Set([p.profile, p.family].filter(Boolean))].join(' · ');
+        return line ? h('p', { key, className: 'muted', style: { fontSize: '0.9rem' } }, line) : null;
+      }
+      case 'element': return elements.length ? h('div', { key, className: 'product-tags' }, elementTags(elements)) : null;
+      case 'mix': return mixBar(p.element_mix);
+      case 'description': return p.description ? h('p', { key, className: 'muted', style: { fontSize: '0.85rem' } }, p.description) : null;
+      case 'notes': return p.notes ? h('div', { key, className: 'note-line notes-block' }, p.notes) : null;
+      case 'similar': return p.inspired_by ? h('p', { key, className: 'muted similar-line' }, 'Similar in scent to ' + p.inspired_by) : null;
+      default: return null;
+    }
   }
 
   // Same element-mix bar as the Shop page: share of votes per element, largest first.

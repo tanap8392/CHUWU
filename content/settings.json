@@ -52,5 +52,13 @@
   "marketing": {
     "meta_pixel_id": "",
     "ga4_id": ""
-  }
+  },
+  "card_layout": [
+    "profile",
+    "element",
+    "mix",
+    "description",
+    "notes",
+    "similar"
+  ]
 }

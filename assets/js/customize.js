@@ -239,12 +239,27 @@
 
   function scentCard(scent, { supporting, preferredFamily } = {}) {
     const isFamilyMatch = preferredFamily && scent.family === preferredFamily;
-    const familyTag = el('span', { class: 'family-tag' + (isFamilyMatch ? ' family-match' : '') }, [
-      document.createTextNode([...new Set([scent.profile, scent.family].filter(Boolean))].join(' · ') + (isFamilyMatch ? ' · your preference' : ''))
-    ]);
+    const family = ChuwuNotes.FAMILIES.find(f => f.key === scent.family);
     const price = el('span', { class: 'scent-price' }, []);
     const picker = ChuwuProductUI.sizePicker(scent, entry => ChuwuProductUI.renderPrice(price, entry));
     ChuwuProductUI.renderPrice(price, picker.selected());
+
+    // Same order as the Shop cards (Site Settings → Product card layout). The element is already
+    // shown by the coloured dot next to the code, so there's no separate element tag here.
+    const sections = {
+      profile: () => {
+        const line = [...new Set([scent.profile, family ? family.label : scent.family].filter(Boolean))].join(' · ');
+        return line || isFamilyMatch
+          ? el('span', { class: 'family-tag' + (isFamilyMatch ? ' family-match' : '') }, [document.createTextNode(line + (isFamilyMatch ? ' · your preference' : ''))])
+          : null;
+      },
+      element: () => null,
+      mix: () => ChuwuProductUI.elementMix(scent),
+      description: () => (scent.description ? el('p', { class: 'scent-desc' }, [document.createTextNode(scent.description)]) : null),
+      notes: () => (scent.notes ? el('p', { class: 'scent-notes' }, [document.createTextNode(scent.notes)]) : null),
+      similar: () => (scent.inspired_by ? el('p', { class: 'scent-inspired similar-line' }, [document.createTextNode('Similar in scent to ' + scent.inspired_by)]) : null)
+    };
+    const ordered = ChuwuProductUI.cardLayout().map(key => sections[key]()).filter(Boolean);
 
     return el('div', { class: 'scent-card' + (supporting ? ' supporting-card' : '') + (isFamilyMatch ? ' family-highlight' : '') }, [
       ChuwuProductUI.media(scent, 'scent-media'),
@@ -254,11 +269,7 @@
           el('span', { class: 'el-swatch', style: `background:${ELEMENT_COLOR[scent.element]}` }, []),
           el('span', { class: 'scent-code' }, [document.createTextNode(scent.code)])
         ]),
-        familyTag,
-        ...(ChuwuProductUI.elementMix(scent) ? [ChuwuProductUI.elementMix(scent)] : []),
-        ...(scent.inspired_by ? [el('p', { class: 'scent-inspired' }, [document.createTextNode('Similar in scent to ' + scent.inspired_by)])] : []),
-        ...(scent.description ? [el('p', { class: 'scent-desc' }, [document.createTextNode(scent.description)])] : []),
-        el('p', { class: 'scent-notes' }, [document.createTextNode(scent.notes || '')]),
+        ...ordered,
         ...(picker.node ? [picker.node] : []),
         el('div', { class: 'scent-price-row' }, [price, scentCta(scent, picker)])
       ])
