@@ -17,7 +17,8 @@ export default async (req) => {
   const user = await currentUser(req);
   if (!user) return Response.json({ error: 'Please log in.' }, { status: 401 });
   const roles = (user.app_metadata && user.app_metadata.roles) || [];
-  if (!roles.includes('admin')) return Response.json({ error: 'not_admin', email: user.email }, { status: 403 });
+  // Netlify's role picker saves "Admin"; typed roles may be lowercase — accept either.
+  if (!roles.some(r => String(r).toLowerCase() === 'admin')) return Response.json({ error: 'not_admin', email: user.email }, { status: 403 });
 
   const store = getStore({ name: 'subscribers', consistency: 'strong' });
 

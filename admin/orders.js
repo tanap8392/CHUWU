@@ -80,7 +80,7 @@
         el('ol', {}, [
           el('li', {}, ['Open app.netlify.com → chuwu-fragrance → ', el('b', {}, ['Identity'])]),
           el('li', {}, ['Click your email → ', el('b', {}, ['Edit settings'])]),
-          el('li', {}, ['Under Roles type ', el('code', {}, ['admin']), ', press Enter, then Save']),
+          el('li', {}, ['Under Roles choose ', el('code', {}, ['Admin']), ', then Save']),
           el('li', {}, ['Come back here, log out and log in again'])
         ]),
         el('p', {}, [el('button', { class: 'btn', onclick: () => netlifyIdentity.logout() }, ['Log out'])])
