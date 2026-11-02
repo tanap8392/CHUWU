@@ -19,6 +19,7 @@
   const ZH = { Wood: '木', Fire: '火', Earth: '土', Metal: '金', Water: '水' };
 
   let current = null; // { adjusted, birth, year }
+  let watcher = null; // waits for the reading to scroll into view (see whenVisible)
 
   const $ = id => document.getElementById(id);
   function el(tag, attrs, children) {
@@ -221,11 +222,24 @@
     ]);
   }
 
+  // Run `fn` once `node` is on screen (or nearly). Each new peek costs a little to write, so it's
+  // only written for customers who scroll down to the reading — not everyone who checks their element.
+  function whenVisible(node, fn) {
+    if (watcher) watcher.disconnect();
+    if (!('IntersectionObserver' in root)) return fn();
+    watcher = new IntersectionObserver(entries => {
+      if (!entries.some(e => e.isIntersecting)) return;
+      watcher.disconnect(); watcher = null;
+      fn();
+    }, { rootMargin: '300px 0px' });
+    watcher.observe(node);
+  }
+
   function showPeek(unlock) {
     const out = $('reading-output');
     out.replaceChildren(shell('profile'));
     out.classList.remove('hidden');
-    load('profile', {}, r => {
+    whenVisible(out, () => load('profile', {}, r => {
       const body = bodyOf('profile');
       const all = renderProfile(r);
       // Show the headline and first paragraph; from the second paragraph the text fades out
@@ -234,7 +248,7 @@
       const faded = el('div', { class: 'reading-faded', 'aria-hidden': 'true' }, all.slice(2));
       body.replaceChildren(...visible, faded);
       out.appendChild(unlock ? pendingCard(unlock) : paywall());
-    });
+    }));
   }
 
   // ---------------------------------------------------------------- unlocked
