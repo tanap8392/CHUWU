@@ -92,8 +92,45 @@
     if (base <= 0) return { error: 'This code doesn\'t apply to the items in your cart.' };
     const value = Number(promo.value) || 0;
     if (promo.type === 'free_delivery') return { discount: 0, freeDelivery: true, saving: deliveryFee };
+    if (promo.type === 'bundle') return bundle(promo, lines.filter(l => scope === 'all' || l.product.type === scope));
     const discount = promo.type === 'fixed' ? Math.min(value, base) : round2(base * Math.min(value, 100) / 100);
     return { discount, freeDelivery: false, saving: discount };
+  }
+
+  // "Any 3 × 10ml for S$49.90": every complete group of `bundle_quantity` matching items (of
+  // `bundle_size`, if set — any scents mixed) costs `bundle_price`. The dearest items are grouped
+  // first, so the customer always gets the bigger saving.
+  function bundle(promo, lines) {
+    const qty = Math.max(1, parseInt(promo.bundle_quantity, 10) || 0);
+    const price = Number(promo.bundle_price) || 0;
+    const size = String(promo.bundle_size || '').trim().toLowerCase();
+    const units = [];
+    lines.forEach(l => {
+      if (size && String(l.size || l.product.size || '').toLowerCase() !== size) return;
+      for (let i = 0; i < l.quantity; i++) units.push(l.unitPrice);
+    });
+    units.sort((a, b) => b - a);
+    const groups = Math.floor(units.length / qty);
+    if (!groups) {
+      const n = qty - units.length;
+      return { error: `Add ${n} more ${size ? size + ' scent' : 'item'}${n > 1 ? 's' : ''} to get any ${qty} for ${root.ChuwuContent.formatPrice(price)}.`, short: n, have: units.length };
+    }
+    let discount = 0;
+    for (let g = 0; g < groups; g++) discount += Math.max(0, units.slice(g * qty, g * qty + qty).reduce((s, n) => s + n, 0) - price);
+    discount = round2(discount);
+    return discount > 0 ? { discount, freeDelivery: false, saving: discount } : { error: 'No saving on these items.' };
+  }
+
+  // What a bundle offer still needs (for the cart's "add 1 more" nudge), or null.
+  function bundleNudge(lines, promotions) {
+    const now = new Date();
+    for (const promo of promotions) {
+      if (promo.type !== 'bundle' || !promo.auto_apply || !isLive(promo, now)) continue;
+      const scope = promo.applies_to || 'all';
+      const r = bundle(promo, lines.filter(l => scope === 'all' || l.product.type === scope));
+      if (r.short && r.have > 0) return r.error; // only once at least one matching item is in the cart
+    }
+    return null;
   }
 
   // delivery: one of settings.checkout.delivery_options (or null). code: what the customer typed.
@@ -120,6 +157,8 @@
     if (typed && !codeMatchedSomething) codeError = 'This code isn\'t valid right now.';
 
     const discount = best ? best.discount : 0;
+    // Free delivery over the minimum counts what's paid for the products, after discounts.
+    if (freeOver > 0) deliveryFee = subtotal - discount >= freeOver ? 0 : (delivery ? Number(delivery.fee) || 0 : 0);
     const appliedDelivery = best && best.freeDelivery ? 0 : deliveryFee;
     return {
       subtotal,
@@ -132,5 +171,5 @@
     };
   }
 
-  root.ChuwuCart = { load, add, setQuantity, remove, clear, count, priced, totals };
+  root.ChuwuCart = { load, add, setQuantity, remove, clear, count, priced, totals, bundleNudge };
 })(typeof window !== 'undefined' ? window : globalThis);

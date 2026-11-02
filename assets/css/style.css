@@ -533,3 +533,5 @@ h1, h2, h3, h4, .price, .scent-code { font-variant-numeric: lining-nums; }
 }
 .birth-reset { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; font-size: 0.82rem; color: #726c65; text-decoration: underline; text-underline-offset: 3px; }
 .birth-reset:hover { color: var(--charcoal); }
+.cart-offer { display: flex; justify-content: space-between; font-size: 0.84rem; color: var(--wood); padding: 10px 0 0; }
+.cart-nudge { font-size: 0.8rem; color: #8a6a2b; background: #FBF6EA; border-radius: 6px; padding: 8px 10px; margin: 10px 0 0; }

@@ -300,7 +300,9 @@
   const APPLIES = { all: 'Everything', signature: 'Signature blends', personalized: 'Personalized blends', element_scent: 'Element scents' };
   function describe(p) {
     const v = Number(p.value) || 0;
-    const what = p.type === 'free_delivery' ? 'Free delivery' : p.type === 'fixed' ? `S$${v.toFixed(2)} off` : `${v}% off`;
+    const what = p.type === 'bundle'
+      ? `Any ${p.bundle_quantity || '?'} × ${p.bundle_size || 'item'} for ${money(p.bundle_price)}`
+      : p.type === 'free_delivery' ? 'Free delivery' : p.type === 'fixed' ? `S$${v.toFixed(2)} off` : `${v}% off`;
     const min = Number(p.min_subtotal) > 0 ? ` · min. spend ${money(p.min_subtotal)}` : '';
     return `${what} · ${APPLIES[p.applies_to || 'all']}${min}`;
   }

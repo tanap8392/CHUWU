@@ -76,8 +76,14 @@
       ]));
     });
 
-    const subtotal = lines.reduce((s, l) => s + l.lineTotal, 0);
-    subtotalEl.textContent = ChuwuContent.formatPrice(subtotal);
+    // Automatic offers (e.g. any 3 × 10ml) and a nudge when one more item would unlock one.
+    const t = ChuwuCart.totals(lines, ChuwuContent.data.promotions || [], '', null);
+    if (t.discount > 0) {
+      linesEl.appendChild(el('div', { class: 'cart-offer' }, [el('span', {}, [text(t.promotion.name)]), el('span', {}, [text('−' + ChuwuContent.formatPrice(t.discount))])]));
+    }
+    const nudge = ChuwuCart.bundleNudge(lines, ChuwuContent.data.promotions || []);
+    if (nudge && lines.length) linesEl.appendChild(el('p', { class: 'cart-nudge' }, [text(nudge)]));
+    subtotalEl.textContent = ChuwuContent.formatPrice(t.subtotal - t.discount);
     checkoutBtn.classList.toggle('hidden', !lines.length);
   }
 

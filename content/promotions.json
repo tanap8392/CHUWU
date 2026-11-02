@@ -1,6 +1,21 @@
 {
   "promotions": [
     {
+      "name": "Any 3 × 10ml for S$49.90",
+      "active": true,
+      "code": "",
+      "auto_apply": true,
+      "type": "bundle",
+      "value": 0,
+      "bundle_size": "10ml",
+      "bundle_quantity": 3,
+      "bundle_price": 49.9,
+      "min_subtotal": 0,
+      "applies_to": "element_scent",
+      "starts": "",
+      "ends": ""
+    },
+    {
       "name": "Example — 10% off first order",
       "active": false,
       "code": "WELCOME10",

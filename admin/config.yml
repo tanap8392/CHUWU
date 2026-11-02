@@ -200,7 +200,11 @@ collections:
                   - { label: "% off", value: "percent" }
                   - { label: "Fixed amount off (SGD)", value: "fixed" }
                   - { label: "Free delivery", value: "free_delivery" }
+                  - { label: "Bundle (e.g. any 3 × 10ml for a set price)", value: "bundle" }
               - { label: "Value", name: "value", widget: "number", value_type: "float", min: 0, default: 10, hint: "10 = 10% off or S$10 off. Ignored for free delivery." }
+              - { label: "Bundle: size", name: "bundle_size", widget: "string", required: false, hint: "Bundles only — e.g. 10ml. Leave empty for any size." }
+              - { label: "Bundle: how many", name: "bundle_quantity", widget: "number", value_type: "int", min: 2, required: false, hint: "Bundles only — e.g. 3. Any scents can be mixed." }
+              - { label: "Bundle: price for the group (SGD)", name: "bundle_price", widget: "number", value_type: "float", min: 0, required: false, hint: "Bundles only — e.g. 49.90. Every full group in the cart gets this price." }
               - { label: "Minimum spend (SGD)", name: "min_subtotal", widget: "number", value_type: "float", min: 0, default: 0, required: false }
               - label: "Applies to"
                 name: "applies_to"

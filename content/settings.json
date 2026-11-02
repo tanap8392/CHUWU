@@ -45,7 +45,14 @@
       "qr_image": "",
       "instructions": "Your order number is your PayNow reference, so we can match your payment to your order — no need to send us a screenshot. We'll start preparing your order once payment is received."
     },
-    "delivery_options": [],
+    "delivery_options": [
+      {
+        "label": "Delivery (Singapore)",
+        "fee": 4.99,
+        "free_over": 60,
+        "needs_address": true
+      }
+    ],
     "thank_you_message": "Thank you — we've received your order.",
     "gift_option": true
   },
