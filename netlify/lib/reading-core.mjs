@@ -141,9 +141,18 @@ const readingsStore = () => getStore({ name: 'readings', consistency: 'strong' }
 // "Who you are" doesn't depend on gender, so the free sneak peek and a paid reading share one copy.
 const cacheKey = (section, v, year) => sha(JSON.stringify({ v: PROMPT_VERSIONS[section], section, year, date: v.date, time: v.time, place: v.place, gender: section === 'profile' ? '' : v.gender }));
 
+// Every text filled in and every list non-empty: the model occasionally leaves a field blank,
+// and a blank part must be written again rather than shown or cached.
+function complete(value, schema) {
+  if (schema.type === 'string') return typeof value === 'string' && value.trim() !== '';
+  if (schema.type === 'array') return Array.isArray(value) && value.length > 0 && value.every(x => complete(x, schema.items));
+  if (schema.type === 'object') return !!value && Object.keys(schema.properties).every(k => complete(value[k], schema.properties[k]));
+  return true;
+}
+
 export async function getCached(section, v, year) {
   const hit = await readingsStore().get(cacheKey(section, v, year), { type: 'json' });
-  return hit ? hit.reading : null;
+  return hit && complete(hit.reading, SECTIONS[section].schema) ? hit.reading : null;
 }
 
 // Cached part, or write it now (and cache it). Throws Anthropic errors to the caller.
@@ -194,6 +203,8 @@ async function write(sectionKey, facts) {
   if (response.stop_reason === 'refusal') throw new Error('refused');
   if (response.stop_reason === 'max_tokens') throw new Error('too long');
   const text = response.content.filter(b => b.type === 'text').map(b => b.text).join('');
-  return JSON.parse(text);
+  const reading = JSON.parse(text);
+  if (!complete(reading, section.schema)) throw new Error('incomplete reading');
+  return reading;
 }
 
