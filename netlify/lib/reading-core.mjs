@@ -7,7 +7,7 @@
 // ANTHROPIC_BASE_URL for functions automatically and bills usage as Netlify credits.
 import Anthropic from '@anthropic-ai/sdk';
 import { getStore } from '@netlify/blobs';
-import { createHash } from 'node:crypto';
+import { createHash, randomBytes } from 'node:crypto';
 import '../../assets/js/bazi-engine.js';
 import '../../assets/js/cities-data.js';
 import '../../assets/js/bazi-reading.js';
@@ -173,6 +173,32 @@ export function fullSections(year) {
 }
 
 export const ordersStore = () => getStore({ name: 'orders', consistency: 'strong' });
+
+// The full reading (and its perfume credit) is only released once the order is marked Paid.
+export const isPaid = order => ['paid', 'shipped', 'completed'].includes(order.status);
+export const CREDIT_AMOUNT = 1.99;
+const newCreditCode = () => 'BAZI-' + Array.from(randomBytes(6), b => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[b % 32]).join('');
+
+// Called when a paid order's reading should be (re)sent: bought without any perfume, it earns a
+// one-use S$1.99 perfume credit code (issued once); then the reading is queued for the email job.
+// The caller saves the order and starts the job with startReadingJob.
+export async function releaseReading(order) {
+  const now = new Date().toISOString();
+  const readings = readingItems(order);
+  if (!order.credit_issued && !order.items.some(isPhysical)) {
+    const code = newCreditCode();
+    const amount = Math.round(CREDIT_AMOUNT * readings.reduce((n, r) => n + r.item.quantity, 0) * 100) / 100;
+    await getStore({ name: 'credits', consistency: 'strong' }).setJSON(code, { code, amount, order_id: order.id, email: order.customer.email, created_at: now, used_at: null });
+    order.credit_issued = { code, amount };
+  }
+  order.reading = { ...(order.reading || {}), status: 'queued', queued_at: now, error: '' };
+}
+
+// Starts reading-email-background.mjs (it returns straight away and runs for up to 15 minutes).
+export async function startReadingJob(req, orderId) {
+  try { await fetch(new URL('/.netlify/functions/reading-email-background', req.url), { method: 'POST', body: JSON.stringify({ order_id: orderId }) }); }
+  catch (e) { console.error('could not start the reading email job', e); }
+}
 
 // Products shipped in a parcel (everything except the digital reading).
 export const isPhysical = item => item.product_id !== READING_PRODUCT_ID;

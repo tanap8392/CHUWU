@@ -1,12 +1,14 @@
 // CHUWU (初·五) — the dashboard's Orders screen (admin/orders.html) talks to this:
 //   GET              list every order, newest first
-//   PATCH  {id, status?, admin_note?}   update an order's status and/or private note
+//   PATCH  {id, status?, admin_note?, resend_reading?}   update an order's status and/or private note
+//          Marking an order with the Full Bazi Reading as Paid writes and emails the reading.
 //   DELETE ?id=…     remove an order (for test orders)
 //
 // Only logged-in dashboard users with the "admin" role may use it. The login token is checked by
 // asking the site's own Netlify Identity service who it belongs to; the role is set under
 // Netlify → Identity → (user) → Edit settings → Roles.
 import { getStore } from '@netlify/blobs';
+import { isPaid, releaseReading, startReadingJob } from '../lib/reading-core.mjs';
 
 const STATUSES = ['awaiting_payment', 'paid', 'shipped', 'completed', 'cancelled'];
 
@@ -46,14 +48,18 @@ export default async (req) => {
       }
     }
     if (body.admin_note !== undefined) order.admin_note = String(body.admin_note).slice(0, 2000);
-    // Re-queue the Full Bazi Reading email (reading-email-background.mjs only acts on "queued").
-    const resend = body.resend_reading === true && order.reading;
-    if (resend) order.reading = { ...order.reading, status: 'queued', queued_at: new Date().toISOString(), error: '' };
-    await store.setJSON(order.id, order);
-    if (resend) {
-      try { await fetch(new URL('/.netlify/functions/reading-email-background', req.url), { method: 'POST', body: JSON.stringify({ order_id: order.id }) }); }
-      catch (e) { console.error('could not start the reading email job', e); }
+    // The Full Bazi Reading goes out once the order is paid: automatically the first time it's
+    // marked Paid, or again with "Resend reading email" (reading-email-background.mjs only acts on "queued").
+    let send = false;
+    if (order.reading) {
+      if (body.resend_reading === true) {
+        if (!isPaid(order)) return Response.json({ error: 'Mark the order as paid first.' }, { status: 400 });
+        send = true;
+      } else if (isPaid(order) && order.reading.status === 'awaiting_payment') send = true;
     }
+    if (send) await releaseReading(order);
+    await store.setJSON(order.id, order);
+    if (send) await startReadingJob(req, order.id);
     return Response.json({ order });
   }
 

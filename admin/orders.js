@@ -149,7 +149,7 @@
       const { order } = await api('PATCH', { id: o.id, ...changes });
       orders[orders.findIndex(x => x.id === o.id)] = order;
       render();
-      toast(changes.status ? `${o.id} → ${LABEL[changes.status]}` : changes.resend_reading ? 'Writing and emailing the reading again — refresh in a minute' : 'Note saved');
+      toast(changes.status ? `${o.id} → ${LABEL[changes.status]}${o.reading && o.reading.status === 'awaiting_payment' && order.reading.status === 'queued' ? ' · emailing the Bazi reading now' : ''}` : changes.resend_reading ? 'Writing and emailing the reading again — refresh in a minute' : 'Note saved');
     } catch (e) {
       toast('Couldn\'t save: ' + e.message);
       if (btn) btn.disabled = false;
@@ -168,6 +168,7 @@
 
   // The Full Bazi Reading: written and emailed automatically when the order is placed.
   const READING_LABEL = {
+    awaiting_payment: 'Waiting for payment — emailed automatically when you mark this order Paid',
     queued: 'Waiting to be written', writing: 'Being written…', sent: 'Emailed to the customer',
     written: 'Written, but not emailed — email isn\'t set up yet', failed: 'Not sent'
   };
@@ -181,7 +182,7 @@
         r.sent_at ? ` — ${fmtDate(r.sent_at)}` : '']) : null,
       r.error ? el('p', { class: 'muted', style: 'font-size:0.85rem' }, [r.error]) : null,
       o.credit_issued ? el('p', { style: 'font-size:0.9rem' }, [`Perfume credit given: ${o.credit_issued.code} (${money(o.credit_issued.amount)})`]) : null,
-      o.reading && r.status !== 'writing' ? el('div', { style: 'margin-top:8px' }, [el('button', { class: 'btn', onclick: e => {
+      o.reading && !['writing', 'awaiting_payment'].includes(r.status) ? el('div', { style: 'margin-top:8px' }, [el('button', { class: 'btn', onclick: e => {
         if (confirm(`Write and email the reading to ${o.customer.email} again?`)) update(o, { resend_reading: true }, e.target);
       } }, [ok ? 'Resend reading email' : 'Send reading email'])]) : null
     ]);

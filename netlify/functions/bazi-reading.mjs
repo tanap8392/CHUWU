@@ -3,8 +3,9 @@
 // POST { section, date, time, place, gender, order_id?, email? }
 //   - "profile" (Who You Are) is the free sneak peek: anyone can ask for it. The page shows the
 //     first paragraphs and fades the rest behind the S$1.99 unlock.
-//   - every other part ("luck", "year", "months", "next") is only for a placed order that includes
-//     the Full Bazi Reading for these exact birth details (order_id + the order's email).
+//   - every other part ("luck", "year", "months", "next") is only for a paid order that includes
+//     the Full Bazi Reading for these exact birth details (order_id + the order's email). An order
+//     still awaiting payment gets 402 "awaiting_payment", so the page can say so.
 //
 // Parts are written by Claude (via Netlify's AI Gateway, see netlify/lib/reading-core.mjs) and
 // cached by birth details, so a chart is only ever paid for once. After a purchase the whole
@@ -13,7 +14,7 @@
 import { getStore } from '@netlify/blobs';
 import {
   Anthropic, SECTIONS, LIMIT_PER_IP_PER_DAY, sha, readingYear, validateBirth, chartFacts,
-  getCached, getOrWrite, ordersStore, readingItems, sameBirth
+  getCached, getOrWrite, ordersStore, readingItems, sameBirth, isPaid
 } from '../lib/reading-core.mjs';
 
 const json = (status, data) => Response.json(data, { status });
@@ -50,6 +51,7 @@ export default async (req) => {
   if (section !== 'profile') {
     order = await paidOrder(body, v);
     if (!order) return json(402, { error: 'locked' });
+    if (!isPaid(order)) return json(402, { error: 'awaiting_payment' });
   }
 
   const cached = await getCached(section, v, year);

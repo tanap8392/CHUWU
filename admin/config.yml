@@ -380,6 +380,8 @@ collections:
               - { label: "Unlock card — what's included", name: "paywall_includes", widget: "text", hint: "One item per line." }
               - { label: "Unlock card — button", name: "paywall_button", widget: "string", hint: "The price is added after it, e.g. \"Unlock My Full Reading — S$1.99\"." }
               - { label: "Unlock card — offset note", name: "paywall_offset", widget: "text" }
+              - { label: "After ordering, before payment — title", name: "pending_title", widget: "string" }
+              - { label: "After ordering, before payment — text", name: "pending_text", widget: "text", hint: "Shown on the Bazi page until you mark the order Paid on the Orders screen." }
               - { label: "Gender note", name: "gender_note", widget: "string" }
               - label: "Next-year preview starts"
                 name: "next_from_month"

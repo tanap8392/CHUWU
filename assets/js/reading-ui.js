@@ -5,8 +5,9 @@
      then the start of "Who You Are" written by Claude. After a couple of paragraphs the text fades
      out behind the unlock card.
    - Unlock: the Full Bazi Reading (S$1.99) goes in the cart with the birth details; it's free when
-     a perfume is in the same order. After checkout, checkout.js remembers the unlock on this device
-     ("chuwu_unlock:…"), so this page shows every part, and the reading is emailed as well.
+     a perfume is in the same order. After checkout, checkout.js remembers the order on this device
+     ("chuwu_unlock:…"). Until the order is marked Paid this page says the reading is on its way;
+     once paid it shows every part (the reading is emailed at the same moment).
 
    Parts come from netlify/functions/bazi-reading.mjs. Texts come from content/customize.json →
    reading (Page Content → Bazi Reading Page). */
@@ -208,7 +209,19 @@
     return card;
   }
 
-  function showPeek() {
+  // Ordered, but the PayNow payment isn't confirmed yet.
+  function pendingCard(unlock) {
+    const btn = el('button', { type: 'button', class: 'btn paywall-btn' }, ['Check again']);
+    btn.addEventListener('click', () => show(current.adjusted, current.birth));
+    return el('div', { class: 'paywall' }, [
+      el('p', { class: 'eyebrow' }, ['Order ' + unlock.order_id]),
+      el('h3', {}, [t('pending_title', 'Your Full Reading Is On Its Way')]),
+      ...paragraphs(t('pending_text', 'As soon as we confirm your PayNow payment, we’ll email your full reading to you — and it unlocks right here too.')),
+      btn
+    ]);
+  }
+
+  function showPeek(unlock) {
     const out = $('reading-output');
     out.replaceChildren(shell('profile'));
     out.classList.remove('hidden');
@@ -220,7 +233,7 @@
       const visible = all.slice(0, 2);
       const faded = el('div', { class: 'reading-faded', 'aria-hidden': 'true' }, all.slice(2));
       body.replaceChildren(...visible, faded);
-      out.appendChild(paywall());
+      out.appendChild(unlock ? pendingCard(unlock) : paywall());
     });
   }
 
@@ -264,7 +277,20 @@
     $('reading-cta').classList.add('hidden');
     renderTeaser();
     const unlock = findUnlock();
-    if (unlock) showFull(unlock); else showPeek();
+    if (!unlock) showPeek();
+    else {
+      // Ask for one paid part to learn whether the order has been paid yet.
+      fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...birth, section: 'luck', order_id: unlock.order_id, email: unlock.email, gender: unlock.gender }) })
+        .then(r => r.json().then(d => ({ status: r.status, error: d.error })), () => ({}))
+        .then(({ status, error }) => {
+          if (status === 402 && error === 'awaiting_payment') return showPeek(unlock);
+          if (status === 402) { // not this order's chart, or cancelled: forget it
+            storage(st => st.removeItem(`chuwu_unlock:${birth.date}|${birth.time}|${birth.place}|${unlock.gender}`));
+            return showPeek();
+          }
+          showFull(unlock);
+        });
+    }
     $('reading-section').classList.remove('hidden');
   }
 

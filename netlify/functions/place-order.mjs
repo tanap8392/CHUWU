@@ -6,16 +6,13 @@
 // length, and never overwrites an existing order.
 //
 // Full Bazi Reading (digital, S$1.99):
-// - the order's reading is queued and reading-email-background.mjs writes and emails it;
-// - bought without any perfume, it earns a one-use S$1.99 perfume credit code (BAZI-XXXXXX);
+// - the order's reading waits for payment ("awaiting_payment"); marking the order Paid on the
+//   Orders screen (orders.mjs) writes and emails it, with the S$1.99 perfume credit code when it
+//   was bought without any perfume;
 // - a credit code used on this order is checked and marked used here.
 // Customers who bought a reading or ticked "news & offers" are added to Subscribers.
 import { getStore } from '@netlify/blobs';
-import { randomBytes } from 'node:crypto';
-import { readingItems, isPhysical, validateBirth, chartFacts, chartSummary, readingYear } from '../lib/reading-core.mjs';
-
-const CREDIT_AMOUNT = 1.99;
-const newCreditCode = () => 'BAZI-' + Array.from(randomBytes(6), b => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[b % 32]).join('');
+import { readingItems, validateBirth, chartFacts, chartSummary, readingYear } from '../lib/reading-core.mjs';
 
 const ID_PATTERN = /^CW-\d{6}-[A-Z0-9]{4}$/;
 
@@ -77,16 +74,7 @@ export default async (req) => {
   }
 
   const readings = readingItems(order);
-  if (readings.length) {
-    order.reading = { status: 'queued', queued_at: now };
-    // Bought without perfume: S$1.99 back as a perfume credit.
-    if (!order.items.some(isPhysical)) {
-      const code = newCreditCode();
-      const amount = Math.round(CREDIT_AMOUNT * readings.reduce((n, r) => n + r.item.quantity, 0) * 100) / 100;
-      await credits.setJSON(code, { code, amount, order_id: order.id, email: order.customer.email, created_at: now, used_at: null });
-      order.credit_issued = { code, amount };
-    }
-  }
+  if (readings.length) order.reading = { status: 'awaiting_payment' };
   await store.setJSON(order.id, order);
 
   // Subscribers: reading buyers (with their chart) and anyone who ticked "news & offers".
@@ -103,12 +91,6 @@ export default async (req) => {
     await subscribers.setJSON(email, rec);
   }
 
-  // Write and email the reading in the background (returns straight away).
-  if (readings.length) {
-    try {
-      await fetch(new URL('/.netlify/functions/reading-email-background', req.url), { method: 'POST', body: JSON.stringify({ order_id: order.id }) });
-    } catch (e) { console.error('could not start the reading email job', e); }
-  }
 
-  return Response.json({ ok: true, id: order.id, credit_code: order.credit_issued ? order.credit_issued.code : null, reading: !!readings.length }, { status: 201 });
+  return Response.json({ ok: true, id: order.id, reading: !!readings.length }, { status: 201 });
 };

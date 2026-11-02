@@ -218,10 +218,9 @@
     const settings = checkoutSettings();
     if (order.sent && order.hasReading) {
       wrap.appendChild(el('div', { class: 'reading-unlocked' }, [
-        el('h3', {}, ['Your full Bazi reading is unlocked']),
-        el('p', {}, [`We’re also emailing it to ${order.email} — it arrives within a few minutes. Please complete your PayNow payment below.`]),
-        ...(order.creditCode ? [el('p', { class: 'credit-code' }, ['Your S$1.99 perfume credit: ', el('b', {}, [order.creditCode]), el('span', { class: 'option-meta' }, ['Use it at checkout on any CHUWU perfume. It’s in your email too.'])])] : []),
-        el('a', { class: 'btn btn-primary', href: 'customize.html#reading-section' }, ['Read My Full Reading'])
+        el('h3', {}, ['Your full Bazi reading is reserved']),
+        el('p', {}, [`As soon as we confirm your PayNow payment, we’ll email your full reading to ${order.email}, and it unlocks on the Bazi page on this device too.`]),
+        ...(order.readingOnly ? [el('p', { class: 'option-meta' }, ['Your S$1.99 perfume credit code comes in the same email — use it on any CHUWU perfume.'])] : [])
       ]));
     }
     if (order.sent) {
@@ -320,6 +319,7 @@
     btn.disabled = true;
     btn.textContent = 'Placing order…';
     order.hasReading = lines.some(l => l.product.type === 'reading');
+    order.readingOnly = order.hasReading && lines.every(l => l.product.type === 'reading');
     order.marketing = $('co-marketing').checked;
 
     const promotion = t.promotion ? `${t.promotion.name}${t.promotion.code ? ' (' + t.promotion.code + ')' : ''}` : '';
@@ -382,7 +382,6 @@
         if (results.every(r => r.status === 'rejected')) throw new Error('Order could not be sent');
         order.sent = true;
         orderPlaced = true;
-        if (results[1].status === 'fulfilled' && results[1].value) order.creditCode = results[1].value.credit_code || '';
         if (order.hasReading) rememberUnlock(lines, order.id, order.email);
         try { sessionStorage.setItem(LAST_ORDER_KEY, JSON.stringify(order)); } catch (err) { /* ignore */ }
         if (window.ChuwuTrack) ChuwuTrack.purchase(order.id, t.total, lines);
