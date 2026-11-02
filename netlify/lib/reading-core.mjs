@@ -159,8 +159,9 @@ export async function getCached(section, v, year) {
 export async function getOrWrite(section, v, year, facts) {
   const cached = await getCached(section, v, year);
   if (cached) return { reading: cached, cached: true };
-  const reading = await write(section, facts);
-  await readingsStore().setJSON(cacheKey(section, v, year), { reading, created_at: new Date().toISOString(), model: MODEL });
+  const { reading, usage } = await write(section, facts);
+  console.log(`reading ${section} written`, JSON.stringify(usage));
+  await readingsStore().setJSON(cacheKey(section, v, year), { reading, created_at: new Date().toISOString(), model: MODEL, usage });
   return { reading, cached: false };
 }
 
@@ -231,6 +232,8 @@ async function write(sectionKey, facts) {
   const text = response.content.filter(b => b.type === 'text').map(b => b.text).join('');
   const reading = JSON.parse(text);
   if (!complete(reading, section.schema)) throw new Error('incomplete reading');
-  return reading;
+  // Token counts, kept with the saved part so the AI cost per reading can be checked.
+  const { input_tokens, output_tokens } = response.usage || {};
+  return { reading, usage: { input_tokens, output_tokens } };
 }
 
