@@ -89,6 +89,7 @@
   <input name="subtotal"><input name="promotion"><input name="discount"><input name="delivery_fee"><input name="total">
   <input name="payment_method"><textarea name="notes"></textarea>
   <input name="is_gift"><textarea name="gift_message"></textarea>
+  <input name="credit_code"><input name="news_opt_in">
 </form>
 
 <section style="padding-top:20px">
@@ -104,11 +105,13 @@
           <div class="field"><label for="co-phone">Mobile / WhatsApp</label><input id="co-phone" name="phone" type="tel" autocomplete="tel" required></div>
         </div>
 
-        <h3 style="margin-top:20px">Delivery</h3>
-        <div id="delivery-options"></div>
-        <div class="field" id="address-field">
-          <label for="co-address">Delivery Address</label>
-          <textarea id="co-address" name="address" rows="3" autocomplete="street-address"></textarea>
+        <div id="delivery-section">
+          <h3 style="margin-top:20px">Delivery</h3>
+          <div id="delivery-options"></div>
+          <div class="field" id="address-field">
+            <label for="co-address">Delivery Address</label>
+            <textarea id="co-address" name="address" rows="3" autocomplete="street-address"></textarea>
+          </div>
         </div>
 
         <h3 style="margin-top:20px">Payment</h3>
@@ -130,6 +133,7 @@
           <textarea id="co-notes" name="notes" rows="2"></textarea>
         </div>
 
+        <label class="reading-consent" style="margin-bottom:14px"><input type="checkbox" id="co-marketing"> <span>Send me CHUWU news, new scents and offers (optional — unsubscribe any time).</span></label>
         <button type="submit" class="btn btn-primary" id="place-order" style="width:100%;justify-content:center;margin-top:8px">Place Order</button>
         <p id="checkout-error" class="form-msg error hidden"></p>
       </form>

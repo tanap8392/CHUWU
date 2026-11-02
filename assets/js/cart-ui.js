@@ -57,7 +57,7 @@
       removeBtn.addEventListener('click', () => ChuwuCart.remove(line.id));
       const info = [el('div', { class: 'title' }, [text(ChuwuContent.productTitle(line.product, line.size))])];
       if (attrsText) info.push(el('div', { class: 'attrs' }, [text(attrsText)]));
-      info.push(el('div', { class: 'qty-price' }, [qtyControl(line), el('span', {}, [text(ChuwuContent.formatPrice(line.lineTotal))])]));
+      info.push(el('div', { class: 'qty-price' }, [line.product.type === 'reading' ? el('span', {}, [text('Digital · emailed to you')]) : qtyControl(line), el('span', {}, [text(ChuwuContent.formatPrice(line.lineTotal))])]));
       info.push(removeBtn);
       linesEl.appendChild(el('div', { class: 'cart-line' }, [lineMedia(line.product), el('div', { class: 'cart-line-info' }, info)]));
     });
@@ -81,9 +81,15 @@
     if (t.discount > 0) {
       linesEl.appendChild(el('div', { class: 'cart-offer' }, [el('span', {}, [text(t.promotion.name)]), el('span', {}, [text('−' + ChuwuContent.formatPrice(t.discount))])]));
     }
-    const nudge = ChuwuCart.bundleNudge(lines, ChuwuContent.data.promotions || []);
-    if (nudge && lines.length) linesEl.appendChild(el('p', { class: 'cart-nudge' }, [text(nudge)]));
-    subtotalEl.textContent = ChuwuContent.formatPrice(t.subtotal - t.discount);
+    if (t.readingWaiver > 0) {
+      linesEl.appendChild(el('div', { class: 'cart-offer' }, [el('span', {}, [text('Bazi reading — free with perfume')]), el('span', {}, [text('−' + ChuwuContent.formatPrice(t.readingWaiver))])]));
+    }
+    const nudge = ChuwuCart.bundleNudge(lines.filter(l => l.product.type !== 'reading'), ChuwuContent.data.promotions || []);
+    if (nudge && lines.some(l => l.product.type !== 'reading')) linesEl.appendChild(el('p', { class: 'cart-nudge' }, [text(nudge)]));
+    if (lines.some(l => l.product.type === 'reading') && !t.needsDelivery) {
+      linesEl.appendChild(el('p', { class: 'cart-nudge' }, [text('Add any perfume and your reading is free.')]));
+    }
+    subtotalEl.textContent = ChuwuContent.formatPrice(t.subtotal - t.discount - t.readingWaiver);
     checkoutBtn.classList.toggle('hidden', !lines.length);
   }
 

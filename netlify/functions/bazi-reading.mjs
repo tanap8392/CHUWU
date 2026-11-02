@@ -1,141 +1,22 @@
-// CHUWU (初·五) — the free Bazi reading, unlocked with an email address on the Bazi page.
+// CHUWU (初·五) — the Bazi reading on the Bazi page.
 //
-// The browser sends the birth details, gender, email and which part of the reading it wants
-// ("profile", "luck", "year", and from November "next" — a brief preview of the coming Bazi
-// year; the page asks for all of them at once). This function:
-//   1. saves the email to the "subscribers" store (Orders screen → Subscribers);
-//   2. recalculates the chart itself with the site's own Bazi code (assets/js/…), so the facts
-//      can't be tampered with;
-//   3. asks Claude to write that part of the reading from those facts, as JSON;
-//   4. caches the result, so the same birth details always get the same reading (and cost once).
+// POST { section, date, time, place, gender, order_id?, email? }
+//   - "profile" (Who You Are) is the free sneak peek: anyone can ask for it. The page shows the
+//     first paragraphs and fades the rest behind the S$1.99 unlock.
+//   - every other part ("luck", "year", "months", "next") is only for a placed order that includes
+//     the Full Bazi Reading for these exact birth details (order_id + the order's email).
 //
-// Claude is reached through Netlify's AI Gateway, which sets ANTHROPIC_API_KEY and
-// ANTHROPIC_BASE_URL for functions automatically and bills usage as Netlify credits
-// (US$1 = 180 credits). Setting your own ANTHROPIC_API_KEY in Netlify switches to direct
-// Anthropic billing. If neither is available, emails are still saved and the page says readings
-// are being set up.
-import Anthropic from '@anthropic-ai/sdk';
+// Parts are written by Claude (via Netlify's AI Gateway, see netlify/lib/reading-core.mjs) and
+// cached by birth details, so a chart is only ever paid for once. After a purchase the whole
+// reading is written and emailed by reading-email-background.mjs; while that is still running,
+// this returns 202 so the page waits for it instead of writing the same parts twice.
 import { getStore } from '@netlify/blobs';
-import { createHash } from 'node:crypto';
-import '../../assets/js/bazi-engine.js';
-import '../../assets/js/cities-data.js';
-import '../../assets/js/bazi-reading.js';
-
-// Bump a part's number to regenerate its cached readings after changing its prompt.
-const PROMPT_VERSIONS = { profile: 1, luck: 1, year: 2, months: 1, next: 1 };
-const MODEL = 'claude-opus-5';
-const LIMIT_PER_IP_PER_DAY = 12;   // fresh (uncached) sections — 4 full readings
-const LIMIT_PER_EMAIL_PER_DAY = 9; // 3 full readings
-const SHICHEN = ['23:30', '01:30', '03:30', '05:30', '07:30', '09:30', '11:30', '13:30', '15:30', '17:30', '19:30', '21:30'];
-
-const SYSTEM = `You write the free Bazi (八字) readings for CHUWU (初·五), a Singapore fragrance brand that pairs Five Element (五行) theory with scent.
-
-You are given a chart that has already been calculated. Never recalculate, add or change any pillar, element, Ten God, date, age or interaction — write only from the facts given, and quote them exactly when you mention them.
-
-Voice: warm, insightful and elegant; plain English with British spelling; second person ("you"). Write for someone curious rather than an expert — when you use a term such as Day Master, Ten Gods, luck pillar or clash, explain it briefly in passing.
-
-Be encouraging and balanced: describe tendencies, strengths and opportunities, never fixed fate. Do not predict death, illness, accidents, pregnancy, lottery wins or specific financial results, and give no medical, legal or investment advice. Present clashes (冲) as periods of change, movement or reassessment, and harmonies (合) as support and connection. The favourable elements come from a simplified strength calculation; describe them as elements to lean on, not as certainties.
-
-This is a general reading. Where more depth would help, you may mention once in the whole section that a personal reading can go further. Do not mention that you are an AI. Follow the requested JSON fields and lengths.`;
-
-// One request per part of the reading: what to write and the JSON shape to write it in.
-const obj = (properties) => ({ type: 'object', additionalProperties: false, required: Object.keys(properties), properties });
-const str = { type: 'string' };
-const list = (items) => ({ type: 'array', items });
-
-const SECTIONS = {
-  profile: {
-    effort: 'medium',
-    pick: f => ({ dayMaster: f.dayMaster, zodiac: f.zodiac, pillars: f.pillars, elementPoints: f.elementPoints, lacking: f.lacking, strength: f.strength, tenGods: f.tenGods, missingGods: f.missingGods }),
-    task: `Write the "Who you are" part of the reading:
-- headline: the Day Master in a few words, e.g. "癸 Water — the gentle rain" (use the given image).
-- personality: two short paragraphs (about 140 words in total) on character, drawn from the Day Master, its strength and the Ten Gods.
-- strengths: three short phrases.
-- growth: two short phrases on what to nurture.
-- balance: one paragraph (about 90 words) on the element balance: which elements are strong, which are lacking, the Day Master's strength (say it is a simplified calculation) and the favourable elements to lean on.
-- ten_gods: the four or five most present Ten Gods (from tenGods, highest weight first). For each: god (exactly as given), area (one of Self, Expression, Wealth, Career & Status, Support & Learning), and text (two sentences on what it brings). If an important Ten God is missing (missingGods), you may mention its absence in one item instead.`,
-    schema: obj({
-      headline: str, personality: str, strengths: list(str), growth: list(str), balance: str,
-      ten_gods: list(obj({ god: str, area: str, text: str }))
-    })
-  },
-  luck: {
-    effort: 'medium',
-    pick: f => ({ dayMaster: f.dayMaster, strength: f.strength, luck: f.luck }),
-    task: `Write the "Luck pillars (大运)" part of the reading:
-- overview: one paragraph (about 80 words) explaining what luck pillars are, that this chart's run ${'${direction}'} and the first begins at about the given start age.
-- pillars: one item for each of the eight luck pillars, in order. pillar and ages exactly as given; title: three to five words naming the period's theme; text: two sentences (about 40 words) from its Ten Gods, elements (favourable or not) and any interactions.
-- current_focus: one paragraph (about 70 words) on the pillar marked current, or, if none is current, on the next one.`,
-    schema: obj({
-      overview: str,
-      pillars: list(obj({ pillar: str, ages: str, title: str, text: str })),
-      current_focus: str
-    })
-  },
-  next: {
-    effort: 'low',
-    pick: f => ({ dayMaster: f.dayMaster, zodiac: f.zodiac, strength: f.strength, lacking: f.lacking, nextYear: f.nextYear, luckPillars: f.luck.pillars.map(p => ({ pillar: p.pillar, years: p.years })) }),
-    task: `Write a brief preview of the coming year (nextYear) — shorter than a full year reading:
-- overview: one paragraph (about 90 words) on how next year's pillar meets this chart: its Ten Gods, elements and any clash or harmony with the chart's branches, and which luck pillar covers it (from the years given).
-- themes: four items, area exactly one of Career, Wealth, Relationships, Wellbeing; text one sentence each. Wellbeing means rest, energy and balance — never illness.
-- key_months: the three most notable of next year's twelve solar months (strong clashes, harmonies or favourable elements), in calendar order. pillar and dates exactly as given; text one or two sentences.`,
-    schema: obj({
-      overview: str,
-      themes: list(obj({ area: str, text: str })),
-      key_months: list(obj({ pillar: str, dates: str, text: str }))
-    })
-  },
-  year: {
-    effort: 'low',
-    pick: f => ({ dayMaster: f.dayMaster, zodiac: f.zodiac, strength: f.strength, lacking: f.lacking, yearAhead: f.yearAhead, currentLuckPillar: f.luck.pillars.find(p => p.current) || null }),
-    task: `Write the "Year ahead" part of the reading for the given year (the month-by-month part is written separately):
-- overview: one paragraph (about 110 words) on how the year's pillar meets this chart: its Ten Gods, elements and any clash or harmony with the chart's branches, and how it sits within the current luck pillar.
-- themes: four items, area exactly one of Career, Wealth, Relationships, Wellbeing; text two sentences each. Wellbeing means rest, energy and balance — never illness.
-- scent_tip: two sentences. CHUWU's scent recommendations add the chart's least-present element (lacking); say which, and if the favourable elements differ, describe them as further elements to lean on during the year.`,
-    schema: obj({
-      overview: str,
-      themes: list(obj({ area: str, text: str })),
-      scent_tip: str
-    })
-  },
-  months: {
-    effort: 'low',
-    pick: f => ({ dayMaster: f.dayMaster, strength: f.strength, months: f.yearAhead.months }),
-    task: `Write the month-by-month part of the year reading:
-- months: one item for each of the twelve solar months, in order. pillar and dates exactly as given; title three to five words; text two sentences (about 30 words) from that month's Ten Gods, elements (favourable or not) and interactions.`,
-    schema: obj({
-      months: list(obj({ pillar: str, dates: str, title: str, text: str }))
-    })
-  }
-};
+import {
+  Anthropic, SECTIONS, LIMIT_PER_IP_PER_DAY, sha, readingYear, validateBirth, chartFacts,
+  getCached, getOrWrite, ordersStore, readingItems, sameBirth
+} from '../lib/reading-core.mjs';
 
 const json = (status, data) => Response.json(data, { status });
-const sha = s => createHash('sha256').update(s).digest('hex');
-
-// The reading year runs from 立春 (about 4 February) in Singapore time.
-function readingYear() {
-  const sg = new Date(Date.now() + 8 * 3600000);
-  const y = sg.getUTCFullYear();
-  return sg.getUTCMonth() > 1 || (sg.getUTCMonth() === 1 && sg.getUTCDate() >= 4) ? y : y - 1;
-}
-
-function validate(b) {
-  const email = String(b.email || '').trim().toLowerCase();
-  if (!/^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/.test(email)) return { error: 'Please enter a valid email address.' };
-  const m = String(b.date || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (!m || +m[1] < 1930 || +m[1] > 2025 || +m[2] < 1 || +m[2] > 12 || +m[3] < 1 || +m[3] > 31) return { error: 'Please check the date of birth.' };
-  if (!SHICHEN.includes(b.time)) return { error: 'Please choose a time of birth.' };
-  if (!['male', 'female'].includes(b.gender)) return { error: 'Please choose male or female (used for the luck pillars).' };
-  if (!SECTIONS[b.section]) return { error: 'Unknown section.' };
-  const place = String(b.place || '');
-  if (place && !globalThis.ChuwuCities.CITIES[place]) return { error: 'Unknown place of birth.' };
-  return {
-    email, place, section: b.section, gender: b.gender, date: b.date, time: b.time,
-    name: String(b.name || '').trim().slice(0, 60),
-    marketing: b.marketing === true,
-    birth: { year: +m[1], month: +m[2], day: +m[3], hour: +b.time.slice(0, 2), minute: +b.time.slice(3) }
-  };
-}
 
 async function underLimit(store, key, limit) {
   const n = Number(await store.get(key)) || 0;
@@ -144,72 +25,54 @@ async function underLimit(store, key, limit) {
   return true;
 }
 
-async function write(sectionKey, facts) {
-  const section = SECTIONS[sectionKey];
-  const client = new Anthropic({ timeout: 55000, maxRetries: 0 }); // Netlify allows 60 s per request
-  const task = section.task.replace('${direction}', facts.luck.direction);
-  const response = await client.messages.create({
-    model: MODEL,
-    max_tokens: 16000,
-    thinking: { type: 'adaptive' },
-    output_config: { effort: section.effort, format: { type: 'json_schema', schema: section.schema } },
-    system: SYSTEM,
-    messages: [{ role: 'user', content: `${task}\n\nChart facts:\n${JSON.stringify(section.pick(facts), null, 1)}` }]
-  });
-  if (response.stop_reason === 'refusal') throw new Error('refused');
-  if (response.stop_reason === 'max_tokens') throw new Error('too long');
-  const text = response.content.filter(b => b.type === 'text').map(b => b.text).join('');
-  return JSON.parse(text);
+// The order must include the Full Bazi Reading for these birth details.
+async function paidOrder(body, v) {
+  const id = String(body.order_id || '');
+  const email = String(body.email || '').trim().toLowerCase();
+  if (!id || !email) return null;
+  const order = await ordersStore().get(id, { type: 'json' });
+  if (!order || order.status === 'cancelled' || String(order.customer.email).toLowerCase() !== email) return null;
+  return readingItems(order).some(r => sameBirth(r.birth, v)) ? order : null;
 }
 
 export default async (req) => {
   if (req.method !== 'POST') return json(405, { error: 'Method not allowed' });
   let body;
   try { body = await req.json(); } catch (e) { return json(400, { error: 'Invalid request.' }); }
-  const v = validate(body || {});
+  if (!SECTIONS[body.section]) return json(400, { error: 'Unknown section.' });
+  const v = validateBirth({ ...body, gender: body.gender || 'female' }); // the free peek doesn't depend on gender
   if (v.error) return json(400, { error: v.error });
 
   const year = readingYear();
-  const adjusted = globalThis.ChuwuCities.adjustForTrueSolarTime(v.birth, v.place);
-  const { facts, chart } = globalThis.ChuwuReading.analyse(adjusted, v.gender, year);
-  facts.nextYear = globalThis.ChuwuReading.yearAhead(chart, year + 1);
+  const section = body.section;
 
-  // 1. Subscriber (one record per email; birth details kept for a follow-up personal reading).
-  const subscribers = getStore({ name: 'subscribers', consistency: 'strong' });
-  const now = new Date().toISOString();
-  const prev = (await subscribers.get(v.email, { type: 'json' })) || { email: v.email, created_at: now, readings: 0 };
-  await subscribers.setJSON(v.email, {
-    ...prev,
-    name: v.name || prev.name || '',
-    marketing: v.marketing || prev.marketing || false,
-    updated_at: now,
-    readings: prev.readings + (v.section === 'profile' ? 1 : 0),
-    birth: { date: v.date, time: v.time, place: v.place || 'Not specified', gender: v.gender },
-    chart: { pillars: facts.pillars.map(p => p.characters).join(' '), dayMaster: `${facts.dayMaster.stem} ${facts.dayMaster.element}`, lacking: facts.lacking.join(', ') }
-  });
-
-  // 2. Cached reading?
-  const readings = getStore({ name: 'readings', consistency: 'strong' });
-  const key = sha(JSON.stringify({ v: PROMPT_VERSIONS[v.section], section: v.section, year, date: v.date, time: v.time, place: v.place, gender: v.gender }));
-  const cached = await readings.get(key, { type: 'json' });
-  if (cached) return json(200, { section: v.section, year, reading: cached.reading, cached: true });
-
-  if (!process.env.ANTHROPIC_API_KEY) return json(503, { error: 'not_configured' });
-
-  // 3. Fair-use limits on fresh readings (they cost money to write).
-  const limits = getStore({ name: 'reading-limits' });
-  const day = now.slice(0, 10);
-  const ip = req.headers.get('x-nf-client-connection-ip') || req.headers.get('x-forwarded-for') || 'unknown';
-  if (!(await underLimit(limits, `${day}:ip:${sha(ip)}`, LIMIT_PER_IP_PER_DAY)) ||
-      !(await underLimit(limits, `${day}:email:${sha(v.email)}`, LIMIT_PER_EMAIL_PER_DAY))) {
-    return json(429, { error: 'You’ve reached today’s limit for free readings — please try again tomorrow.' });
+  let order = null;
+  if (section !== 'profile') {
+    order = await paidOrder(body, v);
+    if (!order) return json(402, { error: 'locked' });
   }
 
-  // 4. Write, cache, return.
+  const cached = await getCached(section, v, year);
+  if (cached) return json(200, { section, year, reading: cached, cached: true });
+  if (!process.env.ANTHROPIC_API_KEY) return json(503, { error: 'not_configured' });
+
+  // After a purchase the email job writes every part; wait for it rather than paying twice.
+  if (order && order.reading && order.reading.status === 'writing' && Date.now() - Date.parse(order.reading.started_at) < 180000) {
+    return json(202, { pending: true });
+  }
+
+  // Fair-use limit on fresh free peeks (each costs a little to write). Paid parts aren't limited.
+  if (!order) {
+    const ip = req.headers.get('x-nf-client-connection-ip') || req.headers.get('x-forwarded-for') || 'unknown';
+    const limits = getStore({ name: 'reading-limits' });
+    if (!(await underLimit(limits, `${new Date().toISOString().slice(0, 10)}:ip:${sha(ip)}`, LIMIT_PER_IP_PER_DAY))) {
+      return json(429, { error: 'You’ve reached today’s limit for new readings — please try again tomorrow.' });
+    }
+  }
+
   try {
-    const reading = await write(v.section, facts);
-    await readings.setJSON(key, { reading, created_at: now, model: MODEL });
-    return json(200, { section: v.section, year, reading });
+    const { reading } = await getOrWrite(section, v, year, chartFacts(v, year));
+    return json(200, { section, year, reading });
   } catch (e) {
     if (e instanceof Anthropic.RateLimitError) return json(503, { error: 'busy' }); // incl. the AI Gateway's per-minute credit limit
     if (e instanceof Anthropic.AuthenticationError) return json(503, { error: 'not_configured' });

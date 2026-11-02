@@ -72,6 +72,7 @@
     const sz = size || p.size;
     if (p.type === 'signature') return `${p.name}${p.name_zh ? ' (' + p.name_zh + ')' : ''} — ${sz}`;
     if (p.type === 'element_scent') return `${p.code} · ${p.element} — ${sz}`;
+    if (p.type === 'reading' || p.type === 'service') return p.name;
     return `${p.name} — ${sz}`;
   }
 

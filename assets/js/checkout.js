@@ -48,8 +48,12 @@
     return ChuwuCart.priced(data.products).lines;
   }
 
+  // A checked BAZI-… reading credit { code, amount } (see netlify/functions/credit.mjs).
+  let appliedCredit = null;
+  let creditMessage = null;
+
   function currentTotals() {
-    return ChuwuCart.totals(currentLines(), data.promotions, appliedCode, selectedDelivery);
+    return ChuwuCart.totals(currentLines(), data.promotions, appliedCode, selectedDelivery, { credit: appliedCredit });
   }
 
   function renderOptions() {
@@ -80,8 +84,11 @@
   }
 
   function updateAddressField() {
+    // Nothing to ship (only the digital reading): no delivery or address at all.
+    const ships = currentLines().some(l => l.product.type !== 'reading');
+    $('delivery-section').classList.toggle('hidden', !ships);
     // With no delivery options set up, still ask for an address.
-    const needs = !selectedDelivery || selectedDelivery.needs_address !== false;
+    const needs = ships && (!selectedDelivery || selectedDelivery.needs_address !== false);
     $('address-field').classList.toggle('hidden', !needs);
   }
 
@@ -107,14 +114,25 @@
     if (t.discount > 0) {
       totalsWrap.appendChild(el('div', { class: 'summary-row discount' }, [el('span', {}, [t.promotion.name]), el('span', {}, ['−' + money(t.discount)])]));
     }
-    if (selectedDelivery) {
+    if (t.readingWaiver > 0) {
+      totalsWrap.appendChild(el('div', { class: 'summary-row discount' }, [el('span', {}, ['Bazi reading — free with perfume']), el('span', {}, ['−' + money(t.readingWaiver)])]));
+    }
+    if (t.credit > 0) {
+      totalsWrap.appendChild(el('div', { class: 'summary-row discount' }, [el('span', {}, [`Reading credit ${t.creditCode}`]), el('span', {}, ['−' + money(t.credit)])]));
+    }
+    if (selectedDelivery && t.needsDelivery) {
       const label = t.deliveryWaivedByPromotion ? `Delivery (${t.promotion.name})` : 'Delivery';
       totalsWrap.appendChild(el('div', { class: 'summary-row' }, [el('span', {}, [label]), el('span', {}, [t.deliveryFee > 0 ? money(t.deliveryFee) : 'Free'])]));
     }
     totalsWrap.appendChild(el('div', { class: 'summary-row total' }, [el('span', {}, ['Total']), el('span', {}, [money(t.total)])]));
 
     const msg = $('promo-msg');
-    if (appliedCode) {
+    if (creditMessage) {
+      msg.classList.remove('hidden');
+      const unusable = appliedCredit && !t.credit;
+      msg.className = 'form-msg ' + (creditMessage.ok && !unusable ? 'ok' : 'error');
+      msg.textContent = unusable ? 'Your reading credit applies to perfume — add a scent to use it.' : creditMessage.text;
+    } else if (appliedCode) {
       msg.classList.remove('hidden');
       msg.className = 'form-msg ' + (t.codeError ? 'error' : 'ok');
       msg.textContent = t.codeError || (t.promotion ? `${t.promotion.name} applied.` : '');
@@ -159,7 +177,17 @@
   // Order store: the copy the dashboard's Orders screen shows and tracks (netlify/functions/place-order.mjs).
   function saveOrder(record) {
     return fetch('/.netlify/functions/place-order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(record) })
-      .then(r => { if (!r.ok) throw new Error('Order store returned HTTP ' + r.status); });
+      .then(r => { if (!r.ok) throw new Error('Order store returned HTTP ' + r.status); return r.json(); });
+  }
+
+  // Remember on this device that the reading for each chart in the order is unlocked, so the Bazi
+  // page shows the full reading (assets/js/reading-ui.js reads the same key).
+  function rememberUnlock(lines, orderIdValue, email) {
+    lines.filter(l => l.product.type === 'reading').forEach(l => {
+      const a = Object.fromEntries(l.attributes.map(x => [x.key, x.value]));
+      const place = a['Birth place'] && a['Birth place'] !== 'Not specified' ? a['Birth place'] : '';
+      try { localStorage.setItem(`chuwu_unlock:${a['Birth date']}|${a['Birth time']}|${place}|${a['Gender']}`, JSON.stringify({ order_id: orderIdValue, email })); } catch (e) { /* ignore */ }
+    });
   }
 
   function orderMessage(order) {
@@ -188,6 +216,14 @@
     wrap.classList.remove('hidden');
 
     const settings = checkoutSettings();
+    if (order.sent && order.hasReading) {
+      wrap.appendChild(el('div', { class: 'reading-unlocked' }, [
+        el('h3', {}, ['Your full Bazi reading is unlocked']),
+        el('p', {}, [`We’re also emailing it to ${order.email} — it arrives within a few minutes. Please complete your PayNow payment below.`]),
+        ...(order.creditCode ? [el('p', { class: 'credit-code' }, ['Your S$1.99 perfume credit: ', el('b', {}, [order.creditCode]), el('span', { class: 'option-meta' }, ['Use it at checkout on any CHUWU perfume. It’s in your email too.'])])] : []),
+        el('a', { class: 'btn btn-primary', href: 'customize.html#reading-section' }, ['Read My Full Reading'])
+      ]));
+    }
     if (order.sent) {
       wrap.appendChild(el('p', { class: 'center' }, [settings.thank_you_message || 'Thank you — we\'ve received your order.']));
     } else {
@@ -270,7 +306,7 @@
       name: form.name.value.trim(),
       email: form.email.value.trim(),
       phone: form.phone.value.trim(),
-      delivery: selectedDelivery ? selectedDelivery.label : '',
+      delivery: !lines.some(l => l.product.type !== 'reading') ? 'Digital — emailed' : selectedDelivery ? selectedDelivery.label : '',
       address: needsAddress ? form.address.value.trim() : '',
       notes: form.notes.value.trim(),
       items: itemsText(lines),
@@ -283,6 +319,8 @@
     const btn = $('place-order');
     btn.disabled = true;
     btn.textContent = 'Placing order…';
+    order.hasReading = lines.some(l => l.product.type === 'reading');
+    order.marketing = $('co-marketing').checked;
 
     const promotion = t.promotion ? `${t.promotion.name}${t.promotion.code ? ' (' + t.promotion.code + ')' : ''}` : '';
     const emailed = submitToNetlify({
@@ -302,7 +340,9 @@
       payment_method: selectedPayment.label,
       notes: order.notes,
       is_gift: order.gift ? 'Yes' : 'No',
-      gift_message: order.giftMessage
+      gift_message: order.giftMessage,
+      credit_code: t.creditCode || '',
+      news_opt_in: order.marketing ? 'Yes' : 'No'
     });
     const saved = saveOrder({
       id: order.id,
@@ -322,6 +362,10 @@
       })),
       subtotal: t.subtotal,
       discount: t.discount,
+      reading_waiver: t.readingWaiver,
+      credit: t.credit,
+      credit_code: t.creditCode || '',
+      marketing: order.marketing,
       delivery_fee: t.deliveryFee,
       total: t.total,
       promotion,
@@ -338,6 +382,8 @@
         if (results.every(r => r.status === 'rejected')) throw new Error('Order could not be sent');
         order.sent = true;
         orderPlaced = true;
+        if (results[1].status === 'fulfilled' && results[1].value) order.creditCode = results[1].value.credit_code || '';
+        if (order.hasReading) rememberUnlock(lines, order.id, order.email);
         try { sessionStorage.setItem(LAST_ORDER_KEY, JSON.stringify(order)); } catch (err) { /* ignore */ }
         if (window.ChuwuTrack) ChuwuTrack.purchase(order.id, t.total, lines);
         ChuwuCart.clear();
@@ -375,7 +421,20 @@
     }
 
     $('apply-promo').addEventListener('click', () => {
-      appliedCode = $('co-promo').value.trim();
+      const typed = $('co-promo').value.trim();
+      // BAZI-… codes are S$1.99 reading credits, checked on the server; anything else is a promotion.
+      if (/^BAZI-/i.test(typed)) {
+        appliedCode = '';
+        fetch('/.netlify/functions/credit?code=' + encodeURIComponent(typed)).then(r => r.json()).then(res => {
+          appliedCredit = res.valid ? { code: res.code, amount: res.amount } : null;
+          creditMessage = res.valid ? { ok: true, text: `Reading credit applied: −${money(res.amount)} on perfume.` } : { ok: false, text: res.error };
+          renderSummary();
+        }).catch(() => { creditMessage = { ok: false, text: 'Couldn’t check this code — please try again.' }; renderSummary(); });
+        return;
+      }
+      appliedCredit = null;
+      creditMessage = null;
+      appliedCode = typed;
       renderSummary();
     });
     $('co-promo').addEventListener('keydown', e => {
@@ -386,7 +445,7 @@
     document.addEventListener('chuwu:cart', () => {
       if (orderPlaced) return;
       if (!currentLines().length) location.reload();
-      else renderSummary();
+      else { updateAddressField(); renderSummary(); }
     });
   });
 })();

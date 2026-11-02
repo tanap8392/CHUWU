@@ -46,7 +46,14 @@ export default async (req) => {
       }
     }
     if (body.admin_note !== undefined) order.admin_note = String(body.admin_note).slice(0, 2000);
+    // Re-queue the Full Bazi Reading email (reading-email-background.mjs only acts on "queued").
+    const resend = body.resend_reading === true && order.reading;
+    if (resend) order.reading = { ...order.reading, status: 'queued', queued_at: new Date().toISOString(), error: '' };
     await store.setJSON(order.id, order);
+    if (resend) {
+      try { await fetch(new URL('/.netlify/functions/reading-email-background', req.url), { method: 'POST', body: JSON.stringify({ order_id: order.id }) }); }
+      catch (e) { console.error('could not start the reading email job', e); }
+    }
     return Response.json({ order });
   }
 

@@ -159,6 +159,16 @@ collections:
                   - *gallery
                   - *badge
                   - *status
+              - label: "Full Bazi Reading (S$1.99 unlock)"
+                name: "reading"
+                widget: "object"
+                summary: "{{fields.name}} — S${{fields.price}} — {{fields.status}}"
+                fields:
+                  - { label: "ID", name: "id", widget: "string", default: "full-reading", hint: "Must stay \"full-reading\" — the Bazi page and the reading email look for it." }
+                  - { label: "Name", name: "name", widget: "string", default: "Full Bazi Reading" }
+                  - { label: "Description", name: "description", widget: "text", required: false }
+                  - { label: "Price (SGD)", name: "price", widget: "number", value_type: "float", min: 0, step: 0.01, hint: "Free when a perfume is in the same order. Bought on its own, the customer gets this amount back as a one-time perfume credit code." }
+                  - { label: "Status", name: "status", widget: "select", default: "active", options: [{ label: "On sale", value: "active" }, { label: "Hidden", value: "hidden" }], hint: "Hidden: the Bazi page shows the free preview only, with no unlock." }
               - label: "Service (e.g. Personal Bazi Reading)"
                 name: "service"
                 widget: "object"
@@ -355,21 +365,22 @@ collections:
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Intro text", name: "lede", widget: "text" }
               - { label: "Small print", name: "explainer", widget: "text" }
-          - label: "Free Bazi reading"
+          - label: "Bazi reading"
             name: "reading"
             widget: "object"
             collapsed: true
-            hint: "The free AI-written reading unlocked with an email, below the scent recommendations. The paid offer at the end uses the active Service product (Products) if there is one, otherwise a WhatsApp button."
+            hint: "The AI-written reading below the scent recommendations. Anyone can read the first paragraphs free; the rest fades out behind the unlock card for the Full Bazi Reading (its price is in Products). The offer at the end uses the active Service product if there is one, otherwise a WhatsApp button."
             fields:
               - { label: "Eyebrow", name: "eyebrow", widget: "string" }
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Intro text", name: "lede", widget: "text" }
               - { label: "Link under the element bars", name: "jump", widget: "string" }
-              - { label: "Line above the form", name: "unlock", widget: "string" }
+              - { label: "Unlock card — eyebrow", name: "paywall_eyebrow", widget: "string" }
+              - { label: "Unlock card — title", name: "paywall_title", widget: "string" }
+              - { label: "Unlock card — what's included", name: "paywall_includes", widget: "text", hint: "One item per line." }
+              - { label: "Unlock card — button", name: "paywall_button", widget: "string", hint: "The price is added after it, e.g. \"Unlock My Full Reading — S$1.99\"." }
+              - { label: "Unlock card — offset note", name: "paywall_offset", widget: "text" }
               - { label: "Gender note", name: "gender_note", widget: "string" }
-              - { label: "Marketing consent checkbox", name: "consent", widget: "string" }
-              - { label: "Button", name: "button", widget: "string" }
-              - { label: "Privacy note under the button", name: "privacy_note", widget: "text" }
               - label: "Next-year preview starts"
                 name: "next_from_month"
                 widget: "select"

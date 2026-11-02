@@ -23,6 +23,8 @@
     const attrs = (attributes || []).filter(a => a.value);
     const sig = JSON.stringify(attrs);
     const existing = lines.find(l => l.productId === productId && (l.size || null) === (size || null) && JSON.stringify(l.attributes) === sig);
+    const product = root.ChuwuContent && (root.ChuwuContent.data.products || []).find(p => p.id === productId);
+    if (existing && product && product.type === 'reading') { save(lines); return; } // one reading per chart is enough
     if (existing) existing.quantity += quantity;
     else lines.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), productId, size: size || null, quantity, attributes: attrs });
     save(lines);
@@ -133,14 +135,24 @@
     return null;
   }
 
+  const isReading = l => l.product.type === 'reading';
+
   // delivery: one of settings.checkout.delivery_options (or null). code: what the customer typed.
-  // Applies the single best offer among auto-applied promotions and the entered code.
-  function totals(lines, promotions, code, delivery) {
+  // opts.credit: a checked reading credit { code, amount } (BAZI-…), or null.
+  //
+  // - Promotions (codes, bundles, automatic offers) apply to perfume; the single best one is used.
+  // - The Full Bazi Reading is free when the order also has a perfume (readingWaiver).
+  // - A reading credit takes up to its amount off the perfume, after promotions.
+  // - Delivery only applies when there's something to ship; free delivery over the minimum counts
+  //   what's paid for the perfume after discounts.
+  function totals(lines, promotions, code, delivery, opts) {
     const now = new Date();
+    const physical = lines.filter(l => !isReading(l));
     const subtotal = round2(lines.reduce((s, l) => s + l.lineTotal, 0));
-    let deliveryFee = delivery ? Number(delivery.fee) || 0 : 0;
+    const physicalSubtotal = round2(physical.reduce((s, l) => s + l.lineTotal, 0));
+    const needsDelivery = physical.length > 0;
+    const baseFee = needsDelivery && delivery ? Number(delivery.fee) || 0 : 0;
     const freeOver = delivery ? Number(delivery.free_over) || 0 : 0;
-    if (freeOver > 0 && subtotal >= freeOver) deliveryFee = 0;
 
     const typed = (code || '').trim().toUpperCase();
     let codeError = null;
@@ -149,7 +161,7 @@
       const matchesCode = typed && promo.code && promo.code.trim().toUpperCase() === typed;
       if (!promo.auto_apply && !matchesCode) return;
       if (!isLive(promo, now)) return;
-      const result = evaluate(promo, lines, subtotal, deliveryFee);
+      const result = evaluate(promo, physical, physicalSubtotal, baseFee);
       if (result.error) { if (matchesCode) codeError = result.error; return; }
       if (!best || result.saving > best.saving) best = { ...result, promo };
     });
@@ -157,17 +169,24 @@
     if (typed && !codeMatchedSomething) codeError = 'This code isn\'t valid right now.';
 
     const discount = best ? best.discount : 0;
-    // Free delivery over the minimum counts what's paid for the products, after discounts.
-    if (freeOver > 0) deliveryFee = subtotal - discount >= freeOver ? 0 : (delivery ? Number(delivery.fee) || 0 : 0);
+    const readingWaiver = needsDelivery ? round2(lines.filter(isReading).reduce((s, l) => s + l.lineTotal, 0)) : 0;
+    const credit = opts && opts.credit && physical.length ? round2(Math.min(opts.credit.amount, Math.max(0, physicalSubtotal - discount))) : 0;
+
+    let deliveryFee = baseFee;
+    if (freeOver > 0 && physicalSubtotal - discount - credit >= freeOver) deliveryFee = 0;
     const appliedDelivery = best && best.freeDelivery ? 0 : deliveryFee;
     return {
       subtotal,
       discount,
+      readingWaiver,
+      credit,
+      creditCode: credit > 0 ? opts.credit.code : '',
+      needsDelivery,
       deliveryFee: appliedDelivery,
       deliveryWaivedByPromotion: !!(best && best.freeDelivery && deliveryFee > 0),
       promotion: best ? { name: best.promo.name, code: best.promo.code || '' } : null,
       codeError,
-      total: round2(Math.max(0, subtotal - discount) + appliedDelivery)
+      total: round2(Math.max(0, subtotal - discount - readingWaiver - credit) + appliedDelivery)
     };
   }
 

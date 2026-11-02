@@ -840,6 +840,16 @@
       "compare_at_price": null,
       "image": "",
       "status": "hidden"
+    },
+    {
+      "type": "reading",
+      "id": "full-reading",
+      "name": "Full Bazi Reading",
+      "description": "Your complete reading: Who You Are and your Ten Gods, eight ten-year luck pillars, the year ahead and month by month. Opens straight after checkout and is emailed to you. Free with any perfume — or get S$1.99 back as credit on your next perfume order.",
+      "price": 1.99,
+      "compare_at_price": null,
+      "image": "",
+      "status": "active"
     }
   ]
 }

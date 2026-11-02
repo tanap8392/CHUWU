@@ -152,6 +152,7 @@
           group('signature', 'Signature blends'),
           group('element_scent', 'Element scents'),
           group('personalized', 'Personalized blend sizes'),
+          group('reading', 'Full Bazi Reading (unlocked on the Bazi page)'),
           group('service', 'Services (sold from the Bazi page)')
         ])
       ]);

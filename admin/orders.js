@@ -149,7 +149,7 @@
       const { order } = await api('PATCH', { id: o.id, ...changes });
       orders[orders.findIndex(x => x.id === o.id)] = order;
       render();
-      toast(changes.status ? `${o.id} → ${LABEL[changes.status]}` : 'Note saved');
+      toast(changes.status ? `${o.id} → ${LABEL[changes.status]}` : changes.resend_reading ? 'Writing and emailing the reading again — refresh in a minute' : 'Note saved');
     } catch (e) {
       toast('Couldn\'t save: ' + e.message);
       if (btn) btn.disabled = false;
@@ -166,6 +166,27 @@
     } catch (e) { toast('Couldn\'t delete: ' + e.message); }
   }
 
+  // The Full Bazi Reading: written and emailed automatically when the order is placed.
+  const READING_LABEL = {
+    queued: 'Waiting to be written', writing: 'Being written…', sent: 'Emailed to the customer',
+    written: 'Written, but not emailed — email isn\'t set up yet', failed: 'Not sent'
+  };
+  function readingBlock(o) {
+    if (!o.reading && !o.credit_issued) return null;
+    const r = o.reading || {};
+    const ok = r.status === 'sent';
+    return el('div', { class: 'block' }, [
+      el('h4', {}, ['Full Bazi Reading']),
+      o.reading ? el('p', {}, [el('b', { style: ok ? 'color:#2e7d4f' : r.status === 'failed' || r.status === 'written' ? 'color:#b3261e' : '' }, [READING_LABEL[r.status] || r.status]),
+        r.sent_at ? ` — ${fmtDate(r.sent_at)}` : '']) : null,
+      r.error ? el('p', { class: 'muted', style: 'font-size:0.85rem' }, [r.error]) : null,
+      o.credit_issued ? el('p', { style: 'font-size:0.9rem' }, [`Perfume credit given: ${o.credit_issued.code} (${money(o.credit_issued.amount)})`]) : null,
+      o.reading && r.status !== 'writing' ? el('div', { style: 'margin-top:8px' }, [el('button', { class: 'btn', onclick: e => {
+        if (confirm(`Write and email the reading to ${o.customer.email} again?`)) update(o, { resend_reading: true }, e.target);
+      } }, [ok ? 'Resend reading email' : 'Send reading email'])]) : null
+    ]);
+  }
+
   function detail(o) {
     const items = el('div', { class: 'items' }, o.items.map(i => el('div', { class: 'item' }, [
       el('div', {}, [
@@ -178,6 +199,8 @@
     const sums = el('div', { class: 'sums' }, [
       el('div', {}, [el('span', {}, ['Subtotal']), el('span', {}, [money(t.subtotal)])]),
       t.discount ? el('div', {}, [el('span', {}, [o.promotion || 'Discount']), el('span', {}, ['−' + money(t.discount)])]) : null,
+      t.reading_waiver ? el('div', {}, [el('span', {}, ['Bazi reading — free with perfume']), el('span', {}, ['−' + money(t.reading_waiver)])]) : null,
+      t.credit ? el('div', {}, [el('span', {}, ['Reading credit ' + (o.credit_used || '')]), el('span', {}, ['−' + money(t.credit)])]) : null,
       el('div', {}, [el('span', {}, ['Delivery']), el('span', {}, [t.delivery_fee ? money(t.delivery_fee) : 'Free'])]),
       el('div', { class: 'total' }, [el('span', {}, ['Total']), el('span', {}, [money(t.total)])])
     ]);
@@ -211,6 +234,7 @@
           el('p', {}, [el('a', { href: 'tel:' + o.customer.phone }, [o.customer.phone])]),
           el('p', {}, [el('a', { href: 'mailto:' + o.customer.email }, [o.customer.email])])
         ]),
+        readingBlock(o),
         el('div', { class: 'block' }, [el('h4', {}, ['Delivery']), el('p', {}, [o.delivery.method || '—']), o.delivery.address ? el('p', { style: 'white-space:pre-line' }, [o.delivery.address]) : null]),
         wa ? el('div', { class: 'block' }, [el('h4', {}, ['Message customer on WhatsApp']), el('div', { class: 'actions' },
           waTemplates(o).map(([label, text]) => el('a', { class: 'btn', href: `https://wa.me/${wa}?text=${encodeURIComponent(text)}`, target: '_blank', rel: 'noopener' }, [label])))]) : null,
