@@ -32,7 +32,10 @@
     if (p.status === 'coming_soon') return el('button', { class: 'btn', disabled: 'disabled' }, [text('Coming Soon')]);
     if (p.type === 'personalized') return el('a', { href: 'customize.html', class: 'btn btn-primary' }, [text('Personalize')]);
     const btn = el('button', { class: 'btn btn-primary' }, [text('Add to Cart')]);
-    btn.addEventListener('click', () => addToCart(p, p.sizes && p.sizes.length ? picker.selected().size : null, btn));
+    btn.addEventListener('click', () => {
+      if (p.sizes && p.sizes.length && !picker.selected()) return picker.ask();
+      addToCart(p, p.sizes && p.sizes.length ? picker.selected().size : null, btn);
+    });
     return btn;
   }
 
@@ -70,13 +73,14 @@
       });
     }
     const price = el('span', { class: 'price' }, []);
-    const picker = ChuwuProductUI.sizePicker(p, entry => ChuwuProductUI.renderPrice(price, entry));
-    ChuwuProductUI.renderPrice(price, picker.selected());
+    const media = ChuwuProductUI.media(p, 'product-media');
+    const picker = ChuwuProductUI.sizePicker(p, entry => { ChuwuProductUI.renderPrice(price, entry); media.showSize(entry); });
+    ChuwuProductUI.showPrice(price, p, picker);
     if (picker.node) body.push(picker.node);
     body.push(el('div', { class: 'price-row' }, [price, buyButton(p, picker)]));
 
     return el('div', { class: 'product-card' + (p.status === 'sold_out' ? ' sold_out' : '') }, [
-      ChuwuProductUI.media(p, 'product-media'),
+      media,
       el('div', { class: 'product-body' }, body)
     ]);
   }

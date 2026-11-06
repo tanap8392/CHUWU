@@ -273,6 +273,7 @@
     if (scent.status === 'active') {
       const btn = el('button', { class: 'scent-cta active' }, [document.createTextNode('Add to Cart')]);
       btn.addEventListener('click', () => {
+        if (scent.sizes && scent.sizes.length && !picker.selected()) return picker.ask();
         ChuwuCart.add(scent.id, 1, readingAttributes(), scent.sizes && scent.sizes.length ? picker.selected().size : null);
         addedFeedback(btn, () => { btn.textContent = 'Add to Cart'; });
       });
@@ -296,8 +297,9 @@
     const isFamilyMatch = !!preferredFamily && scent.families.includes(preferredFamily);
     const familyLabels = scent.families.map(k => (ChuwuNotes.FAMILIES.find(f => f.key === k) || { label: k }).label);
     const price = el('span', { class: 'scent-price' }, []);
-    const picker = ChuwuProductUI.sizePicker(scent, entry => ChuwuProductUI.renderPrice(price, entry));
-    ChuwuProductUI.renderPrice(price, picker.selected());
+    const media = ChuwuProductUI.media(scent, 'scent-media');
+    const picker = ChuwuProductUI.sizePicker(scent, entry => { ChuwuProductUI.renderPrice(price, entry); media.showSize(entry); });
+    ChuwuProductUI.showPrice(price, scent, picker);
 
     // Same order as the Shop cards (Site Settings → Product card layout). The element is already
     // shown by the coloured dot next to the code, so there's no separate element tag here.
@@ -321,7 +323,7 @@
     const ordered = ChuwuProductUI.cardLayout().map(key => sections[key]()).filter(Boolean);
 
     return el('div', { class: 'scent-card' + (isFamilyMatch ? ' family-highlight' : '') }, [
-      ChuwuProductUI.media(scent, 'scent-media'),
+      media,
       el('div', { class: 'scent-body' }, [
         el('h3', {}, [
           el('span', { class: 'el-swatch', style: `background:${ELEMENT_COLOR[scent.element]}` }, []),

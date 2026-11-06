@@ -149,12 +149,13 @@ collections:
                     label_singular: "Size"
                     widget: "list"
                     summary: "{{fields.size}} — S${{fields.price}}"
-                    hint: "Customers pick one of these sizes. Put the smallest first — it's the one selected to start with."
+                    hint: "Customers pick one of these sizes (none is selected to start with). Put the smallest first."
                     default: [{ size: "10ml", price: 24.9 }, { size: "30ml", price: 49.9 }]
                     fields:
                       - { label: "Size", name: "size", widget: "string", hint: "e.g. 10ml" }
                       - { label: "Price (SGD)", name: "price", widget: "number", value_type: "float", min: 0, step: 0.1 }
                       - { label: "Original price", name: "compare_at_price", widget: "number", value_type: "float", min: 0, step: 0.1, required: false, hint: "Fill in to show this size on sale (crossed-out price)." }
+                      - { label: "Photo of this size", name: "image", widget: "image", required: false, hint: "The bottle in this size. Shown when the customer picks this size; the Main photo shows before they choose." }
                   - *image
                   - *gallery
                   - *badge

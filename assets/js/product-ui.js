@@ -9,26 +9,32 @@
     return node;
   }
 
-  // Fills `target` with the price of one size entry ({ price, compare_at_price }).
-  function renderPrice(target, entry) {
+  // Fills `target` with the price of one size entry ({ price, compare_at_price }). With `from`,
+  // it reads "From S$19.90" (no size chosen yet).
+  function renderPrice(target, entry, from) {
     target.innerHTML = '';
+    if (from) target.append(el('span', { class: 'price-from' }, ['From ']));
     if (entry.compare_at_price && entry.compare_at_price > entry.price) {
       target.append(el('s', { class: 'compare-price' }, [ChuwuContent.formatPrice(entry.compare_at_price)]), ' ');
     }
     target.append(ChuwuContent.formatPrice(entry.price));
   }
 
-  // Returns { node, selected() } — node is null for single-size products. The smallest size starts
-  // selected; onChange(entry) runs whenever the customer picks another size.
+  // Returns { node, selected(), ask() } — node is null for single-size products. With several sizes
+  // none is chosen to start with (selected() is null) and the price reads "From …"; onChange(entry)
+  // runs whenever the customer picks a size. ask() points the customer at the picker when they try to
+  // add to cart without choosing.
   function sizePicker(p, onChange) {
     const sizes = p.sizes || [];
-    let current = sizes[0] || { size: p.size, price: p.price, compare_at_price: p.compare_at_price };
-    if (sizes.length < 2) return { node: null, selected: () => current };
+    let current = sizes.length === 1 ? sizes[0] : sizes.length ? null : { size: p.size, price: p.price, compare_at_price: p.compare_at_price };
+    if (sizes.length < 2) return { node: null, selected: () => current, ask() {} };
+    const hint = el('span', { class: 'size-hint', role: 'alert' }, []);
     const node = el('div', { class: 'size-picker', role: 'radiogroup', 'aria-label': 'Size' }, []);
-    sizes.forEach((s, i) => {
-      const b = el('button', { type: 'button', class: 'size-opt' + (i === 0 ? ' active' : ''), role: 'radio', 'aria-checked': i === 0 ? 'true' : 'false' }, [s.size]);
+    sizes.forEach(s => {
+      const b = el('button', { type: 'button', class: 'size-opt', role: 'radio', 'aria-checked': 'false' }, [s.size]);
       b.addEventListener('click', () => {
         current = s;
+        node.classList.remove('needs-choice'); hint.textContent = '';
         node.querySelectorAll('.size-opt').forEach(x => {
           x.classList.toggle('active', x === b);
           x.setAttribute('aria-checked', x === b ? 'true' : 'false');
@@ -37,11 +43,30 @@
       });
       node.appendChild(b);
     });
-    return { node, selected: () => current };
+    node.appendChild(hint);
+    return {
+      node,
+      selected: () => current,
+      ask() {
+        hint.textContent = 'Choose a size';
+        node.classList.remove('needs-choice'); void node.offsetWidth; node.classList.add('needs-choice');
+      }
+    };
+  }
+
+  // The price for a card before/after a size is chosen.
+  function showPrice(target, p, picker) {
+    const entry = picker.selected();
+    if (entry) return renderPrice(target, entry);
+    const sizes = p.sizes || [];
+    const cheapest = sizes.reduce((a, b) => (b.price < a.price ? b : a), sizes[0]);
+    renderPrice(target, cheapest, true);
   }
 
   // Square product image. With a second photo (Products → More photos), hovering shows it on a
   // computer; on a phone, where there's no hover, tapping switches photos and dots show there's more.
+  // box.showSize(entry) swaps the main photo for that size's own photo (Products → Sizes → Photo);
+  // the second photo stays the same for every size.
   function media(p, className) {
     const photos = [p.image].concat((p.gallery || []).map(g => (typeof g === 'string' ? g : g && g.image))).filter(Boolean);
     const box = el('div', { class: className + (photos.length > 1 ? ' has-alt' : '') }, []);
@@ -52,6 +77,14 @@
       box.appendChild(el('img', { src: photos[0], alt, class: 'media-main', loading: 'lazy' }, []));
       if (photos[1]) box.appendChild(el('img', { src: photos[1], alt: '', class: 'media-alt', loading: 'lazy', 'aria-hidden': 'true' }, []));
     }
+    const main = box.querySelector('.media-main');
+    box.showSize = entry => {
+      const src = (entry && entry.image) || p.image;
+      if (main && src && main.getAttribute('src') !== src) main.setAttribute('src', src);
+      if (box.classList.contains('show-alt')) box.click(); // on a phone, go back to the bottle photo
+    };
+    // Preload the other sizes' photos so switching is instant.
+    (p.sizes || []).forEach(s => { if (s.image && s.image !== photos[0]) { const i = new Image(); i.loading = 'lazy'; i.src = s.image; } });
     if (p.badge) box.appendChild(el('span', { class: 'product-badge' }, [p.badge]));
     if (photos.length > 1) {
       const dots = el('div', { class: 'media-dots', 'aria-hidden': 'true' }, [el('span', { class: 'on' }, []), el('span', {}, [])]);
@@ -99,5 +132,5 @@
     return Array.isArray(order) && order.length ? order.filter(k => CARD_SECTIONS.includes(k)) : DEFAULT_LAYOUT;
   }
 
-  root.ChuwuProductUI = { renderPrice, sizePicker, media, elementMix, cardLayout };
+  root.ChuwuProductUI = { renderPrice, showPrice, sizePicker, media, elementMix, cardLayout };
 })(typeof window !== 'undefined' ? window : globalThis);

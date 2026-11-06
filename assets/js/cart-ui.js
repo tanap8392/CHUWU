@@ -20,9 +20,12 @@
     });
   }
 
-  function lineMedia(product) {
-    return product && product.image
-      ? el('img', { src: product.image, alt: product.name || product.code || '' }, [])
+  // The photo of the size in the cart (10ml / 30ml) when it has one.
+  function lineMedia(product, size) {
+    const sz = product && size && (product.sizes || []).find(s => s.size === size);
+    const src = (sz && sz.image) || (product && product.image);
+    return src
+      ? el('img', { src, alt: product.name || product.code || '' }, [])
       : el('div', { class: 'cart-line-placeholder' }, []);
   }
 
@@ -59,7 +62,7 @@
       if (attrsText) info.push(el('div', { class: 'attrs' }, [text(attrsText)]));
       info.push(el('div', { class: 'qty-price' }, [line.product.type === 'reading' ? el('span', {}, [text('Digital · emailed to you')]) : qtyControl(line), el('span', {}, [text(ChuwuContent.formatPrice(line.lineTotal))])]));
       info.push(removeBtn);
-      linesEl.appendChild(el('div', { class: 'cart-line' }, [lineMedia(line.product), el('div', { class: 'cart-line-info' }, info)]));
+      linesEl.appendChild(el('div', { class: 'cart-line' }, [lineMedia(line.product, line.size), el('div', { class: 'cart-line-info' }, info)]));
     });
 
     unavailable.forEach(function (line) {
@@ -67,7 +70,7 @@
       removeBtn.addEventListener('click', () => ChuwuCart.remove(line.id));
       const title = line.product ? ChuwuContent.productTitle(line.product, line.size) : 'Item';
       linesEl.appendChild(el('div', { class: 'cart-line unavailable' }, [
-        lineMedia(line.product),
+        lineMedia(line.product, line.size),
         el('div', { class: 'cart-line-info' }, [
           el('div', { class: 'title' }, [text(title)]),
           el('div', { class: 'attrs' }, [text('No longer available — it won\'t be included in your order.')]),

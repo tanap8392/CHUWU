@@ -33,10 +33,11 @@
   // Element scents are keyed by their code (J01, M02…); other products carry an explicit id.
   // A product with a `sizes` list (e.g. 10ml / 30ml) is sold in each of those sizes at its own
   // price; `price` and `size` then hold the first (smallest) size, for "from" prices and sorting.
+  // A size may have its own photo (the bottle in that size), shown when the customer picks it.
   function normalizeProducts(list) {
     return (list || []).map(p => {
       const sizes = (Array.isArray(p.sizes) ? p.sizes : [])
-        .map(s => ({ size: String(s.size || '').trim(), price: Number(s.price) || 0, compare_at_price: Number(s.compare_at_price) > 0 ? Number(s.compare_at_price) : null }))
+        .map(s => ({ size: String(s.size || '').trim(), price: Number(s.price) || 0, compare_at_price: Number(s.compare_at_price) > 0 ? Number(s.compare_at_price) : null, image: s.image || '' }))
         .filter(s => s.size && s.price > 0);
       // Element mix (Products → Element mix): votes per element. The element with the most votes is
       // the scent's main element, which is what recommendations and the element tag use.

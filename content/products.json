@@ -139,12 +139,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/j01-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/j01-30ml.jpg"
         }
       ],
       "gallery": [
@@ -158,7 +160,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/j01.jpg",
+      "image": "/assets/img/uploads/j01-30ml.jpg",
       "element": "Metal",
       "description": "A sparkling citrus opening unfolds into delicate rose and jasmine, softened by white musk and a powdery finish. Clean, polished and quietly elegant."
     },
@@ -176,12 +178,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/j02-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/j02-30ml.jpg"
         }
       ],
       "gallery": [
@@ -207,7 +211,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/j02.jpg",
+      "image": "/assets/img/uploads/j02-30ml.jpg",
       "element": "Metal",
       "description": "Bright bergamot and a touch of pepper meet orange blossom, crisp pear and green cypress. A soft musky finish rounds out a fresh floral scent with a spirited edge."
     },
@@ -225,12 +229,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/j03-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/j03-30ml.jpg"
         }
       ],
       "gallery": [
@@ -256,7 +262,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/j03.jpg",
+      "image": "/assets/img/uploads/j03-30ml.jpg",
       "element": "Metal",
       "description": "Lemon, bergamot and green petitgrain open into luminous neroli and orange blossom. Soft amberwood and white musk bring a gentle warmth to this breezy citrus scent."
     },
@@ -274,12 +280,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/m01-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/m01-30ml.jpg"
         }
       ],
       "gallery": [
@@ -305,7 +313,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/m01.jpg",
+      "image": "/assets/img/uploads/m01-30ml.jpg",
       "element": "Wood",
       "description": "Fresh tea and bergamot unfold into osmanthus, jasmine and a gentle touch of fig. Mate, soft musk and cedarwood create a delicate finish with a quietly distinctive character."
     },
@@ -323,12 +331,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/m02-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/m02-30ml.jpg"
         }
       ],
       "gallery": [
@@ -358,7 +368,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/m02.jpg",
+      "image": "/assets/img/uploads/m02-30ml.jpg",
       "element": "Wood",
       "description": "Lavender, rosemary and cool mint lead into aromatic juniper and warm spice. Moss, woods and a touch of leather give this fresh herbal scent a grounded, rugged depth."
     },
@@ -376,12 +386,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/m03-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/m03-30ml.jpg"
         }
       ],
       "gallery": [
@@ -411,7 +423,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/m03.jpg",
+      "image": "/assets/img/uploads/m03-30ml.jpg",
       "element": "Wood",
       "description": "Blackcurrant and earthy truffle introduce a rich orchid heart touched with spice. Dark chocolate, patchouli and incense deepen the finish, creating a dramatic floral scent with a warm, sensual character."
     },
@@ -429,12 +441,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/s01-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/s01-30ml.jpg"
         }
       ],
       "gallery": [
@@ -456,7 +470,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/s01.jpg",
+      "image": "/assets/img/uploads/s01-30ml.jpg",
       "element": "Water",
       "description": "Bright citrus gives way to a bold marine heart of seaweed and airy aquatic notes. Musk, ambroxan and cedar create a deep mineral finish, evoking open water and salt-swept rocks."
     },
@@ -474,12 +488,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/s02-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/s02-30ml.jpg"
         }
       ],
       "gallery": [
@@ -501,7 +517,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/s02.jpg",
+      "image": "/assets/img/uploads/s02-30ml.jpg",
       "element": "Water",
       "description": "Soft ambrette meets sea salt and cool mineral notes, settling into earthy sage. Clean, airy and understated, this coastal scent evokes a quiet walk along a windswept shore."
     },
@@ -519,12 +535,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/s03-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/s03-30ml.jpg"
         }
       ],
       "gallery": [
@@ -546,7 +564,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/s03.jpg",
+      "image": "/assets/img/uploads/s03-30ml.jpg",
       "element": "Water",
       "description": "Crushed blackcurrant leaves and tart cassis bring a vivid green opening to dewy rose. A soft musky finish captures the intimate atmosphere of a leafy garden after rain."
     },
@@ -564,12 +582,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/h01-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/h01-30ml.jpg"
         }
       ],
       "gallery": [
@@ -595,7 +615,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/h01.jpg",
+      "image": "/assets/img/uploads/h01-30ml.jpg",
       "element": "Fire",
       "description": "Ginger and cardamom bring a lively warmth to watery florals and white ginger lily. Citrus and vetiver leave a fresh green impression, evoking a tropical garden after rain."
     },
@@ -613,12 +633,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/h02-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/h02-30ml.jpg"
         }
       ],
       "gallery": [
@@ -648,7 +670,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/h02.jpg",
+      "image": "/assets/img/uploads/h02-30ml.jpg",
       "element": "Fire",
       "description": "Juicy plum and dark berries unfold into lush tuberose, carnation and warm spice. Honeyed touches, incense and amber create a rich floral scent with a bold, enveloping character."
     },
@@ -666,12 +688,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/h03-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/h03-30ml.jpg"
         }
       ],
       "gallery": [
@@ -693,7 +717,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/h03.jpg",
+      "image": "/assets/img/uploads/h03-30ml.jpg",
       "element": "Fire",
       "description": "A whiskey opening meets cinnamon and coriander before settling into tobacco, oud and incense. Sandalwood and a touch of vanilla soften the smoky depth with a warm, rounded finish."
     },
@@ -711,12 +735,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/t01-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/t01-30ml.jpg"
         }
       ],
       "gallery": [
@@ -738,7 +764,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/t01.jpg",
+      "image": "/assets/img/uploads/t01-30ml.jpg",
       "element": "Earth",
       "description": "Coconut milk and warm beeswax lend a creamy softness to vanilla, bitter almond and benzoin. Sandalwood and guaiac wood give the sweetness a mellow, grounded depth."
     },
@@ -756,12 +782,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/t02-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/t02-30ml.jpg"
         }
       ],
       "gallery": [
@@ -783,7 +811,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/t02.jpg",
+      "image": "/assets/img/uploads/t02-30ml.jpg",
       "element": "Earth",
       "description": "Lavender and clary sage open into supple leather, bitter almond and powdery orris. Tonka bean, amber and soft woods bring warmth to a smooth, self-assured scent."
     },
@@ -800,12 +828,14 @@
         {
           "size": "10ml",
           "price": 19.9,
-          "compare_at_price": 24.9
+          "compare_at_price": 24.9,
+          "image": "/assets/img/uploads/t03-10ml.jpg"
         },
         {
           "size": "30ml",
           "price": 39.9,
-          "compare_at_price": 49.9
+          "compare_at_price": 49.9,
+          "image": "/assets/img/uploads/t03-30ml.jpg"
         }
       ],
       "gallery": [
@@ -827,7 +857,7 @@
         }
       ],
       "type": "element_scent",
-      "image": "/assets/img/uploads/t03.jpg",
+      "image": "/assets/img/uploads/t03-30ml.jpg",
       "element": "Earth",
       "description": "A boozy dessert fragrance — rum and dark chocolate melt into caramel and sandalwood. Indulgent, dark, and dangerously addictive."
     },

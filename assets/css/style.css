@@ -394,6 +394,10 @@ header.site-nav:has(.announcement-bar) .cart-panel { top: 112px; }
 }
 .size-opt:hover { border-color: var(--charcoal); }
 .size-opt.active { background: var(--charcoal); border-color: var(--charcoal); color: var(--ivory); }
+.size-hint { align-self: center; font-size: 0.78rem; color: var(--fire); }
+.size-picker.needs-choice .size-opt { border-color: var(--fire); animation: size-nudge 0.4s ease; }
+@keyframes size-nudge { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+.price-from { font-size: 0.8em; letter-spacing: 0.02em; }
 .notes-block { white-space: pre-line; line-height: 1.6; margin-top: 6px; }
 /* Cormorant's default old-style figures make codes like "M01" read as "Mo1"; use full-height figures. */
 h1, h2, h3, h4, .price, .scent-code { font-variant-numeric: lining-nums; }
